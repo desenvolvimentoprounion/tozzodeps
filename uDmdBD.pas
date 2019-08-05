@@ -25,6 +25,13 @@ type
     dsrPesquisaPedidos: TDataSource;
     qryPesquisaPedidosDATA: TDateTimeField;
     qryPesquisaPedidosDTLIBERADEPS: TDateTimeField;
+    qryPedidoPrecisaCorte: TFDQuery;
+    qryItensPedido: TFDQuery;
+    qryItensPedidoCODPROD: TBCDField;
+    qryItensPedidoQT: TFMTBCDField;
+    qryItensPedidoPVENDA: TFMTBCDField;
+    qryItensPedidoESTDISP: TFMTBCDField;
+    qryInserePCCORTEI: TFDQuery;
   private
     { Private declarations }
   public

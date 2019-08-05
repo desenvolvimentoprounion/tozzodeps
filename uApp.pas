@@ -2,6 +2,32 @@ unit uApp;
 
 interface
 
+type
+  ItemPedido = class
+
+    public
+      CODPROD : double;
+      QTSEPARADA : double;
+      QTCORTADA : double;
+      NUMCAR : double;
+      CODFUNC : double;
+      PVENDA : double;
+      CODFILIAL: string;
+      QTORIG : double;
+      QTFALTA : double;
+      MOTIVO : string;
+      HORA:  double;
+      MINUTO : double;
+      CODCLI : double;
+      CODUSUR : double;
+      CODROTINA : double;
+      CONDVENDA : double;
+      CODEMITENTEPED : double;
+      NUMSEQ : double;
+
+
+  end;
+
 function PesquisaPedidos(DataInicial, DataFinal : TDateTime; NumeroPedido, CodigoCliente, CodigoRCA : double) : integer;
 
 implementation
@@ -103,8 +129,57 @@ begin
 
     Result := RecordCount;
   end;
+end;
+
+function PedidoPrecisaDeCorte(NumeroPedido : double) : boolean;
+begin
+
+  with DmdBD.qryPedidoPrecisaCorte do
+  begin
+
+    Close;
+    ParamByName('NUMPED').AsFloat := NumeroPedido;
+    Open;
+
+    Result := RecordCount > 0;
+  end;
+end;
+
+procedure ItensDoPedido(NumeroPedido : double);
+begin
+
+  with DmdBD.qryItensPedido do
+  begin
+
+    Close;
+    ParamByName('NUMPED').AsFloat := NumeroPedido;
+    Open;
+  end;
+
+end;
+
+procedure CorteParcial(NumeroPedido, CodigoProduto, QuantidadePedido, QuantidadeEstoque : double);
+begin
 
 
 end;
+
+procedure CorteTotal(NumeroPedido, CodigoProduto, QuantidadePedido : double);
+begin
+
+
+end;
+
+procedure ReservarEstoqueItem(Filial: string; CodigoProduto, Quantidade : double);
+begin
+
+
+end;
+
+// corte parcial
+// corte total
+// reservar item
+// recalcular pedido
+
 
 end.
