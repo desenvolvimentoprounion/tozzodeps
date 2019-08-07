@@ -1,6 +1,6 @@
 object DmdBD: TDmdBD
   OldCreateOrder = False
-  Height = 395
+  Height = 644
   Width = 763
   object qryPesquisaPedidos: TFDQuery
     Connection = conn
@@ -21,6 +21,8 @@ object DmdBD: TDmdBD
       
         #9', (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEA' +
         'DA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP'
+      '    , NVL(PCPEDC.NUMCAR, 0) AS NUMCAR'
+      '    , NVL(PCPEDC.CODEMITENTE, 0) AS CODEMITENTE'
       'FROM NTINTEGRACAODEPSLIBERAPEDIDO LIBERA'
       'JOIN PCPEDC ON PCPEDC.NUMPED = LIBERA.NUMPED'
       'LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI'
@@ -41,6 +43,8 @@ object DmdBD: TDmdBD
       #9', SUM(CASE WHEN QT > ESTDISP THEN 1 ELSE 0 END) AS SEM_ESTOQUE'
       #9', DATA'
       #9', DTLIBERADEPS'
+      '        , NUMCAR'
+      '        , CODEMITENTE'
       'FROM PEDIDOS'
       'GROUP BY '
       #9'CODFILIAL'
@@ -52,6 +56,8 @@ object DmdBD: TDmdBD
       #9', NOME'
       #9', DATA'
       #9', DTLIBERADEPS'
+      '        , NUMCAR'
+      '        , CODEMITENTE'
       'ORDER BY '#9'CODFILIAL'
       #9', NUMPED'
       #9', VLTOTAL'
@@ -127,6 +133,18 @@ object DmdBD: TDmdBD
       Origin = 'DTLIBERADEPS'
       Required = True
     end
+    object qryPesquisaPedidosNUMCAR: TFMTBCDField
+      FieldName = 'NUMCAR'
+      Origin = 'NUMCAR'
+      Precision = 38
+      Size = 38
+    end
+    object qryPesquisaPedidosCODEMITENTE: TFMTBCDField
+      FieldName = 'CODEMITENTE'
+      Origin = 'CODEMITENTE'
+      Precision = 38
+      Size = 38
+    end
   end
   object conn: TFDConnection
     Params.Strings = (
@@ -134,7 +152,6 @@ object DmdBD: TDmdBD
       'User_Name=LOCAL'
       'Password=LOCAL'
       'DriverID=Ora')
-    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 24
@@ -182,6 +199,7 @@ object DmdBD: TDmdBD
       
         #9', (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEA' +
         'DA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP'
+      '        , NVL(PCPEDI.NUMSEQ, 1) AS NUMSEQ'
       'FROM PCPEDC'
       'JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
       'JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL'
@@ -223,17 +241,24 @@ object DmdBD: TDmdBD
       Precision = 38
       Size = 38
     end
+    object qryItensPedidoNUMSEQ: TFMTBCDField
+      FieldName = 'NUMSEQ'
+      Origin = 'NUMSEQ'
+      Precision = 38
+      Size = 38
+    end
   end
   object qryInserePCCORTEI: TFDQuery
     Connection = conn
     SQL.Strings = (
-      'INSERT INTO PCCORTEI'
-      '( CODPROD'
-      ', DATA'
+      'INSERT INTO PCCORTEI ('
+      'CODPROD'
       ', QTSEPARADA'
       ', QTCORTADA'
+      ', DATA'
       ', NUMCAR'
       ', CODFUNC'
+      ', NUMPED'
       ', PVENDA'
       ', CODFILIAL'
       ', QTORIG'
@@ -244,27 +269,26 @@ object DmdBD: TDmdBD
       ', CODCLI'
       ', CODUSUR'
       ', CODROTINA'
-      ', CONDVENDA'
       ', CODEMITENTEPED'
-      ', NUMSEQ )'
-      'VALUES'
-      '( :CODPROD'
-      ', SYSDATE'
+      ', NUMSEQ '
+      ' ) VALUES ('
+      '  :CODPROD'
       ', :QTSEPARADA'
       ', :QTCORTADA'
+      ', SYSDATE'
       ', :NUMCAR'
       ', :CODFUNC'
+      ', :NUMPED'
       ', :PVENDA'
       ', :CODFILIAL'
       ', :QTORIG'
       ', :QTFALTA'
       ', :MOTIVO'
-      ', :HORA'
-      ', :MINUTO'
+      ', TO_NUMBER(TO_CHAR(SYSDATE, '#39'HH24'#39'))'
+      ', TO_NUMBER(TO_CHAR(SYSDATE, '#39'MI'#39'))'
       ', :CODCLI'
       ', :CODUSUR'
       ', :CODROTINA'
-      ', :CONDVENDA'
       ', :CODEMITENTEPED'
       ', :NUMSEQ )')
     Left = 392
@@ -291,6 +315,10 @@ object DmdBD: TDmdBD
         ParamType = ptInput
       end
       item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
         Name = 'PVENDA'
         ParamType = ptInput
       end
@@ -311,14 +339,6 @@ object DmdBD: TDmdBD
         ParamType = ptInput
       end
       item
-        Name = 'HORA'
-        ParamType = ptInput
-      end
-      item
-        Name = 'MINUTO'
-        ParamType = ptInput
-      end
-      item
         Name = 'CODCLI'
         ParamType = ptInput
       end
@@ -331,15 +351,178 @@ object DmdBD: TDmdBD
         ParamType = ptInput
       end
       item
-        Name = 'CONDVENDA'
-        ParamType = ptInput
-      end
-      item
         Name = 'CODEMITENTEPED'
         ParamType = ptInput
       end
       item
         Name = 'NUMSEQ'
+        ParamType = ptInput
+      end>
+  end
+  object qryReservarEstoqueItem: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCEST SET'
+      'QTRESERV = NVL(QTRESERV,0) + :QT'
+      'WHERE CODFILIAL = :CODFILIAL'
+      'AND CODPROD = :CODPROD')
+    Left = 72
+    Top = 256
+    ParamData = <
+      item
+        Name = 'QT'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODFILIAL'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODPROD'
+        ParamType = ptInput
+      end>
+  end
+  object qryLiberarPedido: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDC SET'
+      'POSICAO = '#39'L'#39
+      'WHERE NUMPED = :NUMPED'
+      'AND POSICAO = '#39'B'#39)
+    Left = 232
+    Top = 264
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
+  end
+  object qryLiberarItens: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDI SET'
+      'POSICAO = '#39'L'#39
+      'WHERE NUMPED = :NUMPED'
+      'AND POSICAO = '#39'B'#39)
+    Left = 336
+    Top = 264
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
+  end
+  object qryCorteItemPedido: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDI SET'
+      'QT = QT - :QT_CORTE'
+      'WHERE NUMPED = :NUMPED'
+      'AND CODPROD = :CODPROD')
+    Left = 392
+    Top = 144
+    ParamData = <
+      item
+        Name = 'QT_CORTE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODPROD'
+        ParamType = ptInput
+      end>
+  end
+  object qryAtualizarCabecalhoPedido: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDC SET'
+      '    VLTOTAL = NVL(VLTOTAL,0) - :VLCORTE'
+      '    , VLATEND = NVL(VLATEND,0) - :VLCORTE'
+      '    , DTLIBERA = SYSDATE'
+      
+        '    , VLCUSTOREP = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.VLCUSTORE' +
+        'P, 0)) FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
+      
+        '    , VLCUSTOCONT = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.VLCUSTOC' +
+        'ONT, 0)) FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
+      
+        '    , VLCUSTOREAL = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.VLCUSTOR' +
+        'EAL, 0)) FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
+      
+        '    , VLCUSTOFIN = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.VLCUSTOFI' +
+        'N, 0)) FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
+      
+        '    , NUMITENS = ( SELECT COUNT(PCPEDI.CODPROD) FROM PCPEDI WHER' +
+        'E PCPEDI.NUMPED = :NUMPED )'
+      '    , HORALIBERA = TO_NUMBER(TO_CHAR(SYSDATE, '#39'HH24'#39'))'
+      '    , MINUTOLIBERA = TO_NUMBER(TO_CHAR(SYSDATE, '#39'MI'#39'))'
+      '    , CODFUNCLIBERA = :CODUSUARIO'
+      'WHERE NUMPED = :NUMPED')
+    Left = 496
+    Top = 256
+    ParamData = <
+      item
+        Name = 'VLCORTE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODUSUARIO'
+        ParamType = ptInput
+      end>
+  end
+  object qryDeletarItensSemQuantidade: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'DELETE FROM PCPEDI'
+      'WHERE NUMPED = :NUMPED'
+      'AND QT = 0')
+    Left = 72
+    Top = 360
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
+  end
+  object qryCancelarPedidoSemItens: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDC SET'
+      'POSICAO = '#39'C'#39
+      ', DTCANCEL = SYSDATE'
+      ', CODFUNCCANCEL = :CODUSUARIO'
+      'WHERE NUMPED = :NUMPED'
+      'AND NUMITENS = 0')
+    Left = 464
+    Top = 336
+    ParamData = <
+      item
+        Name = 'CODUSUARIO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
+  end
+  object qryMarcarComoLiberado: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE ntintegracaodepsliberapedido SET'
+      'DTLIBERAWINTHOR = SYSDATE'
+      'WHERE NUMPED = :NUMPED')
+    Left = 496
+    Top = 416
+    ParamData = <
+      item
+        Name = 'NUMPED'
         ParamType = ptInput
       end>
   end

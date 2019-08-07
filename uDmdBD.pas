@@ -32,6 +32,17 @@ type
     qryItensPedidoPVENDA: TFMTBCDField;
     qryItensPedidoESTDISP: TFMTBCDField;
     qryInserePCCORTEI: TFDQuery;
+    qryReservarEstoqueItem: TFDQuery;
+    qryLiberarPedido: TFDQuery;
+    qryLiberarItens: TFDQuery;
+    qryPesquisaPedidosNUMCAR: TFMTBCDField;
+    qryPesquisaPedidosCODEMITENTE: TFMTBCDField;
+    qryItensPedidoNUMSEQ: TFMTBCDField;
+    qryCorteItemPedido: TFDQuery;
+    qryAtualizarCabecalhoPedido: TFDQuery;
+    qryDeletarItensSemQuantidade: TFDQuery;
+    qryCancelarPedidoSemItens: TFDQuery;
+    qryMarcarComoLiberado: TFDQuery;
   private
     { Private declarations }
   public

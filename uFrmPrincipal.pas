@@ -26,7 +26,7 @@ uses
   cxCalendar, cxGroupBox, cxButtonEdit, cxStyles, cxCustomData, cxFilter,
   cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit;
+  cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit, cxProgressBar;
 
 type
   TFrmPrincipal = class(TForm)
@@ -99,11 +99,12 @@ type
     stySemEstoque: TcxStyle;
     grdPedidosDBTableView1DATA: TcxGridDBColumn;
     grdPedidosDBTableView1DTLIBERADEPS: TcxGridDBColumn;
+    prgBar: TcxProgressBar;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
     procedure _irParaMenu(Sender: TObject);
-    procedure btnPesquisarClick(Sender: TObject);
+    procedure _PesquisarManual(Sender: TObject);
     procedure grdPedidosDBTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
@@ -113,6 +114,7 @@ type
     procedure btnEdtCodRCAPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure btnEdtCodRCAExit(Sender: TObject);
+    procedure btnLiberarPedidosManualClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -126,7 +128,7 @@ implementation
 
 {$R *.dfm}
 
-uses uDmdBD, uApp, UMensagem, uConexaoBD, uUtils, UConsultasWinthor;
+uses uDmdBD, uApp, UMensagem, uConexaoBD, uUtils, UConsultasWinthor, uUsuario;
 
 procedure TFrmPrincipal._irParaExecuaoManual(Sender: TObject);
 begin
@@ -174,7 +176,21 @@ begin
 
 end;
 
-procedure TFrmPrincipal.btnPesquisarClick(Sender: TObject);
+procedure TFrmPrincipal.btnLiberarPedidosManualClick(Sender: TObject);
+begin
+
+  FrmPrincipal.prgBar.Visible := True;
+  Application.ProcessMessages;
+
+  ProcessarPedidos(gUSUARIO, gCODIGO_ROTINA);
+
+  FrmPrincipal.prgBar.Visible := False;
+  Application.ProcessMessages;
+
+  _PesquisarManual(Sender);
+end;
+
+procedure TFrmPrincipal._PesquisarManual(Sender: TObject);
 var
   dt_inicial,
   dt_final : TDateTime;
@@ -235,6 +251,9 @@ begin
   dtLiberaPedidoInicial.Date := Date;
   dtLiberaPedidoFinal.Date := Date;
 
+
+  gUSUARIO := TUsuario.PorLogin(ParamStr(1));
+  gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
 end;
 

@@ -4,8 +4,8 @@ object FrmPrincipal: TFrmPrincipal
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Integra'#231#227'o WinThor x DEPS'
-  ClientHeight = 430
-  ClientWidth = 710
+  ClientHeight = 483
+  ClientWidth = 973
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,15 +20,15 @@ object FrmPrincipal: TFrmPrincipal
   object pgcPrincipal: TcxPageControl
     Left = 0
     Top = 0
-    Width = 710
-    Height = 430
+    Width = 973
+    Height = 483
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tabExecucaoManual
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 427
+    ClientRectBottom = 480
     ClientRectLeft = 2
-    ClientRectRight = 707
+    ClientRectRight = 970
     ClientRectTop = 30
     object tabMenu: TcxTabSheet
       Caption = 'tabMenu'
@@ -43,22 +43,22 @@ object FrmPrincipal: TFrmPrincipal
         Style.TextColor = clNavy
         Properties.WordWrap = True
         Transparent = True
-        Width = 530
+        Width = 923
       end
       object cxLabel2: TcxLabel
         Left = 16
-        Top = 63
+        Top = 47
         Caption = 
           'Caso n'#227'o haja estoque suficiente para atender o pedido, os itens' +
           ' sofrer'#227'o cortes, o pedido ser'#225' recalculado e liberado.'
         Style.TextColor = clNavy
         Properties.WordWrap = True
         Transparent = True
-        Width = 406
+        Width = 797
       end
       object cxLabel3: TcxLabel
         Left = 16
-        Top = 121
+        Top = 89
         Caption = 'No caso de corte total dos itens o pedido ser'#225' cancelado.'
         Style.TextColor = clNavy
         Transparent = True
@@ -85,7 +85,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnExcucaoAutomatica: TcxButton
         Left = 16
-        Top = 293
+        Top = 317
         Width = 80
         Height = 80
         OptionsImage.Glyph.SourceDPI = 96
@@ -168,7 +168,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel6: TcxLabel
         Left = 102
-        Top = 301
+        Top = 325
         Caption = 'Execu'#231#227'o autom'#225'tica'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -183,7 +183,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel7: TcxLabel
         Left = 105
-        Top = 334
+        Top = 358
         Caption = 
           'Define o per'#237'odo retroativo e frequ'#234'ncia de execu'#231#227'o de an'#225'lise ' +
           'autom'#225'tica da rotina.'
@@ -204,29 +204,31 @@ object FrmPrincipal: TFrmPrincipal
       Caption = 'tabExecucaoManual'
       ImageIndex = 1
       DesignSize = (
-        705
-        397)
+        968
+        450)
       object Shape1: TShape
         Left = 7
-        Top = 336
+        Top = 389
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
         Brush.Color = clRed
         Pen.Color = clRed
+        ExplicitTop = 336
       end
       object Shape2: TShape
         Left = 207
-        Top = 336
+        Top = 389
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
         Brush.Color = clBlue
         Pen.Color = clBlue
+        ExplicitTop = 336
       end
       object btnVoltarMenu1: TcxButton
         Left = 7
-        Top = 364
+        Top = 417
         Width = 130
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -348,7 +350,7 @@ object FrmPrincipal: TFrmPrincipal
         Transparent = True
       end
       object btnPesquisar: TcxButton
-        Left = 570
+        Left = 833
         Top = 108
         Width = 130
         Height = 25
@@ -387,7 +389,7 @@ object FrmPrincipal: TFrmPrincipal
           319E9A8CF8B55323DE4C7EBCEE78EE16AD714F6ACBBF059CA12764F2DBD90000
           000049454E44AE426082}
         TabOrder = 5
-        OnClick = btnPesquisarClick
+        OnClick = _PesquisarManual
       end
       object cxLabel8: TcxLabel
         Left = 7
@@ -431,8 +433,8 @@ object FrmPrincipal: TFrmPrincipal
       object grdPedidos: TcxGrid
         Left = 7
         Top = 139
-        Width = 695
-        Height = 190
+        Width = 958
+        Height = 222
         Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 16
         object grdPedidosDBTableView1: TcxGridDBTableView
@@ -507,8 +509,8 @@ object FrmPrincipal: TFrmPrincipal
         end
       end
       object btnLiberarPedidosManual: TcxButton
-        Left = 570
-        Top = 364
+        Left = 833
+        Top = 417
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -538,10 +540,11 @@ object FrmPrincipal: TFrmPrincipal
           E26CEE67CFA5ABDD195501EB82381435A0314401412DE04F7EEE05100AE00129
           20B9C87716160F050A40FE2F0C443CDF350F545E0000000049454E44AE426082}
         TabOrder = 6
+        OnClick = btnLiberarPedidosManualClick
       end
       object cxLabel14: TcxLabel
         Left = 23
-        Top = 331
+        Top = 384
         Anchors = [akLeft, akBottom]
         Caption = 'Sem estoque suficiente'
         ParentColor = False
@@ -561,7 +564,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel15: TcxLabel
         Left = 223
-        Top = 331
+        Top = 384
         Anchors = [akLeft, akBottom]
         Caption = 'Com estoque suficiente'
         ParentColor = False
@@ -580,16 +583,24 @@ object FrmPrincipal: TFrmPrincipal
         StyleHot.LookAndFeel.NativeStyle = True
         Transparent = True
       end
+      object prgBar: TcxProgressBar
+        Left = 7
+        Top = 364
+        Anchors = [akLeft, akRight, akBottom]
+        TabOrder = 19
+        Visible = False
+        Width = 958
+      end
     end
     object tabExecucaoAutomatica: TcxTabSheet
       Caption = 'tabExecucaoAutomatica'
       ImageIndex = 2
       DesignSize = (
-        705
-        397)
+        968
+        450)
       object btnVoltarMenu2: TcxButton
         Left = 7
-        Top = 364
+        Top = 417
         Width = 130
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -753,8 +764,8 @@ object FrmPrincipal: TFrmPrincipal
         Style.Color = clWhite
         StyleDisabled.Color = clWhite
         TabOrder = 13
-        Height = 322
-        Width = 322
+        Height = 375
+        Width = 585
       end
       object cxLabel21: TcxLabel
         Left = 380
@@ -790,8 +801,8 @@ object FrmPrincipal: TFrmPrincipal
         Transparent = True
       end
       object cxButton1: TcxButton
-        Left = 572
-        Top = 364
+        Left = 835
+        Top = 417
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -834,8 +845,8 @@ object FrmPrincipal: TFrmPrincipal
         TabOrder = 17
       end
       object cxButton2: TcxButton
-        Left = 436
-        Top = 364
+        Left = 699
+        Top = 417
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
