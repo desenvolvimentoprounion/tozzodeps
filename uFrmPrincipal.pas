@@ -3,7 +3,8 @@ unit uFrmPrincipal;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, dxSkinsCore, dxSkinBlack, dxSkinBlue,
   dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
   dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
@@ -26,7 +27,8 @@ uses
   cxCalendar, cxGroupBox, cxButtonEdit, cxStyles, cxCustomData, cxFilter,
   cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit, cxProgressBar;
+  cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit, cxProgressBar,
+  DateUtils, uUsuario;
 
 type
   TFrmPrincipal = class(TForm)
@@ -69,11 +71,8 @@ type
     Shape2: TShape;
     cxLabel15: TcxLabel;
     cxLabel16: TcxLabel;
-    cxButtonEdit1: TcxButtonEdit;
-    cxTextEdit3: TcxTextEdit;
-    cxLabel17: TcxLabel;
-    cxButtonEdit2: TcxButtonEdit;
-    cxTextEdit4: TcxTextEdit;
+    btnEdtUsuarioAuto: TcxButtonEdit;
+    edtDescricaoUsuarioAuto: TcxTextEdit;
     spnQtdDias: TcxSpinEdit;
     spnIntervaloMinutos: TcxSpinEdit;
     spnQtdLinhas: TcxSpinEdit;
@@ -84,8 +83,8 @@ type
     cxLabel21: TcxLabel;
     edtProximaExecucao: TcxTextEdit;
     cxLabel22: TcxLabel;
-    cxButton1: TcxButton;
-    cxButton2: TcxButton;
+    btnPararAuto: TcxButton;
+    btnPlayAuto: TcxButton;
     grdPedidosDBTableView1CODFILIAL: TcxGridDBColumn;
     grdPedidosDBTableView1NUMPED: TcxGridDBColumn;
     grdPedidosDBTableView1VLTOTAL: TcxGridDBColumn;
@@ -100,13 +99,14 @@ type
     grdPedidosDBTableView1DATA: TcxGridDBColumn;
     grdPedidosDBTableView1DTLIBERADEPS: TcxGridDBColumn;
     prgBar: TcxProgressBar;
+    timer: TTimer;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
     procedure _irParaMenu(Sender: TObject);
     procedure _PesquisarManual(Sender: TObject);
-    procedure grdPedidosDBTableView1StylesGetContentStyle(
-      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+    procedure grdPedidosDBTableView1StylesGetContentStyle
+      (Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
     procedure btnEdtCodClientePropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -115,6 +115,13 @@ type
       AButtonIndex: Integer);
     procedure btnEdtCodRCAExit(Sender: TObject);
     procedure btnLiberarPedidosManualClick(Sender: TObject);
+    procedure btnPlayAutoClick(Sender: TObject);
+    procedure btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnEdtUsuarioAutoExit(Sender: TObject);
+    procedure timerTimer(Sender: TObject);
+    procedure btnPararAutoClick(Sender: TObject);
+    procedure tabExecucaoManualShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -123,12 +130,15 @@ type
 
 var
   FrmPrincipal: TFrmPrincipal;
+  gPROXIMA_EXECUCAO: TDateTime;
+  gAUTOMATICO_HABILITADO: boolean;
+  gUSUARIO_AUTOMATICO: TUsuario;
 
 implementation
 
 {$R *.dfm}
 
-uses uDmdBD, uApp, UMensagem, uConexaoBD, uUtils, UConsultasWinthor, uUsuario;
+uses uDmdBD, uApp, UMensagem, uConexaoBD, uUtils, UConsultasWinthor;
 
 procedure TFrmPrincipal._irParaExecuaoManual(Sender: TObject);
 begin
@@ -151,7 +161,8 @@ end;
 procedure TFrmPrincipal.btnEdtCodClienteExit(Sender: TObject);
 begin
 
-  BotaoPesquisaOnExit(cliente, btnEdtCodCliente, edtDescricaoCliente, 'Cliente não encontrado');
+  BotaoPesquisaOnExit(cliente, btnEdtCodCliente, edtDescricaoCliente,
+    'Cliente não encontrado');
 
 end;
 
@@ -164,7 +175,7 @@ end;
 
 procedure TFrmPrincipal.btnEdtCodRCAExit(Sender: TObject);
 begin
-                                                                                
+
   BotaoPesquisaOnExit(rca, btnEdtCodRCA, edtDescricaoRCA, 'RCA não encontrado');
 end;
 
@@ -173,37 +184,136 @@ procedure TFrmPrincipal.btnEdtCodRCAPropertiesButtonClick(Sender: TObject;
 begin
 
   BotaoPesquisaOnButtonClick(rca, btnEdtCodRCA, Self);
+end;
 
+procedure TFrmPrincipal.btnEdtUsuarioAutoExit(Sender: TObject);
+begin
+
+  BotaoPesquisaOnExit(usuario, btnEdtUsuarioAuto, edtDescricaoUsuarioAuto,
+    'Usuário não encontrado');
+end;
+
+procedure TFrmPrincipal.btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+
+  BotaoPesquisaOnButtonClick(usuario, btnEdtUsuarioAuto, Self);
 end;
 
 procedure TFrmPrincipal.btnLiberarPedidosManualClick(Sender: TObject);
+var
+  data_maxima: TDateTime;
 begin
+
+  data_maxima := EncodeDate(2019, 8, 30);
+
+  if (Date > data_maxima) then
+  begin
+
+    TMsg.Alerta('O período de homologação expirou');
+    Exit;
+  end;
 
   FrmPrincipal.prgBar.Visible := True;
   Application.ProcessMessages;
 
-  ProcessarPedidos(gUSUARIO, gCODIGO_ROTINA);
+  btnPesquisar.Enabled := False;
+  btnVoltarMenu1.Enabled := False;
+  btnLiberarPedidosManual.Enabled := False;
+
+  if ProcessarPedidos(gUSUARIO, gCODIGO_ROTINA) then
+  begin
+
+    TMsg.Sucesso('Pedidos liberados com sucesso');
+  end;
 
   FrmPrincipal.prgBar.Visible := False;
   Application.ProcessMessages;
 
   _PesquisarManual(Sender);
+
+  btnPesquisar.Enabled := True;
+  btnVoltarMenu1.Enabled := True;
+  btnLiberarPedidosManual.Enabled := True;
+end;
+
+procedure TFrmPrincipal.btnPararAutoClick(Sender: TObject);
+begin
+
+  edtProximaExecucao.Text := '';
+  gAUTOMATICO_HABILITADO := False;
+
+  btnEdtUsuarioAuto.Enabled := True;
+  spnQtdDias.Enabled := True;
+  spnQtdLinhas.Enabled := True;
+  spnIntervaloMinutos.Enabled := True;
+
+  btnPlayAuto.Enabled := True;
+  btnPararAuto.Enabled := False;
+  btnVoltarMenu2.Enabled := True;
+end;
+
+procedure TFrmPrincipal.btnPlayAutoClick(Sender: TObject);
+var
+  data_maxima: TDateTime;
+  minutos: double;
+begin
+
+  data_maxima := EncodeDate(2019, 8, 30);
+
+  if (Date > data_maxima) then
+  begin
+
+    TMsg.Alerta('O período de homologação expirou');
+    Exit;
+  end;
+
+  if btnEdtUsuarioAuto.Text = '' then
+  begin
+
+    TMsg.Alerta('Informe o usuário');
+    btnEdtUsuarioAuto.SetFocus;
+    Exit;
+  end;
+
+  if spnIntervaloMinutos.Text = '' then
+  begin
+
+    minutos := 1;
+  end
+  else
+  begin
+
+    minutos := spnIntervaloMinutos.EditValue;
+  end;
+
+  gPROXIMA_EXECUCAO := IncMinute(Now, Trunc(minutos));
+  edtProximaExecucao.Text := DateTimeToStr(gPROXIMA_EXECUCAO);
+  gAUTOMATICO_HABILITADO := True;
+  gUSUARIO_AUTOMATICO := TUsuario.PorMatricula(btnEdtUsuarioAuto.EditValue);
+
+  btnEdtUsuarioAuto.Enabled := False;
+  spnQtdDias.Enabled := False;
+  spnQtdLinhas.Enabled := False;
+  spnIntervaloMinutos.Enabled := False;
+
+  btnPlayAuto.Enabled := False;
+  btnPararAuto.Enabled := True;
+  btnVoltarMenu2.Enabled := False;
+
 end;
 
 procedure TFrmPrincipal._PesquisarManual(Sender: TObject);
 var
-  dt_inicial,
-  dt_final : TDateTime;
-  numero_pedido,
-  codigo_cliente,
-  codigo_rca : double;
+  dt_inicial, dt_final: TDateTime;
+  numero_pedido, codigo_cliente, codigo_rca: double;
 
-  registros_encontrados : integer;
+  registros_encontrados: Integer;
 begin
 
   if dtLiberaPedidoInicial.Text = '' then
   begin
-  
+
     TMsg.Alerta('Informe a data inicial');
     dtLiberaPedidoInicial.SetFocus;
     Exit;
@@ -211,7 +321,7 @@ begin
 
   if dtLiberaPedidoFinal.Text = '' then
   begin
-  
+
     TMsg.Alerta('Informe a data final');
     dtLiberaPedidoFinal.SetFocus;
     Exit;
@@ -222,7 +332,7 @@ begin
   codigo_cliente := 0;
   codigo_rca := 0;
   numero_pedido := 0;
-  
+
   if btnEdtCodCliente.Text <> '' then
     codigo_cliente := btnEdtCodCliente.EditValue;
 
@@ -232,13 +342,14 @@ begin
   if mskNumeroPedido.Text <> '' then
     numero_pedido := mskNumeroPedido.EditValue;
 
-  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido, codigo_cliente, codigo_rca);
+  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido,
+    codigo_cliente, codigo_rca);
 
-  if registros_encontrados = 0 then
-  begin
-  
-    TMsg.Alerta('Nenhum registro encontrado');
-  end;
+//  if registros_encontrados = 0 then
+//  begin
+//
+//    TMsg.Alerta('Nenhum registro encontrado');
+//  end;
 
 end;
 
@@ -251,30 +362,91 @@ begin
   dtLiberaPedidoInicial.Date := Date;
   dtLiberaPedidoFinal.Date := Date;
 
-
   gUSUARIO := TUsuario.PorLogin(ParamStr(1));
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
+  Caption := ParamStr(5) +
+    ' - Integração WinThor x DEPS - [VERSÃO DE HOMOLOGAÇÃO]';
+  Application.Title := Caption;
+
+  btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
+  edtDescricaoUsuarioAuto.Text := gUSUARIO.Nome;
+
+  gAUTOMATICO_HABILITADO := False;
+
 end;
 
-procedure TFrmPrincipal.grdPedidosDBTableView1StylesGetContentStyle(
-  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+procedure TFrmPrincipal.grdPedidosDBTableView1StylesGetContentStyle
+  (Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
 var
-  sem_estoque_idx : integer;
+  sem_estoque_idx: Integer;
 begin
 
   sem_estoque_idx := grdPedidosDBTableView1SEM_ESTOQUE.Index;
 
   if ARecord.Values[sem_estoque_idx] > 0 then
   begin
-  
+
     AStyle := stySemEstoque;
   end
   else
   begin
-  
+
     AStyle := styComEstoque;
+  end;
+
+end;
+
+procedure TFrmPrincipal.tabExecucaoManualShow(Sender: TObject);
+begin
+
+  if (DmdBD.qryPesquisaPedidos.State = dsBrowse) then
+  begin
+
+    DmdBD.qryPesquisaPedidos.Close;
+  end;
+
+  prgBar.Visible := False;
+end;
+
+procedure TFrmPrincipal.timerTimer(Sender: TObject);
+var
+  data_inicial: TDateTime;
+  registros_encontrados: Integer;
+begin
+
+  if (gAUTOMATICO_HABILITADO) and (Now >= gPROXIMA_EXECUCAO) then
+  begin
+
+    gAUTOMATICO_HABILITADO := False;
+
+    if memoLog.Lines.Count >= spnQtdLinhas.EditValue then
+    begin
+
+      memoLog.Clear;
+    end;
+
+    RegistrarLog('Iniciando processamento automático');
+
+    data_inicial := IncDay(Date, spnQtdDias.EditValue * -1);
+    registros_encontrados := PesquisaPedidos(data_inicial, Date, 0, 0, 0);
+
+    RegistrarLog(IntToStr(registros_encontrados) + ' registros encontrados');
+
+    if registros_encontrados > 0 then
+    begin
+
+      ProcessarPedidos(gUSUARIO_AUTOMATICO, gCODIGO_ROTINA, True);
+      RegistrarLog(IntToStr(registros_encontrados) + ' registros processados');
+    end;
+
+    RegistrarLog('Finalizando processamento automático');
+
+    gPROXIMA_EXECUCAO := IncMinute(Now, spnIntervaloMinutos.EditingValue);
+    edtProximaExecucao.Text := DateTimeToStr(gPROXIMA_EXECUCAO);
+
+    gAUTOMATICO_HABILITADO := True;
   end;
 
 end;

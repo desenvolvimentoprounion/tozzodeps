@@ -203,6 +203,7 @@ object FrmPrincipal: TFrmPrincipal
     object tabExecucaoManual: TcxTabSheet
       Caption = 'tabExecucaoManual'
       ImageIndex = 1
+      OnShow = tabExecucaoManualShow
       DesignSize = (
         968
         450)
@@ -634,7 +635,7 @@ object FrmPrincipal: TFrmPrincipal
         Style.IsFontAssigned = True
         Transparent = True
       end
-      object cxButtonEdit1: TcxButtonEdit
+      object btnEdtUsuarioAuto: TcxButtonEdit
         Left = 7
         Top = 23
         Properties.Buttons = <
@@ -644,10 +645,13 @@ object FrmPrincipal: TFrmPrincipal
           end>
         Properties.MaskKind = emkRegExprEx
         Properties.EditMask = '\d+'
+        Properties.OnButtonClick = btnEdtUsuarioAutoPropertiesButtonClick
+        StyleFocused.BorderColor = 33023
         TabOrder = 2
+        OnExit = btnEdtUsuarioAutoExit
         Width = 100
       end
-      object cxTextEdit3: TcxTextEdit
+      object edtDescricaoUsuarioAuto: TcxTextEdit
         Left = 108
         Top = 23
         Enabled = False
@@ -657,69 +661,36 @@ object FrmPrincipal: TFrmPrincipal
         TabOrder = 3
         Width = 225
       end
-      object cxLabel17: TcxLabel
-        Left = 7
-        Top = 58
-        Caption = 'Motivo do corte'
-        ParentFont = False
-        Style.Font.Charset = DEFAULT_CHARSET
-        Style.Font.Color = clWindowText
-        Style.Font.Height = -13
-        Style.Font.Name = 'Verdana'
-        Style.Font.Style = [fsBold]
-        Style.IsFontAssigned = True
-        Transparent = True
-      end
-      object cxButtonEdit2: TcxButtonEdit
-        Left = 7
-        Top = 77
-        Properties.Buttons = <
-          item
-            Default = True
-            Kind = bkEllipsis
-          end>
-        Properties.MaskKind = emkRegExprEx
-        Properties.EditMask = '\d+'
-        TabOrder = 5
-        Width = 100
-      end
-      object cxTextEdit4: TcxTextEdit
-        Left = 108
-        Top = 77
-        Enabled = False
-        StyleDisabled.BorderColor = clBlack
-        StyleDisabled.Color = clWhite
-        StyleDisabled.TextColor = clBlack
-        TabOrder = 6
-        Width = 225
-      end
       object spnQtdDias: TcxSpinEdit
         Left = 7
-        Top = 135
+        Top = 79
         Properties.MinValue = 1.000000000000000000
-        TabOrder = 7
+        StyleFocused.BorderColor = 33023
+        TabOrder = 4
         Value = 1
         Width = 100
       end
       object spnIntervaloMinutos: TcxSpinEdit
         Left = 7
-        Top = 189
+        Top = 133
         Properties.MinValue = 1.000000000000000000
-        TabOrder = 8
+        StyleFocused.BorderColor = 33023
+        TabOrder = 5
         Value = 1
         Width = 100
       end
       object spnQtdLinhas: TcxSpinEdit
         Left = 7
-        Top = 244
-        Properties.MinValue = 1.000000000000000000
-        TabOrder = 9
-        Value = 1
+        Top = 188
+        Properties.MinValue = 100.000000000000000000
+        StyleFocused.BorderColor = 33023
+        TabOrder = 6
+        Value = 100
         Width = 100
       end
       object cxLabel18: TcxLabel
         Left = 7
-        Top = 116
+        Top = 60
         Caption = 'Qtd. dias retroativos para pesquisa dos pedidos'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -732,7 +703,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel19: TcxLabel
         Left = 7
-        Top = 171
+        Top = 115
         Caption = 'Qtd. de minutos de intervalo entre cada execu'#231#227'o'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -745,7 +716,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel20: TcxLabel
         Left = 7
-        Top = 225
+        Top = 169
         Caption = 'Qtd. m'#225'xima de linhas de log de execu'#231#227'o'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -763,7 +734,7 @@ object FrmPrincipal: TFrmPrincipal
         Properties.ReadOnly = True
         Style.Color = clWhite
         StyleDisabled.Color = clWhite
-        TabOrder = 13
+        TabOrder = 10
         Height = 375
         Width = 585
       end
@@ -782,14 +753,14 @@ object FrmPrincipal: TFrmPrincipal
       end
       object edtProximaExecucao: TcxTextEdit
         Left = 7
-        Top = 300
+        Top = 244
         Properties.ReadOnly = True
-        TabOrder = 15
-        Width = 100
+        TabOrder = 12
+        Width = 154
       end
       object cxLabel22: TcxLabel
         Left = 7
-        Top = 280
+        Top = 224
         Caption = 'Pr'#243'xima execu'#231#227'o'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -800,7 +771,7 @@ object FrmPrincipal: TFrmPrincipal
         Style.IsFontAssigned = True
         Transparent = True
       end
-      object cxButton1: TcxButton
+      object btnPararAuto: TcxButton
         Left = 835
         Top = 417
         Width = 130
@@ -842,9 +813,10 @@ object FrmPrincipal: TFrmPrincipal
           CF738AAF6ED6EA4B006882CE77A14ABFD255D2799903606830E4EF28E274070C
           1C67D74255041044C25C9CE43B4149F8B16735F41B8038DB9300E07F6924ECFB
           01D589CC0000000049454E44AE426082}
-        TabOrder = 17
+        TabOrder = 14
+        OnClick = btnPararAutoClick
       end
-      object cxButton2: TcxButton
+      object btnPlayAuto: TcxButton
         Left = 699
         Top = 417
         Width = 130
@@ -873,19 +845,20 @@ object FrmPrincipal: TFrmPrincipal
           D742F6F968FBF8DEDEC610002FB9BEF2D80C7FA3EF4C4BFD852BEDD35DA7FC3D
           00EA489574930C6B44216BC99ACA99A14AD8F2D42AF809500AE0796F04355100
           00000049454E44AE426082}
-        TabOrder = 18
+        TabOrder = 15
+        OnClick = btnPlayAutoClick
       end
     end
   end
   object LookAndFeelController: TcxLookAndFeelController
     NativeStyle = False
     SkinName = 'SevenClassic'
-    Left = 664
-    Top = 8
+    Left = 864
+    Top = 80
   end
   object styRepo: TcxStyleRepository
-    Left = 658
-    Top = 54
+    Left = 914
+    Top = 78
     PixelsPerInch = 96
     object styComEstoque: TcxStyle
       AssignedValues = [svTextColor]
@@ -896,5 +869,11 @@ object FrmPrincipal: TFrmPrincipal
       Color = clRed
       TextColor = clYellow
     end
+  end
+  object timer: TTimer
+    Interval = 10000
+    OnTimer = timerTimer
+    Left = 882
+    Top = 166
   end
 end

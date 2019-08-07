@@ -6,7 +6,10 @@ uses uUsuario;
 
 function PesquisaPedidos(DataInicial, DataFinal: TDateTime;
   NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
-function ProcessarPedidos(Usuario: TUsuario; Rotina: double): integer;
+function ProcessarPedidos(Usuario: TUsuario; Rotina: double;
+  RegistrarTextoLog: boolean = false): boolean;
+
+procedure RegistrarLog(Texto: string);
 
 var
   gUSUARIO: TUsuario;
@@ -16,6 +19,13 @@ implementation
 
 uses uDmdBD, DB, Classes, Forms, Windows, SysUtils, uConexaoBD, UMensagem,
   uFrmPrincipal;
+
+procedure RegistrarLog(Texto: string);
+begin
+
+  FrmPrincipal.memoLog.Lines.Add(DateTimeToStr(Now) + ': ' + Texto);
+  Application.ProcessMessages;
+end;
 
 function PesquisaPedidos(DataInicial, DataFinal: TDateTime;
   NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
@@ -133,17 +143,6 @@ begin
   end;
 end;
 
-procedure CorteParcial(NumeroPedido, CodigoProduto, QuantidadePedido,
-  QuantidadeEstoque: double);
-begin
-
-end;
-
-procedure CorteTotal(NumeroPedido, CodigoProduto, QuantidadePedido: double);
-begin
-
-end;
-
 procedure LiberarPedido(Filial: string; NumeroPedido: double);
 begin
 
@@ -249,7 +248,8 @@ begin
 
 end;
 
-function ProcessarPedidos(Usuario: TUsuario; Rotina: double): integer;
+function ProcessarPedidos(Usuario: TUsuario; Rotina: double;
+  RegistrarTextoLog: boolean = false): boolean;
 var
   numero_pedido: double;
   codigo_produto: double;
@@ -275,7 +275,7 @@ begin
     (DmdBD.qryPesquisaPedidos.RecordCount = 0) then
   begin
 
-    Result := 0;
+    Result := false;
     Exit;
   end;
 
@@ -309,6 +309,7 @@ begin
           if not(PedidoPrecisaDeCorte(numero_pedido)) then
           begin
 
+            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) + '. Não necessita de corte. Liberando pedido.');
             LiberarPedido(codigo_filial, numero_pedido);
             qryPesquisaPedidos.Next;
 
@@ -355,6 +356,9 @@ begin
             if quantidade_corte > 0 then
             begin
 
+              RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
+                '. Cortando produto ' + FloatToStr(codigo_produto));
+
               CorteProduto(codigo_filial, codigo_produto, Quantidade,
                 quantidade_final, quantidade_corte, 0, numero_carregamento,
                 Usuario.Matricula, numero_pedido, valor_unitario,
@@ -371,10 +375,15 @@ begin
           if valor_corte_pedido > 0 then
           begin
 
+            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
+              '. Atualizando cabeçalho.');
+
             AtualizarPedido(numero_pedido, valor_corte_pedido,
               Usuario.Matricula);
           end;
 
+          RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
+            '. Liberando pedido.');
           LiberarPedido(codigo_filial, numero_pedido);
 
           FrmPrincipal.prgBar.Position := FrmPrincipal.prgBar.Position + 1;
@@ -385,7 +394,7 @@ begin
       end;
 
       FDacDatabase.Commit;
-      TMsg.Sucesso('Pedidos liberados com sucesso');
+      Result := True;
 
     end;
   except
@@ -393,7 +402,17 @@ begin
     begin
 
       FDacDatabase.Rollback;
-      TMsg.Erro('Erro ao liberar pedidos' + #13 + #13 + E.Message);
+
+      if not RegistrarTextoLog then
+      begin
+
+        TMsg.Erro('Erro ao liberar pedidos' + #13 + #13 + E.Message);
+      end
+      else
+      begin
+
+      RegistrarLog('ERRO: ' + E.Message);
+      end;
     end;
   end;
 end;
