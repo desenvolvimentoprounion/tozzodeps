@@ -366,7 +366,7 @@ begin
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
   Caption := ParamStr(5) +
-    ' - Integração WinThor x DEPS - [VERSÃO DE HOMOLOGAÇÃO]';
+    ' - Integração WinThor x DEPS - versão: 1.1.0.0 [VERSÃO DE HOMOLOGAÇÃO]';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;

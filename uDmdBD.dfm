@@ -460,6 +460,25 @@ object DmdBD: TDmdBD
       '    , HORALIBERA = TO_NUMBER(TO_CHAR(SYSDATE, '#39'HH24'#39'))'
       '    , MINUTOLIBERA = TO_NUMBER(TO_CHAR(SYSDATE, '#39'MI'#39'))'
       '    , CODFUNCLIBERA = :CODUSUARIO'
+      '    , TOTPESO = ('
+      
+        '                select sum(pcpedi.qt * nvl(pcprodut.pesobruto, 0' +
+        '))'
+      '                from pcpedi'
+      
+        '                join pcprodut on pcprodut.codprod = pcpedi.codpr' +
+        'od'
+      '                where pcpedi.numped = :NUMPED)'
+      '    , TOTVOLUME = ('
+      '                select sum(pcpedi.qt * nvl(pcprodut.volume, 0))'
+      '                from pcpedi'
+      
+        '                join pcprodut on pcprodut.codprod = pcpedi.codpr' +
+        'od'
+      '                where pcpedi.numped = :NUMPED)'
+      
+        '    , VLTABELA = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.PVENDA, 0))' +
+        ' FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
       'WHERE NUMPED = :NUMPED')
     Left = 496
     Top = 256
