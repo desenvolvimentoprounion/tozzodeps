@@ -26,6 +26,7 @@ object FrmMsgSucesso: TFrmMsgSucesso
     BevelOuter = bvNone
     BorderWidth = 10
     Color = clWhite
+    ParentBackground = False
     TabOrder = 0
     object Panel2: TPanel
       Left = 10

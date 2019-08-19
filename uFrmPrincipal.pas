@@ -28,7 +28,7 @@ uses
   cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit, cxProgressBar,
-  DateUtils, uUsuario;
+  DateUtils, uUsuario, dxSkinOffice2019Colorful, dxSkinTheBezier, dxDateRanges;
 
 type
   TFrmPrincipal = class(TForm)
@@ -100,6 +100,60 @@ type
     grdPedidosDBTableView1DTLIBERADEPS: TcxGridDBColumn;
     prgBar: TcxProgressBar;
     timer: TTimer;
+    tabLog: TcxTabSheet;
+    btnConsultarLog: TcxButton;
+    cxLabel17: TcxLabel;
+    cxLabel23: TcxLabel;
+    cxLabel24: TcxLabel;
+    cxLabel25: TcxLabel;
+    dtLogInicial: TcxDateEdit;
+    cxLabel26: TcxLabel;
+    dtLogFinal: TcxDateEdit;
+    cxLabel27: TcxLabel;
+    mskNumeroLog: TcxMaskEdit;
+    cxLabel28: TcxLabel;
+    btnEdtCodClienteLog: TcxButtonEdit;
+    edtDescricaoLog: TcxTextEdit;
+    cxLabel29: TcxLabel;
+    btnEdtCodRCALog: TcxButtonEdit;
+    edtDescricaoRCALog: TcxTextEdit;
+    btnVoltarMenu3: TcxButton;
+    Shape3: TShape;
+    cxLabel30: TcxLabel;
+    Shape4: TShape;
+    cxLabel31: TcxLabel;
+    btnPesquisarLog: TcxButton;
+    btnVerItensLog: TcxButton;
+    grdLogPedidos: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    grdLogPedidosNUMPED: TcxGridDBColumn;
+    grdLogPedidosDATA: TcxGridDBColumn;
+    grdLogPedidosCODUSUARIO: TcxGridDBColumn;
+    grdLogPedidosUSUARIO: TcxGridDBColumn;
+    grdLogPedidosCODCLI: TcxGridDBColumn;
+    grdLogPedidosCLIENTE: TcxGridDBColumn;
+    grdLogPedidosCORTE: TcxGridDBColumn;
+    grdLogPedidosVLTOTALANTES: TcxGridDBColumn;
+    grdLogPedidosVLTOTALDEPOIS: TcxGridDBColumn;
+    grdLogPedidosVLATENDANTES: TcxGridDBColumn;
+    grdLogPedidosVLATENDDEPOIS: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOREPANTES: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOREPDEPOIS: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOCONTANTES: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOCONTDEPOIS: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOREALANTES: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOREALDEPOIS: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOFINANTES: TcxGridDBColumn;
+    grdLogPedidosVLCUSTOFINDEPOIS: TcxGridDBColumn;
+    grdLogPedidosNUMITENSANTES: TcxGridDBColumn;
+    grdLogPedidosNUMITENSDEPOIS: TcxGridDBColumn;
+    grdLogPedidosTOTPESOANTES: TcxGridDBColumn;
+    grdLogPedidosTOTPESODEPOIS: TcxGridDBColumn;
+    stySemCorte: TcxStyle;
+    styComCorte: TcxStyle;
+    grdLogPedidosVLTABELAANTES: TcxGridDBColumn;
+    grdLogPedidosVLTABELADEPOIS: TcxGridDBColumn;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
@@ -122,6 +176,18 @@ type
     procedure timerTimer(Sender: TObject);
     procedure btnPararAutoClick(Sender: TObject);
     procedure tabExecucaoManualShow(Sender: TObject);
+    procedure _irParaLog(Sender: TObject);
+    procedure btnEdtCodClienteLogExit(Sender: TObject);
+    procedure btnEdtCodClienteLogPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnEdtCodRCALogPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnEdtCodRCALogExit(Sender: TObject);
+    procedure grdLogPedidosStylesGetContentStyle(Sender: TcxCustomGridTableView;
+      ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
+      var AStyle: TcxStyle);
+    procedure btnPesquisarLogClick(Sender: TObject);
+    procedure _VerLogItens(Sender: TObject);
   private
     { Private declarations }
   public
@@ -158,12 +224,33 @@ begin
   tabMenu.Show;
 end;
 
+procedure TFrmPrincipal._irParaLog(Sender: TObject);
+begin
+
+
+  tabLog.Show;
+end;
+
 procedure TFrmPrincipal.btnEdtCodClienteExit(Sender: TObject);
 begin
 
   BotaoPesquisaOnExit(cliente, btnEdtCodCliente, edtDescricaoCliente,
     'Cliente não encontrado');
 
+end;
+
+procedure TFrmPrincipal.btnEdtCodClienteLogExit(Sender: TObject);
+begin
+
+  BotaoPesquisaOnExit(cliente, btnEdtCodClienteLog, edtDescricaoLog, 'Cliente não encontrado');
+end;
+
+procedure TFrmPrincipal.btnEdtCodClienteLogPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+
+
+  BotaoPesquisaOnButtonClick(cliente, btnEdtCodClienteLog, Self);
 end;
 
 procedure TFrmPrincipal.btnEdtCodClientePropertiesButtonClick(Sender: TObject;
@@ -177,6 +264,21 @@ procedure TFrmPrincipal.btnEdtCodRCAExit(Sender: TObject);
 begin
 
   BotaoPesquisaOnExit(rca, btnEdtCodRCA, edtDescricaoRCA, 'RCA não encontrado');
+end;
+
+procedure TFrmPrincipal.btnEdtCodRCALogExit(Sender: TObject);
+begin
+
+  BotaoPesquisaOnExit(rca, btnEdtCodRCALog, edtDescricaoRCALog, 'RCA não encontrado');
+
+end;
+
+procedure TFrmPrincipal.btnEdtCodRCALogPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+
+
+  BotaoPesquisaOnButtonClick(rca, btnEdtCodRCALog, Self);
 end;
 
 procedure TFrmPrincipal.btnEdtCodRCAPropertiesButtonClick(Sender: TObject;
@@ -253,6 +355,60 @@ begin
   btnVoltarMenu2.Enabled := True;
 end;
 
+procedure TFrmPrincipal.btnPesquisarLogClick(Sender: TObject);
+var
+  data_inicial,
+  data_final : TDateTime;
+
+  numero_pedido,
+  codigo_cliente,
+  codigo_rca : double;
+
+  registros_encontrados : integer;
+begin
+
+  if (dtLogInicial.Text = '') then
+  begin
+
+    TMsg.Alerta('Informe a data inicial');
+    dtLogInicial.SetFocus;
+    Exit;
+  end;
+
+  if (dtLogFinal.Text = '') then
+  begin
+
+    TMsg.Alerta('Informe a data final');
+    dtLogFinal.SetFocus;
+    Exit;
+  end;
+
+  data_inicial := dtLogInicial.Date;
+  data_final := dtLogFinal.Date;
+  numero_pedido := 0;
+  codigo_cliente := 0;
+  codigo_rca := 0;
+
+  if mskNumeroLog.Text <> '' then
+    numero_pedido := mskNumeroLog.EditValue;
+
+  if btnEdtCodClienteLog.Text <> '' then
+    codigo_cliente := btnEdtCodClienteLog.EditValue;
+
+  if btnEdtCodRCALog.Text <> '' then
+    codigo_rca := btnEdtCodRCALog.EditValue;
+
+
+  registros_encontrados := PesquisaLog(data_inicial, data_final, numero_pedido, codigo_cliente, codigo_rca);
+
+  if registros_encontrados = 0 then
+  begin
+
+    TMsg.Alerta('Nenhum registro encontrado');
+  end;
+
+end;
+
 procedure TFrmPrincipal.btnPlayAutoClick(Sender: TObject);
 var
   data_maxima: TDateTime;
@@ -300,6 +456,25 @@ begin
   btnPlayAuto.Enabled := False;
   btnPararAuto.Enabled := True;
   btnVoltarMenu2.Enabled := False;
+
+end;
+
+procedure TFrmPrincipal._VerLogItens(Sender: TObject);
+var
+  numero_pedido : double;
+begin
+
+  if (DmdBD.qryConsultaLogCabecalho.State <> dsBrowse)
+    or (DmdBD.qryConsultaLogCabecalho.RecordCount = 0)
+   then
+  begin
+
+    Exit;
+  end;
+
+
+  numero_pedido := DmdBD.qryConsultaLogCabecalhoNUMPED.AsFloat;
+  VerItensLog(numero_pedido);
 
 end;
 
@@ -362,17 +537,43 @@ begin
   dtLiberaPedidoInicial.Date := Date;
   dtLiberaPedidoFinal.Date := Date;
 
+  dtLogInicial.Date := Date;
+  dtLogFinal.Date := Date;
+
   gUSUARIO := TUsuario.PorLogin(ParamStr(1));
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
   Caption := ParamStr(5) +
-    ' - Integração WinThor x DEPS - versão: 1.1.0.0 [VERSÃO DE HOMOLOGAÇÃO]';
+    ' - Integração WinThor x DEPS - versão: 1.2.0.0 [VERSÃO DE HOMOLOGAÇÃO]';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
   edtDescricaoUsuarioAuto.Text := gUSUARIO.Nome;
 
   gAUTOMATICO_HABILITADO := False;
+
+end;
+
+procedure TFrmPrincipal.grdLogPedidosStylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+var
+  idx_corte : integer;
+begin
+
+  idx_corte := grdLogPedidosCORTE.Index;
+
+  if ARecord.Values[idx_corte] = 'S' then
+  begin
+
+    AStyle := styComCorte;
+  end
+  else
+  begin
+
+    AStyle := stySemCorte;
+  end;
+
 
 end;
 

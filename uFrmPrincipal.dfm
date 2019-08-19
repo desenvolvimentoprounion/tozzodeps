@@ -24,7 +24,7 @@ object FrmPrincipal: TFrmPrincipal
     Height = 483
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabExecucaoManual
+    Properties.ActivePage = tabLog
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 480
     ClientRectLeft = 2
@@ -33,6 +33,7 @@ object FrmPrincipal: TFrmPrincipal
     object tabMenu: TcxTabSheet
       Caption = 'tabMenu'
       ImageIndex = 0
+      ExplicitTop = 29
       object cxLabel1: TcxLabel
         Left = 16
         Top = 10
@@ -43,7 +44,7 @@ object FrmPrincipal: TFrmPrincipal
         Style.TextColor = clNavy
         Properties.WordWrap = True
         Transparent = True
-        Width = 923
+        Width = 921
       end
       object cxLabel2: TcxLabel
         Left = 16
@@ -65,7 +66,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnExcucaoManual: TcxButton
         Left = 16
-        Top = 189
+        Top = 135
         Width = 80
         Height = 80
         OptionsImage.Glyph.SourceDPI = 96
@@ -85,7 +86,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnExcucaoAutomatica: TcxButton
         Left = 16
-        Top = 317
+        Top = 241
         Width = 80
         Height = 80
         OptionsImage.Glyph.SourceDPI = 96
@@ -103,39 +104,40 @@ object FrmPrincipal: TFrmPrincipal
           464646463B7D262331333B262331303B2623393B2E426C61636B7B66696C6C3A
           233732373237323B7D262331333B262331303B2623393B2E5265647B66696C6C
           3A234431314331433B7D262331333B262331303B2623393B2E7374307B6F7061
-          636974793A302E363B7D3C2F7374796C653E3C706F6C79676F6E20636C617373
-          3D22426C61636B2220706F696E74733D2232342C342032342C382031382C3820
-          31382C3420382C3420382C3820322C3820322C3420302C3420302C3238203236
-          2C32382032362C3420222F3E3C7061746820636C6173733D2257686974652220
-          643D224D322C313268323276313448325631327A222F3E3C7061746820636C61
-          73733D22426C61636B2220643D224D342C3668325632483456367A204D32302C
-          327634683256324832307A222F3E3C7061746820636C6173733D225265642220
-          643D224D32332C313863332E392C302C372C332E312C372C37732D332E312C37
-          2D372C37732D372D332E312D372D375331392E312C31382C32332C31387A222F
-          3E3C7061746820636C6173733D2257686974652220643D224D32332C32306332
-          2E382C302C352C322E322C352C35732D322E322C352D352C35732D352D322E32
-          2D352D355332302E322C32302C32332C32307A222F3E3C706F6C79676F6E2063
-          6C6173733D225265642220706F696E74733D2233312C31392032392C31372032
-          382C31382032382E352C31382E352032372C32302032382C32312032392E352C
-          31392E352033302C323020222F3E3C7061746820636C6173733D225265642220
-          643D224D32312C32352E3263302C312C302E382C312E382C312E382C312E3863
-          302E392C302C312E372D302E372C312E382D312E374C32362C32326C2D332E33
-          2C312E344332312E372C32332E352C32312C32342E332C32312C32352E327A22
-          2F3E3C7061746820636C6173733D225265642220643D224D382C3230762D3668
-          36763648387A204D31302C313676326832762D324831307A222F3E3C67206964
-          3D22D0A1D0BBD0BED0B95F322220636C6173733D22737430223E3C7061746820
-          636C6173733D22426C61636B2220643D224D342C32346832762D324834563234
-          7A204D342C32306832762D3248345632307A204D342C31366832762D32483456
-          31367A204D382C32346832762D3248385632347A204D31322C32346832762D32
-          682D325632347A204D31362C32306832762D32682D3256323020202623393B26
-          23393B7A204D31362C31366832762D32682D325631367A204D32302C31347632
-          6832762D324832307A222F3E3C2F673E3C2F7376673E}
+          636974793A302E363B7D3C2F7374796C653E0D0A3C706F6C79676F6E20636C61
+          73733D22426C61636B2220706F696E74733D2232342C342032342C382031382C
+          382031382C3420382C3420382C3820322C3820322C3420302C3420302C323820
+          32362C32382032362C3420222F3E0D0A3C7061746820636C6173733D22576869
+          74652220643D224D322C313268323276313448325631327A222F3E0D0A3C7061
+          746820636C6173733D22426C61636B2220643D224D342C366832563248345636
+          7A204D32302C327634683256324832307A222F3E0D0A3C7061746820636C6173
+          733D225265642220643D224D32332C313863332E392C302C372C332E312C372C
+          37732D332E312C372D372C37732D372D332E312D372D375331392E312C31382C
+          32332C31387A222F3E0D0A3C7061746820636C6173733D225768697465222064
+          3D224D32332C323063322E382C302C352C322E322C352C35732D322E322C352D
+          352C35732D352D322E322D352D355332302E322C32302C32332C32307A222F3E
+          0D0A3C706F6C79676F6E20636C6173733D225265642220706F696E74733D2233
+          312C31392032392C31372032382C31382032382E352C31382E352032372C3230
+          2032382C32312032392E352C31392E352033302C323020222F3E0D0A3C706174
+          6820636C6173733D225265642220643D224D32312C32352E3263302C312C302E
+          382C312E382C312E382C312E3863302E392C302C312E372D302E372C312E382D
+          312E374C32362C32326C2D332E332C312E344332312E372C32332E352C32312C
+          32342E332C32312C32352E327A222F3E0D0A3C7061746820636C6173733D2252
+          65642220643D224D382C3230762D366836763648387A204D31302C3136763268
+          32762D324831307A222F3E0D0A3C672069643D22D0A1D0BBD0BED0B95F322220
+          636C6173733D22737430223E0D0A09093C7061746820636C6173733D22426C61
+          636B2220643D224D342C32346832762D3248345632347A204D342C3230683276
+          2D3248345632307A204D342C31366832762D3248345631367A204D382C323468
+          32762D3248385632347A204D31322C32346832762D32682D325632347A204D31
+          362C32306832762D32682D3256323020202623393B2623393B7A204D31362C31
+          366832762D32682D325631367A204D32302C313476326832762D324832307A22
+          2F3E0D0A093C2F673E0D0A3C2F7376673E0D0A}
         TabOrder = 4
         OnClick = _irParaExecucaoAutomatica
       end
       object cxLabel4: TcxLabel
         Left = 102
-        Top = 196
+        Top = 142
         Caption = 'Execu'#231#227'o manual'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -150,7 +152,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel5: TcxLabel
         Left = 105
-        Top = 229
+        Top = 175
         Caption = 
           'Permite a an'#225'lise dos pedidos liberados pelo sistema de DEPS de ' +
           'acordo com os filtros definidos pelo usu'#225'rio.'
@@ -168,7 +170,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel6: TcxLabel
         Left = 102
-        Top = 325
+        Top = 249
         Caption = 'Execu'#231#227'o autom'#225'tica'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -183,7 +185,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel7: TcxLabel
         Left = 105
-        Top = 358
+        Top = 282
         Caption = 
           'Define o per'#237'odo retroativo e frequ'#234'ncia de execu'#231#227'o de an'#225'lise ' +
           'autom'#225'tica da rotina.'
@@ -199,11 +201,127 @@ object FrmPrincipal: TFrmPrincipal
         Transparent = True
         Width = 372
       end
+      object btnConsultarLog: TcxButton
+        Left = 16
+        Top = 350
+        Width = 80
+        Height = 80
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+          F4000008C649444154785E9D970B7054D5FDC73FE7DEBBBB61034930212F4248
+          20E151081040500C8262C24B505A41FF4E6BA75070CAB4F5D5A98A456DABD3D6
+          07C8D84E6D7DCC5094BF08A8BC54248409F23024A824819020CF3C681262DED9
+          C7DD7B4EB777F60E994C8C63BFB3BF397BEFEE9EEFE7F73BBF73E6AE504AE148
+          08C1F750DF2F2BFE0719F42307AAAF44588018004001A87E26F8FB96A3AC7D20
+          EF3B0106347E7EE37B49C3125357084D5F2484480531514A5925A56A0899C14F
+          9B9BEAFEFFF78FFFB8410861C3F406095921F8B66C9DE87B6FE1AAAD00E2AEE5
+          ABDDAFBD7DE4E9CD3BCABA8E965D54571A5A5567B7DF36E8ECF2AB2BF5ADEAC8
+          890BEAF5ADC77B36BD59F4E765F7AE8D06744038736D7CE3D0F70700B475CFBD
+          15FFDADBC70E7D7AF8ACEAF6059523D394AAC71F541DDD01D5D6E957ED5D01F5
+          4D9B4F7D5C745A6D78FD60E9434FFE75786F8897FE7180FEA40D54F6DBE62F77
+          A5A567EF983221756EFEECB178A35C545FB8C6BA970BB9EFA16D2C59BD95354F
+          ED61D3E612AE34B48310CC9C3E9A293F489B3E7C44D6AEB905F77A2353899069
+          F5EF3340876B9BDE3CF8CCB8ACD4F505B78EC30C4936EFFC82773E3A436C4A3A
+          83E387E1898A02D324D0D946B0BD99A57347317F76269A263874F42C676BEA5E
+          5DFFC8D2C700EBB957F6CABCD697FAAF8063D82BF4DF3EFBFA70B7DBFDD8ACE9
+          99006C78F3086F7F728E82C573F8E3AA1BD9F0D32CD6DC96C8D8F418E2929349
+          1E3B9183279BD8FE493552C1CDD346E1F6B81FFCC5631BB300F1BB87EF145913
+          749C70E4181A9170011EC0131B37EC9E319989DEC15E0F272BEBD97DA886FC3B
+          66F2AB82E1A40E7511B214C3620C164D89657462142E43272D3B8BE3E58D9CAF
+          6DC370B918332AC91D139BB862A0A53600FDA917F61ED085360740A198317904
+          F58D6D8C1E198F52F061E159E2D3B3587E4B32819024602AFCE1F005EDF78C4D
+          8DA2B1DD0404A3B2D3397AB29E8CD418D2D3122829D597017F012C40F507A009
+          B4394FFCB2A0D72164F1AF1D2524DC3098403044E5B9268664E410E7D523E612
+          5F38FC21658F6E43E0766B6842909C12CFA99206A454C4C478B1A44A737AADA2
+          339F9C2107FAF6009AB44D2118B2F09B16A190A4ABCB4794C7853F68D1D91DC4
+          15EDA1BECDB40D7B7A99072C49BBDFC2E512783C8241D1063DA6690344B95D58
+          96151F0110273A736D0880AFBC2B9C0A20A4B222D9030A10A01B1A3EBF49D0B4
+          88BB61104A9A149EED60E184D8B0B90D609B072CA8EF0C627820DAAD03126F18
+          C202FCBE008140B0935E0A4300D066A4533EF85E3400251570DD5C01D15106CD
+          2D9D84A464D2F81402DD6D9C6FF5F371751BF51DA6BD0CCD3E8BEA6F02745912
+          DDAD11176BD0F24D5BB8F9E25116345DEB20180A5CC116AA2F8454A001424A45
+          59451D1F7C52CEFB1F9DE264791D1E8F8B53A72F6349C89F954DC7D55AC0A236
+          6C5E7CA99383173B39732D40B715427709E2635DE886A2FCCC25F272472095A4
+          E6EB7AFC3DDD4580A48FBCBE0B4CE9DE1601B014D3728673F78249FC70E164A6
+          E68CE0F65BC6F145C545FCFE0023936298377314ADB55F1315A57047817081DB
+          0383BC3A49F1EE3030947E51CD8C094924C679E9EA09507AF2ACACBD58F52EA0
+          7A577AC6E053CC30DF777A009B56393B4080A560C8102F13C6A450545C41C11D
+          B9FCDF821CE28ED7B0EFF353648DCF203E712871B18308FAFD5C6D68E56CD565
+          E64DCDB0A3ABDB4F615119CD8D4DC1E6A6660BD081D0B38F2E10FBFEF9279513
+          53C8E541D1A8EB4B20412A8400941D2825B82D6F22B5758D7C76EC34BE9E008B
+          668DE50FABE71223FD949756B0FBC3624A8F954377178FDF7F3377FCD7BCCBCF
+          9123E5545456B3F281FCA89CA973F6DE74FBAAF1800BD016AF79520058216987
+          0D10921210D8030221045269B85D6E6E9D3581F3E76BD9BDF7184DCDED441B3A
+          6B964CE3D58717F1CED33FE2955F2F60E5A2C9B885A0E95A3BEFEF2A66CFBE43
+          4C1C97C1FCB9D37978EDDD09E999130FDFB960F944C00D68692B0E8A504812B2
+          2C0410B3F6C977DB97CE9FCA852B2D2889230C1D468DBC014D5894945571E94A
+          233993B2199D994A6A6A4218D0B00FAAFA8626BE3E5F4F59E919DA3B3A484BCF
+          A0B9B985C5F933888E763139B989DA5D2F371F2AFFF7E2E7F75457024140EE5F
+          374F0920F6C1C7B7B6BDF8F43D0482122140291CB16D7719F72D9D024A72F56A
+          0B255FD6507DAE9EBA8616FB8CD034416AF250B23393B93137DBEEA797FEF611
+          E91999549DAEE299D559DC34671EED5FBEC5F19D7BAE1585215EDC7FDE81B08C
+          EB3D00A05036930225402894A5904A474941724A2277252720E7876CCACAEAAB
+          E1464D46080DC2A1944008C9BA8796F0C473DBF9D91C83940B6FE04BBD466CEE
+          4A662A95103477ED0B83DFB9A9E85205103000A49438BE080081422114589172
+          084D8FEC160D850B047C59D5C8F8B1E90821EC4060F74EC6C854962D9C847E62
+          7D0BF939F18D877792A41443A7AE62B6500966F0C3BD9AEE9ABFF1C0B9330620
+          2CA95091A47BD75F39970E1B1A42387B07043ABA6120FA3CE2094DC33B78285B
+          8FD4DF1FF09BEFCC5E3C2DE16AF10E5280A1B93F27B7A92DA1B3AB7003B0C406
+          505252F85935E1874DE7B0708400B6EC38E120392FE7922DEF95A022780E7F4A
+          720CC7CA2EB2EB4C4BB55BB0CCD753F241FE3D3726341DDD43A2106416FC86C3
+          DBF64F01741B405A92797963089A1201BD97832DDB4FF093E533AEBB0A074284
+          3FFB9C0756DC041163E7671E97E0E3C29300C1EDA75B2AA5692DEDF11DDB9DB7
+          706A82ABE62BBA2FFBE8F1995F01D200B09CAC9D1DA07026051931743A43F52E
+          B7637CDD1C402A81B4148004823B6BDA2A4C532EACAB3FFCC2F061DEBC80B9BF
+          B8A2D57C14081ACEBAD167728742460A8C632E009C6B090A24BD4E51E1402867
+          120B30775FECA804EE06F4C8BD20601A80B27701E076698E372A927672622C2E
+          2392631FBEA48418FB33DB5D010822A9A0A40380042C07C42996130218B26CE5
+          A6DD2EC333B7F7F3004A0211202440E45A0E3C2A8912600503C51F6C7EE42EA0
+          1BB0E8470E801BF044461D107CBB04DF2D873800F82359CB6FFBC36B00A108A1
+          7F4083EF2F1909C500FA0FBD1999BC1D57AE6C0000000049454E44AE426082}
+        TabOrder = 9
+        OnClick = _irParaLog
+      end
+      object cxLabel17: TcxLabel
+        Left = 102
+        Top = 358
+        Caption = 'Consultar log'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -24
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = []
+        Style.TextColor = clNavy
+        Style.IsFontAssigned = True
+        Transparent = True
+        OnClick = _irParaLog
+      end
+      object cxLabel23: TcxLabel
+        Left = 105
+        Top = 391
+        Caption = 
+          'Permite a consulta dos logs de avalia'#231#227'o de pedidos e altera'#231#227'o ' +
+          'feitas pela rotina.'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Arial'
+        Style.Font.Style = []
+        Style.TextColor = clGray
+        Style.IsFontAssigned = True
+        Properties.WordWrap = True
+        Transparent = True
+        Width = 380
+      end
     end
     object tabExecucaoManual: TcxTabSheet
       Caption = 'tabExecucaoManual'
       ImageIndex = 1
       OnShow = tabExecucaoManualShow
+      ExplicitTop = 29
       DesignSize = (
         968
         450)
@@ -596,6 +714,7 @@ object FrmPrincipal: TFrmPrincipal
     object tabExecucaoAutomatica: TcxTabSheet
       Caption = 'tabExecucaoAutomatica'
       ImageIndex = 2
+      ExplicitTop = 29
       DesignSize = (
         968
         450)
@@ -849,6 +968,425 @@ object FrmPrincipal: TFrmPrincipal
         OnClick = btnPlayAutoClick
       end
     end
+    object tabLog: TcxTabSheet
+      Caption = 'tabLog'
+      ImageIndex = 3
+      ExplicitLeft = 3
+      DesignSize = (
+        968
+        450)
+      object Shape3: TShape
+        Left = 7
+        Top = 389
+        Width = 10
+        Height = 10
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clRed
+        Pen.Color = clRed
+      end
+      object Shape4: TShape
+        Left = 207
+        Top = 389
+        Width = 10
+        Height = 10
+        Anchors = [akLeft, akBottom]
+        Brush.Color = clBlue
+        Pen.Color = clBlue
+      end
+      object cxLabel24: TcxLabel
+        Left = 7
+        Top = 4
+        Caption = 'Libera'#231#227'o do pedido pelo sistema DEPS'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object cxLabel25: TcxLabel
+        Left = 7
+        Top = 25
+        Caption = 'De'
+        Transparent = True
+      end
+      object dtLogInicial: TcxDateEdit
+        Left = 28
+        Top = 24
+        StyleFocused.BorderColor = 33023
+        TabOrder = 2
+        Width = 121
+      end
+      object cxLabel26: TcxLabel
+        Left = 159
+        Top = 28
+        Caption = 'at'#233
+        Transparent = True
+      end
+      object dtLogFinal: TcxDateEdit
+        Left = 189
+        Top = 24
+        StyleFocused.BorderColor = 33023
+        TabOrder = 4
+        Width = 121
+      end
+      object cxLabel27: TcxLabel
+        Left = 374
+        Top = 4
+        Caption = 'N'#250'mero do pedido'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object mskNumeroLog: TcxMaskEdit
+        Left = 374
+        Top = 24
+        Properties.MaskKind = emkRegExprEx
+        Properties.EditMask = '\d+'
+        StyleFocused.BorderColor = 33023
+        TabOrder = 6
+        Width = 121
+      end
+      object cxLabel28: TcxLabel
+        Left = 7
+        Top = 59
+        Caption = 'Cliente'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object btnEdtCodClienteLog: TcxButtonEdit
+        Left = 7
+        Top = 79
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        Properties.MaskKind = emkRegExprEx
+        Properties.EditMask = '\d+'
+        Properties.OnButtonClick = btnEdtCodClienteLogPropertiesButtonClick
+        StyleFocused.BorderColor = 33023
+        TabOrder = 8
+        OnExit = btnEdtCodClienteLogExit
+        Width = 100
+      end
+      object edtDescricaoLog: TcxTextEdit
+        Left = 108
+        Top = 79
+        Enabled = False
+        StyleDisabled.BorderColor = clBlack
+        StyleDisabled.Color = clWhite
+        StyleDisabled.TextColor = clBlack
+        TabOrder = 9
+        Width = 225
+      end
+      object cxLabel29: TcxLabel
+        Left = 374
+        Top = 59
+        Caption = 'RCA'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object btnEdtCodRCALog: TcxButtonEdit
+        Left = 374
+        Top = 79
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        Properties.MaskKind = emkRegExprEx
+        Properties.EditMask = '\d+'
+        Properties.OnButtonClick = btnEdtCodRCALogPropertiesButtonClick
+        StyleFocused.BorderColor = 33023
+        TabOrder = 11
+        OnExit = btnEdtCodRCALogExit
+        Width = 100
+      end
+      object edtDescricaoRCALog: TcxTextEdit
+        Left = 475
+        Top = 79
+        Enabled = False
+        StyleDisabled.BorderColor = clBlack
+        StyleDisabled.Color = clWhite
+        StyleDisabled.TextColor = clBlack
+        TabOrder = 12
+        Width = 225
+      end
+      object btnVoltarMenu3: TcxButton
+        Left = 7
+        Top = 417
+        Width = 130
+        Height = 25
+        Anchors = [akLeft, akBottom]
+        Caption = 'Voltar'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000001974455874536F6674776172650041646F626520496D616765526561
+          647971C9653C0000000F744558745469746C65004261636B3B507265763D5C97
+          C9000000E349444154785EA5D33F0AC2301406F0EC3A751114244B076F205DE2
+          D4CD2B0882F72838B77B77472FE0DAA974F2066E0A2ED2B14EF12B7C42782482
+          64F80DEDFB43F292A8EDF122E550410B3DB5FC97CB7CF74343090D14602021C3
+          7F0D73B46CA0E10435A4D65AE533C6A066AE761B940C4C981C34E630B7FC36C8
+          B9B45424CEA0030B03ECC54A1AC815875388E215DC587C87B5672505548A1336
+          4E60032FB08CCD035B31D02A1E53C2E21DBCC186380D12E87D0D867F1BC82D64
+          F06441078B5F5B080D710957367940161E62F818A770768EF1E03BC6C88B147F
+          95E31F53F473FE00C527425349ACC3430000000049454E44AE426082}
+        TabOrder = 13
+        OnClick = _irParaMenu
+      end
+      object cxLabel30: TcxLabel
+        Left = 23
+        Top = 384
+        Anchors = [akLeft, akBottom]
+        Caption = 'Pedido que teve corte'
+        ParentColor = False
+        ParentFont = False
+        Style.Color = clWhite
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clRed
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = True
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = True
+        StyleFocused.LookAndFeel.NativeStyle = True
+        StyleHot.LookAndFeel.NativeStyle = True
+        Transparent = True
+      end
+      object cxLabel31: TcxLabel
+        Left = 223
+        Top = 384
+        Anchors = [akLeft, akBottom]
+        Caption = 'Pedido que n'#227'o teve corte'
+        ParentColor = False
+        ParentFont = False
+        Style.Color = clWhite
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clBlue
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = True
+        Style.TransparentBorder = True
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = True
+        StyleFocused.LookAndFeel.NativeStyle = True
+        StyleHot.LookAndFeel.NativeStyle = True
+        Transparent = True
+      end
+      object btnPesquisarLog: TcxButton
+        Left = 833
+        Top = 108
+        Width = 130
+        Height = 25
+        Anchors = [akTop, akRight]
+        Caption = 'Pesquisar'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000000B744558745469746C65005A6F6F6D3BCF09FEBC0000035A49444154
+          785E7D936B4C1C7514C57F33BBB0BBBC7641046A2AD0D242B616ABB605D41462
+          7996F8819268254693A6311AF41BA6180214A4055A959AC6588DB18FB0049342
+          237DA821585B405AB1A948080F53A3B5B42C9447175876766699BF5308899F3C
+          C9B92737B9E7E4DE0F1721C40A01D3C79F77EC38F54D5FFBD9B6FEFB67DB6F8A
+          33E7FA27BF6AE9B950FB514B26100C486BF3D547DB015869720BF759BE7475D7
+          B67D37A88EFE392516BD7E616045476E4F0AD7F9FEC0E1A6F39FEEC8C87500B2
+          E1E1FDDA16D660FAA2F9DAE1CEEE31A16ACBE287BE7F44F5C95FC581DAABA2CA
+          D04BBD7F0BEF922A5ABFFD4594D7B95A011B2095967F0D80FCC9C94BDBA31CF6
+          83BBD236D2E41AA4F3C63D0AD2E229CE4B25608DA2A3D7CDF1D62172B2B6E270
+          D85F2B39F0E11EC0E4F3F901904342EC155B926383AEDE9A60CAE3A766FF76E2
+          9F70101F63E3796734492949B83D1A3FDD9CE099D44482ADF652204851140064
+          1D9196B83E8A1F6F8DB3775722F37EC1AC6F9939839884618064E77A6E0C4FB2
+          31218E40403C07981545E5C25BE9C89AA6AFB35ACD3C58505892830C73803925
+          C0BCA61B5C263C44223A3204AFAA116C09C6AF6A9180E1D3305BACC88AE29F5A
+          F269C6908D2BB73D8CCDAA3C547566D4004B0822224CE8928AC36165EEA11763
+          F579004D0BA0EB3AF2C282B767E48F09763A63989D79C0A8C7CFC8829F2509C2
+          C34D58424CDC754FB32DE9318686FFC2E75B1C00960D1845204FBAC74F5DECFC
+          8DF4CD51C44698718FDFC32C544243C1A72A0C8EDE415AD6D8141B46C7C51E3C
+          3313CD802684BE1220019637DEFDECF453290925050569FC7EDF38C3ED61DAD8
+          22CE6E2525CEC106870D97EB32E18B6344DEF9BEFE83CBC34781C573FB5FD065
+          40FDB9ABB9B4EFFAC089A6136D3AD3D3BCEC5CC77BBB9DE427C7B078779C63C7
+          CE10ED1DA2B67433D9D9CF561CC9771E04425F39DD27AFFD810C583372DECECB
+          2EAAE8CA2D3EA4E4141F12D945556A6661D9B56D19FB4A2AB3363474D7BF2AC4
+          40A3B85EBF5754BF94DC08D8FFFB4C1260066C4038605F2561800588284B7FB2
+          BEABB25088DE32D1539927EAF2B71E917617D5201020745851C12A044820B1DA
+          5FE9689081B0779E8EAB28CCDA549E9F9380CB35E6E5FFD0F2FA4E1A3213A87B
+          319E9A8CF8B55323DE4C7EBCEE78EE16AD714F6ACBBF059CA12764F2DBD90000
+          000049454E44AE426082}
+        TabOrder = 16
+        OnClick = btnPesquisarLogClick
+      end
+      object btnVerItensLog: TcxButton
+        Left = 833
+        Top = 417
+        Width = 130
+        Height = 25
+        Anchors = [akRight, akBottom]
+        Caption = 'Ver itens'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000001E744558745469746C6500426F726465724C696E655374796C653B42
+          6F72646572733BAD5F115B0000013A49444154785EA553C14A03410C4DEA5041
+          FF42BC8B7AD1DADA9B78F60FC49BE807D47A120F22887F207E8A68110F6E15EF
+          FA0BEDBAAD8B48374E2633A4EC0A037698CCBE37C9262F61178908665918B98B
+          19E1DEE59B6A20DECC10CA77281048DC900D73B8BBD8A899D402725128F12132
+          BCA6581CB2219CA8F6AF45B87CD0ABDE12494AAF0A8382D2F97ED372A8F6B702
+          6939A2B0C0DDF357E9D285EB0C46690E8F579BF33B672FDFCEE7AB86418EADFF
+          E9BA61CCE7200F85A6A5FB50C094FD0C358714F3DDF163AE2431606289911627
+          B8B47F2FB0EA2F41B49BCB6BBA8FDBB683C65729422FC22B0A946BFC04DAA77D
+          DAB6B67EDCE3808556B74FCD6E426B470FCC179B2709B1AD1E0ADFEA3C53A393
+          D08AF0BAC9866320558CA381E568A91F7D6639A00E354BBF64C8A45F625D25A9
+          C42897923F33FFCEBFE620B4ADEBA2E1D80000000049454E44AE426082}
+        TabOrder = 17
+        OnClick = _VerLogItens
+      end
+      object cxGrid1: TcxGrid
+        Left = 7
+        Top = 139
+        Width = 958
+        Height = 222
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 18
+        object grdLogPedidos: TcxGridDBTableView
+          OnDblClick = _VerLogItens
+          Navigator.Buttons.CustomButtons = <>
+          DataController.DataSource = DmdBD.dsrConsultaLogCabecalho
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skCount
+              Column = grdLogPedidosNUMPED
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.NoDataToDisplayInfoText = 'Sem dados a serem exibidos'
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          Styles.OnGetContentStyle = grdLogPedidosStylesGetContentStyle
+          object grdLogPedidosNUMPED: TcxGridDBColumn
+            DataBinding.FieldName = 'NUMPED'
+          end
+          object grdLogPedidosDATA: TcxGridDBColumn
+            DataBinding.FieldName = 'DATA'
+          end
+          object grdLogPedidosCODUSUARIO: TcxGridDBColumn
+            DataBinding.FieldName = 'CODUSUARIO'
+          end
+          object grdLogPedidosUSUARIO: TcxGridDBColumn
+            DataBinding.FieldName = 'USUARIO'
+          end
+          object grdLogPedidosCODCLI: TcxGridDBColumn
+            DataBinding.FieldName = 'CODCLI'
+          end
+          object grdLogPedidosCLIENTE: TcxGridDBColumn
+            DataBinding.FieldName = 'CLIENTE'
+          end
+          object grdLogPedidosCORTE: TcxGridDBColumn
+            DataBinding.FieldName = 'CORTE'
+          end
+          object grdLogPedidosVLTOTALANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLTOTALANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLTOTALDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLTOTALDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLTABELAANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLTABELAANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLTABELADEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLTABELADEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLATENDANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLATENDANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLATENDDEPOIS: TcxGridDBColumn
+            Caption = 'VL. ATEND. DEPOIS'
+            DataBinding.FieldName = 'VLATENDDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOREPANTES: TcxGridDBColumn
+            Caption = 'VL. CUSTO REP. ANTES'
+            DataBinding.FieldName = 'VLCUSTOREPANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOREPDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOREPDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOCONTANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOCONTANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOCONTDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOCONTDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOREALANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOREALANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOREALDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOREALDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOFINANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOFINANTES'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosVLCUSTOFINDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'VLCUSTOFINDEPOIS'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
+          object grdLogPedidosNUMITENSANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'NUMITENSANTES'
+          end
+          object grdLogPedidosNUMITENSDEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'NUMITENSDEPOIS'
+          end
+          object grdLogPedidosTOTPESOANTES: TcxGridDBColumn
+            DataBinding.FieldName = 'TOTPESOANTES'
+          end
+          object grdLogPedidosTOTPESODEPOIS: TcxGridDBColumn
+            DataBinding.FieldName = 'TOTPESODEPOIS'
+          end
+        end
+        object cxGrid1Level1: TcxGridLevel
+          GridView = grdLogPedidos
+        end
+      end
+    end
   end
   object LookAndFeelController: TcxLookAndFeelController
     NativeStyle = False
@@ -857,8 +1395,8 @@ object FrmPrincipal: TFrmPrincipal
     Top = 80
   end
   object styRepo: TcxStyleRepository
-    Left = 914
-    Top = 78
+    Left = 922
+    Top = 30
     PixelsPerInch = 96
     object styComEstoque: TcxStyle
       AssignedValues = [svTextColor]
@@ -868,6 +1406,14 @@ object FrmPrincipal: TFrmPrincipal
       AssignedValues = [svColor, svTextColor]
       Color = clRed
       TextColor = clYellow
+    end
+    object stySemCorte: TcxStyle
+      AssignedValues = [svTextColor]
+      TextColor = clBlue
+    end
+    object styComCorte: TcxStyle
+      AssignedValues = [svTextColor]
+      TextColor = clRed
     end
   end
   object timer: TTimer

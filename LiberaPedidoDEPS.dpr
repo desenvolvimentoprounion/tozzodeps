@@ -17,7 +17,8 @@ uses
   UMensagem in 'libs\mensagens\UMensagem.pas',
   UConsultasWinthor in 'libs\consultas\UConsultasWinthor.pas',
   UFrmConsultaWinthor in 'libs\consultas\UFrmConsultaWinthor.pas' {FrmConsultaWinthor},
-  UFrmConsultaWinthorFornecedor in 'libs\consultas\UFrmConsultaWinthorFornecedor.pas' {FrmConsultaWinthorFornecedor};
+  UFrmConsultaWinthorFornecedor in 'libs\consultas\UFrmConsultaWinthorFornecedor.pas' {FrmConsultaWinthorFornecedor},
+  uFrmLogItens in 'uFrmLogItens.pas' {FrmLogItens};
 
 {$R *.res}
 
@@ -25,9 +26,10 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   ConectarBD();
-  Application.CreateForm(TDmdBD, DmdBD);
 
+  Application.CreateForm(TDmdBD, DmdBD);
   DefinirConexao(DmdBD);
+
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.Run;
 end.

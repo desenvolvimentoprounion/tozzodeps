@@ -27,6 +27,7 @@ object FrmMsgPergunta: TFrmMsgPergunta
     BevelOuter = bvNone
     BorderWidth = 10
     Color = clWhite
+    ParentBackground = False
     TabOrder = 0
     object Panel2: TPanel
       Left = 10
