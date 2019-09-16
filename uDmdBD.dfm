@@ -170,7 +170,7 @@ object DmdBD: TDmdBD
       #9', PCPEDI.PVENDA'
       
         #9', (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEA' +
-        'DA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP'
+        'DA,0)) ESTDISP'
       'FROM PCPEDC'
       'JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
       'JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL'
@@ -178,7 +178,7 @@ object DmdBD: TDmdBD
       'WHERE PCPEDC.NUMPED = :NUMPED'
       
         'AND PCPEDI.QT > (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PC' +
-        'EST.QTBLOQUEADA,0) - NVL(PCEST.QTPENDENTE,0))')
+        'EST.QTBLOQUEADA,0))')
     Left = 256
     Top = 96
     ParamData = <
@@ -208,7 +208,7 @@ object DmdBD: TDmdBD
       #9', NVL(PCEST.QTINDENIZ, 0) AS QTINDENIZ'
       
         #9', (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEA' +
-        'DA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP'
+        'DA,0)) ESTDISP'
       '        , NVL(PCPEDI.NUMSEQ, 1) AS NUMSEQ'
       'FROM PCPEDC'
       'JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
@@ -547,8 +547,8 @@ object DmdBD: TDmdBD
         'od'
       '                where pcpedi.numped = :NUMPED)'
       
-        '    , VLTABELA = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.PVENDA, 0))' +
-        ' FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
+        '    , VLTABELA = ( SELECT SUM(PCPEDI.QT * NVL(PCPEDI.PTABELA, 0)' +
+        ') FROM PCPEDI WHERE PCPEDI.NUMPED = :NUMPED )'
       'WHERE NUMPED = :NUMPED')
     Left = 488
     Top = 288

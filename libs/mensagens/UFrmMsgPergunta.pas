@@ -21,7 +21,7 @@ uses
   dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, dxSkinOffice2019Colorful, dxSkinTheBezier;
+  dxSkinXmas2008Blue;
 
 type
   TFrmMsgPergunta = class(TForm)

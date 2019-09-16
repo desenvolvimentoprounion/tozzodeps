@@ -28,6 +28,8 @@ object FrmMsgInformacao: TFrmMsgInformacao
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
+    ExplicitTop = 21
+    ExplicitHeight = 169
     object Panel2: TPanel
       Left = 10
       Top = 103
@@ -70,6 +72,7 @@ object FrmMsgInformacao: TFrmMsgInformacao
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
       Properties.WordWrap = True
+      ExplicitHeight = 99
       Width = 285
       AnchorX = 338
       AnchorY = 57

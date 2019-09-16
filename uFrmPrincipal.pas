@@ -307,14 +307,14 @@ var
   data_maxima: TDateTime;
 begin
 
-  data_maxima := EncodeDate(2019, 8, 30);
+//  data_maxima := EncodeDate(2019, 9, 10);
 
-  if (Date > data_maxima) then
-  begin
-
-    TMsg.Alerta('O período de homologação expirou');
-    Exit;
-  end;
+//  if (Date > data_maxima) then
+//  begin
+//
+//    TMsg.Alerta('O período de homologação expirou');
+//    Exit;
+//  end;
 
   FrmPrincipal.prgBar.Visible := True;
   Application.ProcessMessages;
@@ -415,14 +415,14 @@ var
   minutos: double;
 begin
 
-  data_maxima := EncodeDate(2019, 8, 30);
+//  data_maxima := EncodeDate(2019, 9, 10);
 
-  if (Date > data_maxima) then
-  begin
-
-    TMsg.Alerta('O período de homologação expirou');
-    Exit;
-  end;
+//  if (Date > data_maxima) then
+//  begin
+//
+//    TMsg.Alerta('O período de homologação expirou');
+//    Exit;
+//  end;
 
   if btnEdtUsuarioAuto.Text = '' then
   begin
@@ -544,7 +544,7 @@ begin
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
   Caption := ParamStr(5) +
-    ' - Integração WinThor x DEPS - versão: 1.2.0.0 [VERSÃO DE HOMOLOGAÇÃO]';
+    ' - Integração WinThor x DEPS - versão: 2.0.0.0';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
