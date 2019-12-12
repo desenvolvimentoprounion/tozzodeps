@@ -28,7 +28,9 @@ object DmdBD: TDmdBD
       'LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI'
       'LEFT JOIN PCUSUARI ON PCUSUARI.CODUSUR = PCPEDC.CODUSUR'
       'LEFT JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
-      'LEFT JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL'
+      
+        'LEFT JOIN PCEST ON PCEST.CODFILIAL = nvl(PCPEDI.CODFILIALRETIRA,' +
+        ' PCPEDC.CODFILIAL)'
       #9#9#9#9'AND PCEST.CODPROD = PCPEDI.CODPROD'
       ')'
       ''
@@ -173,7 +175,9 @@ object DmdBD: TDmdBD
         'DA,0)) ESTDISP'
       'FROM PCPEDC'
       'JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
-      'JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL'
+      
+        'JOIN PCEST ON PCEST.CODFILIAL = NVL(PCPEDI.CODFILIALRETIRA, PCPE' +
+        'DC.CODFILIAL)'
       #9#9'   AND PCEST.CODPROD = PCPEDI.CODPROD'
       'WHERE PCPEDC.NUMPED = :NUMPED'
       
@@ -210,9 +214,12 @@ object DmdBD: TDmdBD
         #9', (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEA' +
         'DA,0)) ESTDISP'
       '        , NVL(PCPEDI.NUMSEQ, 1) AS NUMSEQ'
+      '  , NVL(PCPEDI.CODFILIALRETIRA, PCPEDC.CODFILIAL) as CODFILIAL'
       'FROM PCPEDC'
       'JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED'
-      'JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL'
+      
+        'JOIN PCEST ON PCEST.CODFILIAL = NVL(PCPEDI.CODFILIALRETIRA, PCPE' +
+        'DC.CODFILIAL)'
       #9#9'   AND PCEST.CODPROD = PCPEDI.CODPROD'
       'WHERE PCPEDC.NUMPED = :NUMPED')
     Left = 256
@@ -316,6 +323,11 @@ object DmdBD: TDmdBD
       Origin = 'VLCUSTOFIN'
       Precision = 38
       Size = 38
+    end
+    object qryItensPedidoCODFILIAL: TStringField
+      FieldName = 'CODFILIAL'
+      Origin = 'CODFILIAL'
+      Size = 2
     end
   end
   object qryInserePCCORTEI: TFDQuery
@@ -1275,5 +1287,38 @@ object DmdBD: TDmdBD
       Precision = 16
       Size = 3
     end
+  end
+  object qryInserePCNFCANITEM: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'INSERT INTO PCNFCANITEM ('
+      '    NUMPED'
+      '    , CODPROD'
+      '    , MOTIVO'
+      '    , CODFUNCCANC'
+      '    , QT'
+      '    , PVENDA'
+      '    , PTABELA'
+      '    , NUMSEQ'
+      '    , DATACANC )'
+      'SELECT'
+      '    NUMPED'
+      '    , CODPROD'
+      '    , TRIM(SUBSTR(MOTIVO, 1, 60)) AS MOTIVO'
+      '    , CODFUNC AS CODFUNCCANC'
+      '    , QTCORTADA AS QT'
+      '    , PVENDA'
+      '    , PVENDA AS PTABELA'
+      '    , NUMSEQ'
+      '    , TRUNC(DATA) AS DATACANC'
+      'FROM PCCORTEI'
+      'WHERE NUMPED = :NUMPED')
+    Left = 56
+    Top = 768
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
   end
 end

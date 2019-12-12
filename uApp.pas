@@ -64,9 +64,8 @@ begin
     SQL.Add(' LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI                                                      ');
     SQL.Add(' LEFT JOIN PCUSUARI ON PCUSUARI.CODUSUR = PCPEDC.CODUSUR                                                    ');
     SQL.Add(' LEFT JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED                                                          ');
-    SQL.Add(' LEFT JOIN PCEST ON PCEST.CODFILIAL = PCPEDC.CODFILIAL                                                      ');
-    SQL.Add
-      (' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
+    SQL.Add(' LEFT JOIN PCEST ON PCEST.CODFILIAL = nvl(PCPEDI.CODFILIALRETIRA, PCPEDC.CODFILIAL)                         ');
+    SQL.Add(' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
 
     SQL.Add('WHERE TRUNC(LIBERA.DTLIBERADEPS) BETWEEN :DTINICIAL AND :DTFINAL   ');
 
@@ -149,7 +148,21 @@ begin
   end;
 end;
 
+procedure InserePCNFCANITEM(NumeroPedido : double);
+begin
+
+  with DmdBD.qryInserePCNFCANITEM do
+  begin
+
+    Close;
+    ParamByName('NUMPED').AsFloat := NumeroPedido;
+    ExecSQL;
+  end;
+end;
+
 procedure LiberarPedido(Filial: string; NumeroPedido: double);
+var
+  filial_item : string;
 begin
 
   with DmdBD do
@@ -164,12 +177,12 @@ begin
     while (not qryItensPedido.Eof) do
     begin
 
+      filial_item := qryItensPedidoCODFILIAL.AsString;
+
       qryReservarEstoqueItem.Close;
-      qryReservarEstoqueItem.ParamByName('QT').AsFloat :=
-        qryItensPedidoQT.AsFloat;
-      qryReservarEstoqueItem.ParamByName('CODFILIAL').AsString := Filial;
-      qryReservarEstoqueItem.ParamByName('CODPROD').AsFloat :=
-        qryItensPedidoCODPROD.AsFloat;
+      qryReservarEstoqueItem.ParamByName('QT').AsFloat := qryItensPedidoQT.AsFloat;
+      qryReservarEstoqueItem.ParamByName('CODFILIAL').AsString := filial_item;
+      qryReservarEstoqueItem.ParamByName('CODPROD').AsFloat := qryItensPedidoCODPROD.AsFloat;
       qryReservarEstoqueItem.ExecSQL;
 
       qryItensPedido.Next;
@@ -392,6 +405,7 @@ var
   codigo_rca: double;
   codigo_emitente: double;
   Sequencia: double;
+  filial_item : string;
 begin
 
   if (DmdBD.qryPesquisaPedidos.State <> dsBrowse) or
@@ -466,6 +480,7 @@ begin
             valor_total := quantidade_original * valor_unitario;
             quantidade_final := quantidade_original;
             Sequencia := qryItensPedidoNUMSEQ.AsFloat;
+            filial_item := qryItensPedidoCODFILIAL.AsString;
 
             if (quantidade_disponivel < quantidade_original) and
               (quantidade_disponivel > 0) then
@@ -488,7 +503,7 @@ begin
               RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
                 '. Cortando produto ' + FloatToStr(codigo_produto));
 
-              CorteProduto(codigo_filial, codigo_produto, quantidade_original,
+              CorteProduto(filial_item, codigo_produto, quantidade_original,
                 quantidade_final, quantidade_corte, 0, numero_carregamento,
                 Usuario.Matricula, numero_pedido, valor_unitario,
                 codigo_cliente, codigo_rca, Rotina, codigo_emitente, Sequencia);
@@ -544,6 +559,7 @@ begin
           RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
             '. Liberando pedido.');
           LiberarPedido(codigo_filial, numero_pedido);
+          InserePCNFCANITEM(numero_pedido);
 
           AtualizarLogPedido(numero_pedido, True);
 

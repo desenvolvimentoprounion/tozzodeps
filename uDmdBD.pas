@@ -111,6 +111,8 @@ type
     qryTotaisPedidoVLTABELA: TFMTBCDField;
     qryConsultaLogCabecalhoVLTABELAANTES: TBCDField;
     qryConsultaLogCabecalhoVLTABELADEPOIS: TBCDField;
+    qryItensPedidoCODFILIAL: TStringField;
+    qryInserePCNFCANITEM: TFDQuery;
   private
     { Private declarations }
   public
