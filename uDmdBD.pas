@@ -113,6 +113,8 @@ type
     qryConsultaLogCabecalhoVLTABELADEPOIS: TBCDField;
     qryItensPedidoCODFILIAL: TStringField;
     qryInserePCNFCANITEM: TFDQuery;
+    StorProcDesmembraPedido: TFDStoredProc;
+    qryPesquisaPedidosCODPLPAG: TBCDField;
   private
     { Private declarations }
   public

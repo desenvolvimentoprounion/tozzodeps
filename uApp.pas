@@ -2,7 +2,7 @@ unit uApp;
 
 interface
 
-uses uUsuario, StrUtils;
+uses uUsuario, StrUtils, FireDAC.Comp.Client, FireDAC.Stan.Option;
 
 function PesquisaPedidos(DataInicial, DataFinal: TDateTime;
   NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
@@ -13,9 +13,11 @@ function ProcessarPedidos(Usuario: TUsuario; Rotina: double;
 function PesquisaLog(DataInicial, DataFinal: TDateTime;
   NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 
-procedure VerItensLog(Pedido : double);
+procedure VerItensLog(Pedido: double);
 
 procedure RegistrarLog(Texto: string);
+
+procedure DesmembrarPedido(aNumeroPedido: double; aMatriculaUsuario: double);
 
 var
   gUSUARIO: TUsuario;
@@ -50,6 +52,7 @@ begin
     SQL.Add(' 	, NVL(PCPEDC.CODEMITENTE, 0) AS CODEMITENTE                                                              ');
     SQL.Add(' 	, LIBERA.DTLIBERADEPS                                                                                    ');
     SQL.Add(' 	, PCPEDC.NUMPED                                                                                          ');
+    SQL.Add(' 	, PCPEDC.CODPLPAG                                                                                        ');
     SQL.Add(' 	, PCPEDC.VLTOTAL                                                                                         ');
     SQL.Add(' 	, PCPEDC.CODCLI                                                                                          ');
     SQL.Add(' 	, PCCLIENT.CLIENTE                                                                                       ');
@@ -65,7 +68,8 @@ begin
     SQL.Add(' LEFT JOIN PCUSUARI ON PCUSUARI.CODUSUR = PCPEDC.CODUSUR                                                    ');
     SQL.Add(' LEFT JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED                                                          ');
     SQL.Add(' LEFT JOIN PCEST ON PCEST.CODFILIAL = nvl(PCPEDI.CODFILIALRETIRA, PCPEDC.CODFILIAL)                         ');
-    SQL.Add(' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
+    SQL.Add
+      (' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
 
     SQL.Add('WHERE TRUNC(LIBERA.DTLIBERADEPS) BETWEEN :DTINICIAL AND :DTFINAL   ');
 
@@ -110,6 +114,7 @@ begin
     SQL.Add(' 	, DTLIBERADEPS                                                                                           ');
     SQL.Add(' 	, NUMCAR                                                                                                 ');
     SQL.Add(' 	, CODEMITENTE                                                                                            ');
+    SQL.Add(' 	, CODPLPAG                                                                                               ');
     SQL.Add(' FROM PEDIDOS                                                                                               ');
     SQL.Add(' GROUP BY                                                                                                   ');
     SQL.Add(' 	CODFILIAL                                                                                                ');
@@ -123,6 +128,7 @@ begin
     SQL.Add(' 	, DTLIBERADEPS                                                                                           ');
     SQL.Add(' 	, NUMCAR                                                                                                 ');
     SQL.Add(' 	, CODEMITENTE                                                                                            ');
+    SQL.Add(' 	, CODPLPAG                                                                                               ');
     SQL.Add(' ORDER BY                                                                                                   ');
     SQL.Add(' 	 DTLIBERADEPS                                                                                            ');
     SQL.Add(' 	, DATA                                                                                                   ');
@@ -148,7 +154,7 @@ begin
   end;
 end;
 
-procedure InserePCNFCANITEM(NumeroPedido : double);
+procedure InserePCNFCANITEM(NumeroPedido: double);
 begin
 
   with DmdBD.qryInserePCNFCANITEM do
@@ -162,7 +168,7 @@ end;
 
 procedure LiberarPedido(Filial: string; NumeroPedido: double);
 var
-  filial_item : string;
+  filial_item: string;
 begin
 
   with DmdBD do
@@ -339,7 +345,7 @@ begin
 
       Mas para facilitar futuros relátórios, aqui pesquisamos
       e registramos os logs dos itens.
-     }
+    }
     if not TeveCorte then
     begin
 
@@ -363,12 +369,16 @@ begin
           ParamByName('QTPEDDEPOIS').AsFloat := qryItensPedidoQT.AsFloat;
           ParamByName('PVENDAPED').AsFloat := qryItensPedidoPVENDA.AsFloat;
           ParamByName('PTABELAPED').AsFloat := qryItensPedidoPTABELA.AsFloat;
-          ParamByName('VLCUSTOREPPED').AsFloat := qryItensPedidoVLCUSTOREP.AsFloat;
-          ParamByName('VLCUSTOCONTPED').AsFloat := qryItensPedidoVLCUSTOCONT.AsFloat;
-          ParamByName('VLCUSTOREALPED').AsFloat := qryItensPedidoVLCUSTOREAL.AsFloat;
+          ParamByName('VLCUSTOREPPED').AsFloat :=
+            qryItensPedidoVLCUSTOREP.AsFloat;
+          ParamByName('VLCUSTOCONTPED').AsFloat :=
+            qryItensPedidoVLCUSTOCONT.AsFloat;
+          ParamByName('VLCUSTOREALPED').AsFloat :=
+            qryItensPedidoVLCUSTOREAL.AsFloat;
           ParamByName('QTESTGER').AsFloat := qryItensPedidoQTESTGER.AsFloat;
           ParamByName('QTRESERV').AsFloat := qryItensPedidoQTRESERV.AsFloat;
-          ParamByName('QTBLOQUEADA').AsFloat := qryItensPedidoQTBLOQUEADA.AsFloat;
+          ParamByName('QTBLOQUEADA').AsFloat :=
+            qryItensPedidoQTBLOQUEADA.AsFloat;
           ParamByName('QTPENDENTE').AsFloat := qryItensPedidoQTPENDENTE.AsFloat;
           ParamByName('QTINDENIZ').AsFloat := qryItensPedidoQTINDENIZ.AsFloat;
           ParamByName('QTDISPONIVEL').AsFloat := qryItensPedidoESTDISP.AsFloat;
@@ -405,7 +415,7 @@ var
   codigo_rca: double;
   codigo_emitente: double;
   Sequencia: double;
-  filial_item : string;
+  filial_item: string;
 begin
 
   if (DmdBD.qryPesquisaPedidos.State <> dsBrowse) or
@@ -561,6 +571,14 @@ begin
           LiberarPedido(codigo_filial, numero_pedido);
           InserePCNFCANITEM(numero_pedido);
 
+
+          if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
+          begin
+
+
+            DesmembrarPedido(numero_pedido, Usuario.Matricula);
+          end;
+
           AtualizarLogPedido(numero_pedido, True);
 
           FrmPrincipal.prgBar.Position := FrmPrincipal.prgBar.Position + 1;
@@ -597,7 +615,6 @@ end;
 function PesquisaLog(DataInicial, DataFinal: TDateTime;
   NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 begin
-
 
   with DmdBD.qryConsultaLogCabecalho do
   begin
@@ -665,7 +682,6 @@ begin
       ParamByName('CODCLI').AsFloat := CodigoCliente;
     end;
 
-
     if CodigoRCA > 0 then
     begin
 
@@ -675,7 +691,6 @@ begin
 
     SQL.Add(' ORDER BY LOG.DATA  ');
 
-
     Open;
 
     Result := RecordCount;
@@ -683,14 +698,12 @@ begin
 
 end;
 
-procedure VerItensLog(Pedido : double);
+procedure VerItensLog(Pedido: double);
 begin
-
 
   DmdBD.qryConsultaLogItem.Close;
   DmdBD.qryConsultaLogItem.ParamByName('NUMPED').AsFloat := Pedido;
   DmdBD.qryConsultaLogItem.Open;
-
 
   if not Assigned(FrmLogItens) then
   begin
@@ -699,6 +712,91 @@ begin
   end;
 
   FrmLogItens.ShowModal;
+end;
+
+procedure DesmembrarPedido(aNumeroPedido: double; aMatriculaUsuario: double);
+begin
+
+  with DmdBD.StorProcDesmembraPedido do
+  begin
+
+    Close;
+    FetchOptions.Items := FetchOptions.Items - [fiMeta];
+
+    with Params do
+    begin
+      Clear;
+      with Add do
+      begin
+
+        Name := 'pi_nCodRotina';
+        ParamType := ptInput;
+        DataType := ftFloat;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'pi_nNumPed';
+        ParamType := ptInput;
+        DataType := ftFloat;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'pi_nMatricula';
+        ParamType := ptInput;
+        DataType := ftFloat;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'pi_vPosicaoPedido';
+        ParamType := ptInput;
+        DataType := ftString;
+        Size := 1;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'pi_nProxNumCar';
+        ParamType := ptInput;
+        DataType := ftFloat;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'po_vOcorreramErros';
+        ParamType := ptOutput;
+        DataType := ftString;
+        Size := 100;
+      end;
+
+      with Add do
+      begin
+
+        Name := 'po_vMsgErros';
+        ParamType := ptOutput;
+        DataType := ftString;
+        Size := 100;
+      end;
+    end;
+
+    Prepare;
+    Params[0].Value := 2336;
+    Params[1].Value := aNumeroPedido;
+    Params[2].Value := aMatriculaUsuario;
+    Params[3].Value := 'L';
+    Params[4].Value := '';
+    Params[5].Value := '';
+    Params[5].Value := '';
+    ExecProc;
+  end;
+
 end;
 
 end.

@@ -23,6 +23,7 @@ object DmdBD: TDmdBD
         'DA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP'
       '    , NVL(PCPEDC.NUMCAR, 0) AS NUMCAR'
       '    , NVL(PCPEDC.CODEMITENTE, 0) AS CODEMITENTE'
+      '    , PCPEDC.CODPLPAG'
       'FROM NTINTEGRACAODEPSLIBERAPEDIDO LIBERA'
       'JOIN PCPEDC ON PCPEDC.NUMPED = LIBERA.NUMPED'
       'LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI'
@@ -47,6 +48,7 @@ object DmdBD: TDmdBD
       #9', DTLIBERADEPS'
       '        , NUMCAR'
       '        , CODEMITENTE'
+      '        , CODPLPAG'
       'FROM PEDIDOS'
       'GROUP BY '
       #9'CODFILIAL'
@@ -60,6 +62,7 @@ object DmdBD: TDmdBD
       #9', DTLIBERADEPS'
       '        , NUMCAR'
       '        , CODEMITENTE'
+      '        , CODPLPAG'
       'ORDER BY '#9'CODFILIAL'
       #9', NUMPED'
       #9', VLTOTAL'
@@ -146,6 +149,12 @@ object DmdBD: TDmdBD
       Origin = 'CODEMITENTE'
       Precision = 38
       Size = 38
+    end
+    object qryPesquisaPedidosCODPLPAG: TBCDField
+      FieldName = 'CODPLPAG'
+      Origin = 'CODPLPAG'
+      Precision = 4
+      Size = 0
     end
   end
   object conn: TFDConnection
@@ -1320,5 +1329,11 @@ object DmdBD: TDmdBD
         Name = 'NUMPED'
         ParamType = ptInput
       end>
+  end
+  object StorProcDesmembraPedido: TFDStoredProc
+    Connection = conn
+    StoredProcName = 'PRC_MED_FINALIZACAO_PEDIDO_01'
+    Left = 88
+    Top = 864
   end
 end

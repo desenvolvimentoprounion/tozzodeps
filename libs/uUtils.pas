@@ -27,6 +27,10 @@ begin
 
     if (DataModule.Components[I] is TFDQuery) then
       (DataModule.Components[I] as TFDQuery).Connection := FDacDatabase;
+
+    if (DataModule.Components[I] is TFDStoredProc) then
+      (DataModule.Components[I] as TFDStoredProc).Connection := FDacDatabase;
+
   end;
 end;
 
