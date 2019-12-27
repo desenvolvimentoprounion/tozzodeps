@@ -464,6 +464,12 @@ begin
 
             AtualizarLogPedido(numero_pedido, false);
 
+            if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
+            begin
+
+              DesmembrarPedido(numero_pedido, Usuario.Matricula);
+            end;
+
             qryPesquisaPedidos.Next;
 
             FrmPrincipal.prgBar.Position := FrmPrincipal.prgBar.Position + 1;
@@ -571,10 +577,8 @@ begin
           LiberarPedido(codigo_filial, numero_pedido);
           InserePCNFCANITEM(numero_pedido);
 
-
           if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
           begin
-
 
             DesmembrarPedido(numero_pedido, Usuario.Matricula);
           end;
@@ -796,6 +800,19 @@ begin
     Params[5].Value := '';
     ExecProc;
   end;
+
+
+  // Atualizando PCPLPAG do cabeçalho quando se tem apenas um item
+  // a procedure deveria fazer isso mas não faz
+  with DmdBD.qryAtualizarPCPLPAG do
+  begin
+
+    Close;
+    ParamByName('NUMPED').AsFloat := aNumeroPedido;
+    ExecSQL;
+  end;
+
+
 
 end;
 

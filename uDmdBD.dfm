@@ -1,6 +1,6 @@
 object DmdBD: TDmdBD
   OldCreateOrder = False
-  Height = 953
+  Height = 1051
   Width = 763
   object qryPesquisaPedidos: TFDQuery
     Connection = conn
@@ -1335,5 +1335,25 @@ object DmdBD: TDmdBD
     StoredProcName = 'PRC_MED_FINALIZACAO_PEDIDO_01'
     Left = 88
     Top = 864
+  end
+  object qryAtualizarPCPLPAG: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCPEDC SET'
+      
+        'CODPLPAG = ( SELECT MIN(CODPLPAG) FROM PCPEDI WHERE NUMPED = :NU' +
+        'MPED)'
+      'WHERE CODPLPAG = '#39'99'#39
+      'AND NUMPED = :NUMPED'
+      
+        'AND (SELECT COUNT (DISTINCT CODPLPAG) FROM PCPEDI WHERE PCPEDI.N' +
+        'UMPED = :NUMPED) = 1')
+    Left = 312
+    Top = 848
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end>
   end
 end

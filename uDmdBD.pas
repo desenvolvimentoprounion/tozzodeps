@@ -115,6 +115,7 @@ type
     qryInserePCNFCANITEM: TFDQuery;
     StorProcDesmembraPedido: TFDStoredProc;
     qryPesquisaPedidosCODPLPAG: TBCDField;
+    qryAtualizarPCPLPAG: TFDQuery;
   private
     { Private declarations }
   public
