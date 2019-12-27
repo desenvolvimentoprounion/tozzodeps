@@ -791,7 +791,7 @@ begin
     Params[1].Value := aNumeroPedido;
     Params[2].Value := aMatriculaUsuario;
     Params[3].Value := 'L';
-    Params[4].Value := '';
+    Params[4].Value := 0;
     Params[5].Value := '';
     Params[5].Value := '';
     ExecProc;
