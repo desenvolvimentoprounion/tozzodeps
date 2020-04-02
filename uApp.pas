@@ -237,26 +237,42 @@ procedure CorteProduto(Filial: string; Produto, QuantidadeOriginal,
   Pedido, ValorUnitario, Cliente, RCA, Rotina, Emitente, Sequencia: double);
 begin
 
-  with DmdBD.qryInserePCCORTEI do
+//  with DmdBD.qryInserePCCORTEI do
+//  begin
+//
+//    Close;
+//
+//    ParamByName('CODPROD').AsFloat := Produto;
+//    ParamByName('QTSEPARADA').AsFloat := QuantidadeSeparada;
+//    ParamByName('QTCORTADA').AsFloat := QuantidadeCortada;
+//    ParamByName('NUMCAR').AsFloat := Carregamento;
+//    ParamByName('CODFUNC').AsFloat := Usuario;
+//    ParamByName('NUMPED').AsFloat := Pedido;
+//    ParamByName('PVENDA').AsFloat := ValorUnitario;
+//    ParamByName('CODFILIAL').AsString := Filial;
+//    ParamByName('QTORIG').AsFloat := QuantidadeOriginal;
+//    ParamByName('QTFALTA').AsFloat := QuantidadeFalta;
+//    ParamByName('MOTIVO').AsString := 'FALTA DE MERCADORIA';
+//    ParamByName('CODCLI').AsFloat := Cliente;
+//    ParamByName('CODUSUR').AsFloat := RCA;
+//    ParamByName('CODROTINA').AsFloat := Rotina;
+//    ParamByName('CODEMITENTEPED').AsFloat := Emitente;
+//    ParamByName('NUMSEQ').AsFloat := Sequencia;
+//    ExecSQL;
+//  end;
+
+
+  with DmdBD.qryInserePCFALTA do
   begin
 
     Close;
-
-    ParamByName('CODPROD').AsFloat := Produto;
-    ParamByName('QTSEPARADA').AsFloat := QuantidadeSeparada;
-    ParamByName('QTCORTADA').AsFloat := QuantidadeCortada;
-    ParamByName('NUMCAR').AsFloat := Carregamento;
-    ParamByName('CODFUNC').AsFloat := Usuario;
     ParamByName('NUMPED').AsFloat := Pedido;
+    ParamByName('CODPROD').AsFloat := Produto;
+    ParamByName('CODUSUR').AsFloat := RCA;
+    ParamByName('CODCLI').AsFloat := Cliente;
+    ParamByName('QT').AsFloat := QuantidadeCortada;
     ParamByName('PVENDA').AsFloat := ValorUnitario;
     ParamByName('CODFILIAL').AsString := Filial;
-    ParamByName('QTORIG').AsFloat := QuantidadeOriginal;
-    ParamByName('QTFALTA').AsFloat := QuantidadeFalta;
-    ParamByName('MOTIVO').AsString := 'FALTA DE MERCADORIA';
-    ParamByName('CODCLI').AsFloat := Cliente;
-    ParamByName('CODUSUR').AsFloat := RCA;
-    ParamByName('CODROTINA').AsFloat := Rotina;
-    ParamByName('CODEMITENTEPED').AsFloat := Emitente;
     ParamByName('NUMSEQ').AsFloat := Sequencia;
     ExecSQL;
   end;
@@ -591,6 +607,12 @@ begin
           qryPesquisaPedidos.Next;
         end;
       end;
+
+      // Caso algum pedido seja liberado manualmente
+      // ele não é atualizado na tabela de integração
+      // esse update corrige isso
+      DmdBD.qryAtualizaDatasIntegracao.Close;
+      DmdBD.qryAtualizaDatasIntegracao.ExecSQL;
 
       FDacDatabase.Commit;
       Result := True;

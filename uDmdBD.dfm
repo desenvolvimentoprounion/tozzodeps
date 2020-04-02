@@ -1356,4 +1356,65 @@ object DmdBD: TDmdBD
         ParamType = ptInput
       end>
   end
+  object qryInserePCFALTA: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      
+        'INSERT INTO PCFALTA (NUMPED, DATA, CODPROD, CODUSUR, CODCLI, QT,' +
+        ' PVENDA, CODFILIAL, NUMSEQ)'
+      
+        'VALUES (:NUMPED, TRUNC(SYSDATE), :CODPROD, :CODUSUR, :CODCLI, :Q' +
+        'T, :PVENDA, :CODFILIAL, :NUMSEQ)')
+    Left = 496
+    Top = 96
+    ParamData = <
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODPROD'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODUSUR'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODCLI'
+        ParamType = ptInput
+      end
+      item
+        Name = 'QT'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PVENDA'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODFILIAL'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NUMSEQ'
+        ParamType = ptInput
+      end>
+  end
+  object qryAtualizaDatasIntegracao: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE NTINTEGRACAODEPSLIBERAPEDIDO SET'
+      'DTLIBERAWINTHOR = SYSDATE'
+      'WHERE DTLIBERAWINTHOR IS NULL '
+      'AND NUMPED IN ('
+      '    SELECT DEPS.NUMPED'
+      '    FROM NTINTEGRACAODEPSLIBERAPEDIDO DEPS'
+      '    JOIN PCPEDC ON PCPEDC.NUMPED = DEPS.NUMPED'
+      '            AND PCPEDC.POSICAO <> '#39'B'#39
+      '    WHERE DEPS.DTLIBERAWINTHOR IS NULL            '
+      ')   ')
+    Left = 88
+    Top = 928
+  end
 end

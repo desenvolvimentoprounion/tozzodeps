@@ -116,6 +116,8 @@ type
     StorProcDesmembraPedido: TFDStoredProc;
     qryPesquisaPedidosCODPLPAG: TBCDField;
     qryAtualizarPCPLPAG: TFDQuery;
+    qryInserePCFALTA: TFDQuery;
+    qryAtualizaDatasIntegracao: TFDQuery;
   private
     { Private declarations }
   public
