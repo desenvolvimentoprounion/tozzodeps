@@ -61,7 +61,7 @@ begin
     SQL.Add(' 	, PCPEDI.CODPROD                                                                                         ');
     SQL.Add(' 	, PCPEDI.QT                                                                                              ');
     SQL.Add(' 	, (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEADA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP  ');
-    SQL.Add(' FROM NTINTEGRACAODEPSLIBERAPEDIDO LIBERA                                                                   ');
+    SQL.Add(' FROM MDINTEGRACAODEPSLIBERAPEDIDO LIBERA                                                                   ');
     SQL.Add(' JOIN PCPEDC ON PCPEDC.NUMPED = LIBERA.NUMPED                                                               ');
     SQL.Add('             AND PCPEDC.POSICAO = ''B''                                                                     ');
     SQL.Add(' LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI                                                      ');
@@ -480,11 +480,11 @@ begin
 
             AtualizarLogPedido(numero_pedido, false);
 
-            if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
-            begin
-
-              DesmembrarPedido(numero_pedido, Usuario.Matricula);
-            end;
+//            if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
+//            begin
+//
+//              DesmembrarPedido(numero_pedido, Usuario.Matricula);
+//            end;
 
             qryPesquisaPedidos.Next;
 
@@ -673,7 +673,7 @@ begin
     SQL.Add('      , LOG.NUMITENSDEPOIS                                           ');
     SQL.Add('      , LOG.TOTPESOANTES                                             ');
     SQL.Add('      , LOG.TOTPESODEPOIS                                            ');
-    SQL.Add(' FROM NTINTEGRACAODEPSLOGC LOG                                       ');
+    SQL.Add(' FROM MDINTEGRACAODEPSLOGC LOG                                       ');
     SQL.Add(' JOIN PCPEDC ON PCPEDC.NUMPED = LOG.NUMPED                           ');
     SQL.Add(' LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI               ');
     SQL.Add(' LEFT JOIN PCEMPR USUARIO ON USUARIO.MATRICULA = LOG.CODUSUARIO      ');

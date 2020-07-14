@@ -24,7 +24,7 @@ object FrmPrincipal: TFrmPrincipal
     Height = 483
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabExecucaoManual
+    Properties.ActivePage = tabMenu
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 480
     ClientRectLeft = 2
