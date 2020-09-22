@@ -118,6 +118,7 @@ type
     qryAtualizarPCPLPAG: TFDQuery;
     qryInserePCFALTA: TFDQuery;
     qryAtualizaDatasIntegracao: TFDQuery;
+    qryAtualizaPCFALTA: TFDQuery;
   private
     { Private declarations }
   public

@@ -262,6 +262,7 @@ begin
 //  end;
 
 
+  // Insere uma falta zerada caso já não exista
   with DmdBD.qryInserePCFALTA do
   begin
 
@@ -270,12 +271,25 @@ begin
     ParamByName('CODPROD').AsFloat := Produto;
     ParamByName('CODUSUR').AsFloat := RCA;
     ParamByName('CODCLI').AsFloat := Cliente;
-    ParamByName('QT').AsFloat := QuantidadeCortada;
+//    ParamByName('QT').AsFloat := QuantidadeCortada;
     ParamByName('PVENDA').AsFloat := ValorUnitario;
     ParamByName('CODFILIAL').AsString := Filial;
     ParamByName('NUMSEQ').AsFloat := Sequencia;
     ExecSQL;
   end;
+
+
+  with DmdBD.qryAtualizaPCFALTA do
+  begin
+
+    Close;
+    ParamByName('QT').AsFloat := QuantidadeCortada;
+    ParamByName('NUMPED').AsFloat := Pedido;
+    ParamByName('CODPROD').AsFloat := Produto;
+    ExecSQL;
+  end;
+
+
 
   with DmdBD.qryCorteItemPedido do
   begin

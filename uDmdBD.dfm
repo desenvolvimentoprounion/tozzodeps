@@ -1363,9 +1363,13 @@ object DmdBD: TDmdBD
         'INSERT INTO PCFALTA (NUMPED, DATA, CODPROD, CODUSUR, CODCLI, QT,' +
         ' PVENDA, CODFILIAL, NUMSEQ)'
       
-        'VALUES (:NUMPED, TRUNC(SYSDATE), :CODPROD, :CODUSUR, :CODCLI, :Q' +
-        'T, :PVENDA, :CODFILIAL, :NUMSEQ)')
-    Left = 496
+        'SELECT :NUMPED, TRUNC(SYSDATE), :CODPROD, :CODUSUR, :CODCLI, 0, ' +
+        ':PVENDA, :CODFILIAL, :NUMSEQ'
+      'FROM DUAL'
+      
+        'WHERE NOT EXISTS ( SELECT 1 FROM PCFALTA WHERE NUMPED = :NUMPED ' +
+        'AND CODPROD = :CODPROD  )')
+    Left = 528
     Top = 96
     ParamData = <
       item
@@ -1382,10 +1386,6 @@ object DmdBD: TDmdBD
       end
       item
         Name = 'CODCLI'
-        ParamType = ptInput
-      end
-      item
-        Name = 'QT'
         ParamType = ptInput
       end
       item
@@ -1416,5 +1416,28 @@ object DmdBD: TDmdBD
       ')   ')
     Left = 88
     Top = 928
+  end
+  object qryAtualizaPCFALTA: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCFALTA SET'
+      'QT = NVL(QT, 0) + :QT'
+      'WHERE NUMPED = :NUMPED'
+      'AND CODPROD = :CODPROD')
+    Left = 528
+    Top = 144
+    ParamData = <
+      item
+        Name = 'QT'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODPROD'
+        ParamType = ptInput
+      end>
   end
 end
