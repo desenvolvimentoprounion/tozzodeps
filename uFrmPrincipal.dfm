@@ -4,7 +4,7 @@ object FrmPrincipal: TFrmPrincipal
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Integra'#231#227'o WinThor x DEPS'
-  ClientHeight = 483
+  ClientHeight = 597
   ClientWidth = 973
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -21,12 +21,12 @@ object FrmPrincipal: TFrmPrincipal
     Left = 0
     Top = 0
     Width = 973
-    Height = 483
+    Height = 597
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabMenu
+    Properties.ActivePage = tabConfig
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 480
+    ClientRectBottom = 594
     ClientRectLeft = 2
     ClientRectRight = 970
     ClientRectTop = 30
@@ -85,7 +85,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnExcucaoAutomatica: TcxButton
         Left = 16
-        Top = 241
+        Top = 244
         Width = 80
         Height = 80
         OptionsImage.Glyph.SourceDPI = 96
@@ -202,7 +202,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnConsultarLog: TcxButton
         Left = 16
-        Top = 350
+        Top = 353
         Width = 80
         Height = 80
         OptionsImage.Glyph.SourceDPI = 96
@@ -315,6 +315,118 @@ object FrmPrincipal: TFrmPrincipal
         Transparent = True
         Width = 380
       end
+      object btnConfiguracoes: TcxButton
+        Left = 16
+        Top = 462
+        Width = 80
+        Height = 80
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+          F40000001974455874536F6674776172650041646F626520496D616765526561
+          647971C9653C00000016744558745469746C650053686F77416C6C3B4F707469
+          6F6E733B88C98C0E0000085149444154785EAD560B5055C719FECEE3BEB87841
+          63A2A2D82201A2E3AB89234DA8821A1F8836468962A73569C7B434339954AB9D
+          B44E489B99C6769C69DAC6EA643A16B524D1511345020828082A81E20B545434
+          2AA012B8DC0BDC07F775CEED7F76CE43066AA69DEEB97BF6ECEEBFFBFFFFB7FF
+          F7EFE5002895FFC7A1A62A9EE7B3305289AA2F8EDEEC9B53078D7936F7685F17
+          8B4296E49A8D7973170390D848D4582B6AA28AF21FAD9A8DFF4F89D2C3E966EE
+          3D7241718C6706A8659801B26A156B1F5B98BB431DA58F287B291D0D0A99C9F1
+          3C756515B661D001BCBEC710C5C31136E0E5A0C8D2A34D18DFA0396DD8382F6A
+          64D580E185D762201296D942B6017B00A7DB87F29A2BF8E0A3726CFAEDA7F813
+          B5E5A75BD04BE34C8E5E4A95D93743CF18532AA82F03A1B0F4A8B31809017D21
+          7BA220255E94545D82D3E5C5B20533F1875FBF82A50B6752DF87929397D9BCBA
+          C630DA0085BD64B52FCB0C811151E08D185085546F2EB4DC8359143123752C8E
+          1D3F81DC1F6E41F1B10A4CA7BE491070BEB95D81995530E59CB15875442BB24E
+          9DE145D485E4A8860493BD7EFB6BBC386F2A8E1E2BC389AA7AB66959651D2459
+          C2CBAB96A3AAEE1A16CD9B3684A6D48C404D7A2463E63FB34096151DBA475DDD
+          1E24258E45ED9926489108D846245353D7884D6F6EC0C3AF07A0F179DFE126C0
+          809F95D772E7A8487064F4E311E0341AEA7E509D386134EE74BAF07CFA2C949F
+          A865E3CA3E19E93371B7B3179312C64023CE8635CF216A704C47922120EB31C0
+          3D3E08194C2C6AD979A6258FC795EB0F90B36C3E5E5CF402AC163396529BB37C
+          211B4FA5F9A8F6E874D44340DF0B46103EFE082412524D605C9F313501A7CEDE
+          C457F703589F978B5F6DD988F64E37AEDC78C0209DF1CC44A6C8386F5533C791
+          62AA00A0B2C462111FA53C897023B040D6F9CC163946D9B0E085148C89B7E374
+          C32DECD8750AB50DB731262E96C6D310E7B032399E032C261E7652C249126C26
+          41E933AF2D661EA200BCBAFA3B00206846FCF2DD5DD85CF0376C7E67273875C2
+          FEFECEAAFE5FBC9E857058529D1A9A7687C5B9CA2C9B5980B3D785B30D5771EB
+          DE7DA44D998497B233100849CC90A36567D0DAD601A7D379D0EB1DF873E1CEDF
+          350204924A3B1EFF73319257C3F956244E7A125BDE580B411050F76533044EC6
+          196A95FEDB6FAEC7FAD54BD6C5D81D3F5375EAF1C26B2C6054613FA3BAFA7D38
+          75E61A76155662DBF643D85D5885EAB3D7E072FB5872A187E5058E0742A10822
+          B447F6E274DCB8D5816DEFEFC1756A572EC9A071C03F1884140EF9B5A310789E
+          13049ED38290719C514DB5C24DCA2B4F5F010962D1FCE9F876E293B8DBDE83BB
+          1D3DE8EFF7222ED64C676C224F0151E0D1D7EF0147ECF17882F8C90F72209A04
+          48C42C7F20089EE3D037E041281C92019854A765A50E6101D32CB3AB15CDD73A
+          58CACD59FA2CB52CAA913C651CA6A54E80DFEB25782F226E941D3E5F00179ADB
+          F06A5E36C21109CA3EEE013FC9EB883203E6A5CF46CBD5B6FC0DF90583022F8C
+          03C7C9FD7DCE9D462664FC878E40DB9D6E643E9F069167CA755A59441E65E72E
+          213ECE41D9D2CD66F25F5B85D8583BBC640C19A02BD6DE1235B22421FFC76BC4
+          8AEA86AD89094FB199C2A2A3BC7E046A2AD6B9DDDDE345E2C427D4746B503D18
+          0CE1524B1B7EB36903045164600E06C3E8F7F8690F2D93E894662548F3C15018
+          A2C8518C64B04447002846E7EAA9981419198D34258C8B47C77D1792268F5506
+          D46D019194A610D52A6A1AB128732EFA3C834C13D38D2851D28D83078AD1D1F9
+          1013274EC0EA35CB60B3C7B27DC3E128DA075D183D3A16151575E875BA0A8D44
+          2431F0F53F11C9494FE17A5B17221199A1A05616E9EB5E5E48DE4AD8F749096C
+          56338D49AC2FD11E870F9762F68C14FC65C756CC9A9E8CD292934C794492484E
+          A6A38BC1BEFD9FA3B4ACB2E0D0FE1DDB78E3CE6641A8E7F1A9291358CAADAC6D
+          C59D0E271922110B9C385AD98CD6DB3D5890311B575A6FC1C483457B5892994C
+          5F5F3FB232E720446399DF7B164EF70031C606891C91A92A817DA3ED2B1C3FB4
+          7B0F80083F3408B504C1512AB62263EED38877C4A0BEE90EE5823A345D6EC7BC
+          39C9484B7A02A5555F62FAB4A7C10B02792713BC54A94D499982FA8616F05109
+          0D4D5791969204516094644879BC83782635094B5FDAF83A0033A7F2327EF37B
+          9F75BFB32907817064D8D54A1F3A3AA32C51EC25E813C68F433625991E9787E2
+          C0AF53189070AEFE22DA3B1E22E95B93B0306B2E22A4BCCB39A0533389B26669
+          7935BE28ABDEFB482232AED6E177018DAB6D381241EBCD7BC8CBCDA6E4E363B0
+          133B685C9993185516647D17A31D76B6C6DDE743B7DBC3E8C9F3408CCD8CCE6E
+          173233D3515DDBB85643C0F156C11167C1D6E50038D5134DB7A15E22EBEC245D
+          74F00B982D36CA961E46D3F4E76641B458E00F86A92F6B31A52347BE91720EB2
+          14417DFD79381CB1B090FCE79F957CACDF863F7FBBA8D864B266AA600FBB7438
+          325FE481EF2F998EC9E36D38D7781916B319031E2F9A2EDDC0DA5756928C8890
+          1451F3C9D04C18090571E04071B0FDDEEDBF0B8268E6057194BBF7E15F39655E
+          45C1C2AA76418D5C347941AD2200EBFCC579F9392BB2DFC8CACA402F411E1B6B
+          854914100884E1F1FB61B75A71B2EA34EA6A6A3FAC3B79E08F00060144008444
+          F5A0C32C7A8000BEA9188668E8D94C664B28DE318A5D4E36AB09470E95E02651
+          2D9518B162C51204C361067B94D29FAADCA71A1015A3545423E46FD44A50AE5C
+          F7168AF66C276EC7686880B0370BE4F1602080B367FF858B17CEEFAEADF8E403
+          EFE2F55B26278EFF69726A0A3B065A6F5114AB55EE72F64779FC9745962496F3
+          E9BF826678C4DDDBBDBFE8E3237B7FBFFD436F55E5A9E3A4FC3D00CEBACA4FDF
+          2D2E2E3FFED1EE42DFB1E2D2FDEEDEAE7F020829EB1EF4F411F1A2F8378483D6
+          24C4E982C70000000049454E44AE426082}
+        TabOrder = 12
+        OnClick = _irParaConfig
+      end
+      object cxLabel32: TcxLabel
+        Left = 102
+        Top = 470
+        Caption = 'Configura'#231#245'es'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -24
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = []
+        Style.TextColor = clNavy
+        Style.IsFontAssigned = True
+        Transparent = True
+        OnClick = _irParaConfig
+      end
+      object cxLabel33: TcxLabel
+        Left = 105
+        Top = 503
+        Caption = 'Defini'#231#227'o das configura'#231#245'es da rotina'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Arial'
+        Style.Font.Style = []
+        Style.TextColor = clGray
+        Style.IsFontAssigned = True
+        Properties.WordWrap = True
+        Transparent = True
+        Width = 220
+      end
     end
     object tabExecucaoManual: TcxTabSheet
       Caption = 'tabExecucaoManual'
@@ -322,10 +434,10 @@ object FrmPrincipal: TFrmPrincipal
       OnShow = tabExecucaoManualShow
       DesignSize = (
         968
-        450)
+        564)
       object Shape1: TShape
         Left = 7
-        Top = 389
+        Top = 503
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
@@ -335,7 +447,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object Shape2: TShape
         Left = 207
-        Top = 389
+        Top = 503
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
@@ -345,7 +457,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnVoltarMenu1: TcxButton
         Left = 7
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -551,7 +663,7 @@ object FrmPrincipal: TFrmPrincipal
         Left = 7
         Top = 139
         Width = 958
-        Height = 222
+        Height = 336
         Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 16
         object grdPedidosDBTableView1: TcxGridDBTableView
@@ -627,7 +739,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnLiberarPedidosManual: TcxButton
         Left = 833
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -661,7 +773,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel14: TcxLabel
         Left = 23
-        Top = 384
+        Top = 498
         Anchors = [akLeft, akBottom]
         Caption = 'Sem estoque suficiente'
         ParentColor = False
@@ -681,7 +793,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel15: TcxLabel
         Left = 223
-        Top = 384
+        Top = 498
         Anchors = [akLeft, akBottom]
         Caption = 'Com estoque suficiente'
         ParentColor = False
@@ -702,7 +814,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object prgBar: TcxProgressBar
         Left = 7
-        Top = 364
+        Top = 478
         Anchors = [akLeft, akRight, akBottom]
         TabOrder = 19
         Visible = False
@@ -714,10 +826,10 @@ object FrmPrincipal: TFrmPrincipal
       ImageIndex = 2
       DesignSize = (
         968
-        450)
+        564)
       object btnVoltarMenu2: TcxButton
         Left = 7
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -851,7 +963,7 @@ object FrmPrincipal: TFrmPrincipal
         Style.Color = clWhite
         StyleDisabled.Color = clWhite
         TabOrder = 10
-        Height = 375
+        Height = 489
         Width = 585
       end
       object cxLabel21: TcxLabel
@@ -889,7 +1001,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnPararAuto: TcxButton
         Left = 835
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -934,7 +1046,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnPlayAuto: TcxButton
         Left = 699
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -970,24 +1082,26 @@ object FrmPrincipal: TFrmPrincipal
       ImageIndex = 3
       DesignSize = (
         968
-        450)
+        564)
       object Shape3: TShape
         Left = 7
-        Top = 389
+        Top = 503
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
         Brush.Color = clRed
         Pen.Color = clRed
+        ExplicitTop = 389
       end
       object Shape4: TShape
         Left = 207
-        Top = 389
+        Top = 503
         Width = 10
         Height = 10
         Anchors = [akLeft, akBottom]
         Brush.Color = clBlue
         Pen.Color = clBlue
+        ExplicitTop = 389
       end
       object cxLabel24: TcxLabel
         Left = 7
@@ -1130,7 +1244,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnVoltarMenu3: TcxButton
         Left = 7
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -1153,7 +1267,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel30: TcxLabel
         Left = 23
-        Top = 384
+        Top = 498
         Anchors = [akLeft, akBottom]
         Caption = 'Pedido que teve corte'
         ParentColor = False
@@ -1173,7 +1287,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel31: TcxLabel
         Left = 223
-        Top = 384
+        Top = 498
         Anchors = [akLeft, akBottom]
         Caption = 'Pedido que n'#227'o teve corte'
         ParentColor = False
@@ -1236,7 +1350,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnVerItensLog: TcxButton
         Left = 833
-        Top = 417
+        Top = 531
         Width = 130
         Height = 25
         Anchors = [akRight, akBottom]
@@ -1263,7 +1377,7 @@ object FrmPrincipal: TFrmPrincipal
         Left = 7
         Top = 139
         Width = 958
-        Height = 222
+        Height = 336
         Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 18
         object grdLogPedidos: TcxGridDBTableView
@@ -1381,6 +1495,111 @@ object FrmPrincipal: TFrmPrincipal
         object cxGrid1Level1: TcxGridLevel
           GridView = grdLogPedidos
         end
+      end
+    end
+    object tabConfig: TcxTabSheet
+      Caption = 'tabConfig'
+      ImageIndex = 4
+      OnShow = tabConfigShow
+      DesignSize = (
+        968
+        564)
+      object grdConfigQtPendente: TcxGroupBox
+        Left = 16
+        Top = 24
+        Caption = 'QT. PENDENTE: Ao realizar corte dos produtos do pedido'
+        TabOrder = 0
+        Height = 97
+        Width = 857
+        object radNaoFazerNadaQtPendente: TcxRadioButton
+          Left = 16
+          Top = 59
+          Width = 265
+          Height = 17
+          Caption = 'N'#227'o alterar o campo QT. PENDENTE'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+          Transparent = True
+        end
+        object radDeduzirQtPendente: TcxRadioButton
+          Left = 328
+          Top = 59
+          Width = 393
+          Height = 17
+          Caption = 'Deduzir a quantidade cortada do campo QT. PENDENTE'
+          TabOrder = 1
+          Transparent = True
+        end
+        object cxLabel34: TcxLabel
+          Left = 16
+          Top = 22
+          Caption = 
+            'O que deve ser feito em rela'#231#227'o ao campo QT. PENDENTE do estoque' +
+            ' do produto quando houver corte no pedido?'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -13
+          Style.Font.Name = 'Verdana'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          Transparent = True
+        end
+      end
+      object btnSalvarConfiguracoes: TcxButton
+        Left = 754
+        Top = 531
+        Width = 211
+        Height = 25
+        Anchors = [akRight, akBottom]
+        Caption = 'Salvar configura'#231#245'es'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000000B744558745469746C6500536176653BF9E8F9090000020349444154
+          785E7D52316B145110FEDEE6EE9A03EF2E57284A6C6DAC42C0262185829D0A36
+          16820AFE010BADC47F60AB2022585A588875B01041822158D858081204956872
+          DC5DD6DD3733CF99D93DD713CCC0F7BEF776E7FB66E6ED0654912982633EFCFC
+          9F67A2603B2CAC9DBFB2810CEB4B274EE1E4D271B0303832A24450A94C113112
+          2846ECED8F301A7DB59CD76F379E9F6D9901425A5F3DB38C4F9FC7B87BE70690
+          60E1E49C80BC886049B87EF33656964F6373EBFD1A8096190466017352B0ABA6
+          BF22C4D5C9C5972E5CD632010F1F3F0553C4CECE17088B8F9ED99292B898884C
+          EFE2548B270711D942867E7F114717BB9E0308582A83962D2C6EE0EE2925EFA6
+          245671899205ED561B9D4EA77EC7CA6D887063904CCCE29735C923BEEF4F91C4
+          A771DC7FF008C7865DEF88896B23FA6310BC03226FEFEAB55B9A203E63823143
+          5490445C3883D05F23F8FCC228F26F180C06B3CB730059BD57866F20229EDF18
+          D42358BC78F60487C5EAB98B5A6408E63903B1F6BD358B9FE302F06D729610BC
+          B2AE20B63CF9D780602072579FB9F98B6082E6DF8D044932FF156CA648EC89F7
+          5E7E844802299851B3C26667F30BCAF31D043B3091DFC3917E0F5C895C1C4D3C
+          03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
+          14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
+          F6AC9379188DF20000000049454E44AE426082}
+        TabOrder = 1
+        OnClick = btnSalvarConfiguracoesClick
+      end
+      object cxButton1: TcxButton
+        Left = 8
+        Top = 531
+        Width = 130
+        Height = 25
+        Anchors = [akLeft, akBottom]
+        Caption = 'Voltar'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000001974455874536F6674776172650041646F626520496D616765526561
+          647971C9653C0000000F744558745469746C65004261636B3B507265763D5C97
+          C9000000E349444154785EA5D33F0AC2301406F0EC3A751114244B076F205DE2
+          D4CD2B0882F72838B77B77472FE0DAA974F2066E0A2ED2B14EF12B7C42782482
+          64F80DEDFB43F292A8EDF122E550410B3DB5FC97CB7CF74343090D14602021C3
+          7F0D73B46CA0E10435A4D65AE533C6A066AE761B940C4C981C34E630B7FC36C8
+          B9B45424CEA0030B03ECC54A1AC815875388E215DC587C87B5672505548A1336
+          4E60032FB08CCD035B31D02A1E53C2E21DBCC186380D12E87D0D867F1BC82D64
+          F06441078B5F5B080D710957367940161E62F818A770768EF1E03BC6C88B147F
+          95E31F53F473FE00C527425349ACC3430000000049454E44AE426082}
+        TabOrder = 2
+        OnClick = _irParaMenu
       end
     end
   end

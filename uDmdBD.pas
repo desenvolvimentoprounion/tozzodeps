@@ -119,6 +119,11 @@ type
     qryInserePCFALTA: TFDQuery;
     qryAtualizaDatasIntegracao: TFDQuery;
     qryAtualizaPCFALTA: TFDQuery;
+    qryConfigQtPendente: TFDQuery;
+    qryConfigQtPendenteVALOR: TStringField;
+    qryInsereConfigQtPendente: TFDQuery;
+    qryAtualizaConfigQtPendente: TFDQuery;
+    qryDeduzirQtPendente: TFDQuery;
   private
     { Private declarations }
   public

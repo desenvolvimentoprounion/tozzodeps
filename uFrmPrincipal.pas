@@ -28,7 +28,7 @@ uses
   cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, Vcl.ExtCtrls, cxSpinEdit, cxMemo, cxCurrencyEdit, cxProgressBar,
-  DateUtils, uUsuario, dxSkinOffice2019Colorful, dxSkinTheBezier, dxDateRanges;
+  DateUtils, uUsuario, dxSkinOffice2019Colorful, dxSkinTheBezier, dxDateRanges, cxRadioGroup;
 
 type
   TFrmPrincipal = class(TForm)
@@ -154,6 +154,16 @@ type
     styComCorte: TcxStyle;
     grdLogPedidosVLTABELAANTES: TcxGridDBColumn;
     grdLogPedidosVLTABELADEPOIS: TcxGridDBColumn;
+    btnConfiguracoes: TcxButton;
+    cxLabel32: TcxLabel;
+    cxLabel33: TcxLabel;
+    tabConfig: TcxTabSheet;
+    grdConfigQtPendente: TcxGroupBox;
+    radNaoFazerNadaQtPendente: TcxRadioButton;
+    radDeduzirQtPendente: TcxRadioButton;
+    cxLabel34: TcxLabel;
+    btnSalvarConfiguracoes: TcxButton;
+    cxButton1: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
@@ -188,6 +198,9 @@ type
       var AStyle: TcxStyle);
     procedure btnPesquisarLogClick(Sender: TObject);
     procedure _VerLogItens(Sender: TObject);
+    procedure _irParaConfig(Sender: TObject);
+    procedure tabConfigShow(Sender: TObject);
+    procedure btnSalvarConfiguracoesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -229,6 +242,14 @@ begin
 
 
   tabLog.Show;
+end;
+
+procedure TFrmPrincipal._irParaConfig(Sender: TObject);
+begin
+
+
+  tabConfig.Show;
+
 end;
 
 procedure TFrmPrincipal.btnEdtCodClienteExit(Sender: TObject);
@@ -459,6 +480,28 @@ begin
 
 end;
 
+procedure TFrmPrincipal.btnSalvarConfiguracoesClick(Sender: TObject);
+var
+  nova_config_qt_pendente: TConfigQTPendente;
+begin
+
+
+  nova_config_qt_pendente := qtpendNaoFazerNada;
+
+  if radDeduzirQtPendente.Checked then
+  begin
+
+    nova_config_qt_pendente := qtpendDeduzirCampo;
+  end;
+
+  SalvarConfiguracaoQtPendente(nova_config_qt_pendente);
+  CarregarConfiguracoes();
+
+  TMsg.Sucesso('Configuração alterada com sucesso');
+
+
+end;
+
 procedure TFrmPrincipal._VerLogItens(Sender: TObject);
 var
   numero_pedido : double;
@@ -544,13 +587,15 @@ begin
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
   Caption := ParamStr(5) +
-    ' - Integração WinThor x DEPS - versão: 1.1.0.0';
+    ' - Integração WinThor x DEPS - versão: 3.1.0.0';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
   edtDescricaoUsuarioAuto.Text := gUSUARIO.Nome;
 
   gAUTOMATICO_HABILITADO := False;
+
+  CarregarConfiguracoes();
 
 end;
 
@@ -596,6 +641,14 @@ begin
 
     AStyle := styComEstoque;
   end;
+
+end;
+
+procedure TFrmPrincipal.tabConfigShow(Sender: TObject);
+begin
+
+  radNaoFazerNadaQtPendente.Checked := (gCONFIG_QT_PENDENTE = qtpendNaoFazerNada);
+  radDeduzirQtPendente.Checked := (gCONFIG_QT_PENDENTE = qtpendDeduzirCampo);
 
 end;
 

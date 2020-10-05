@@ -4,14 +4,14 @@ interface
 
 uses uUsuario, StrUtils, FireDAC.Comp.Client, FireDAC.Stan.Option;
 
-function PesquisaPedidos(DataInicial, DataFinal: TDateTime;
-  NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+type
+  TConfigQTPendente = (qtpendNaoFazerNada, qtpendDeduzirCampo);
 
-function ProcessarPedidos(Usuario: TUsuario; Rotina: double;
-  RegistrarTextoLog: boolean = false): boolean;
+function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 
-function PesquisaLog(DataInicial, DataFinal: TDateTime;
-  NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+function ProcessarPedidos(Usuario: TUsuario; Rotina: double; RegistrarTextoLog: boolean = false): boolean;
+
+function PesquisaLog(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 
 procedure VerItensLog(Pedido: double);
 
@@ -19,9 +19,14 @@ procedure RegistrarLog(Texto: string);
 
 procedure DesmembrarPedido(aNumeroPedido: double; aMatriculaUsuario: double);
 
+procedure CarregarConfiguracoes();
+
+procedure SalvarConfiguracaoQtPendente(aNovoValor: TConfigQTPendente);
+
 var
   gUSUARIO: TUsuario;
   gCODIGO_ROTINA: double;
+  gCONFIG_QT_PENDENTE: TConfigQTPendente;
 
 implementation
 
@@ -35,8 +40,7 @@ begin
   Application.ProcessMessages;
 end;
 
-function PesquisaPedidos(DataInicial, DataFinal: TDateTime;
-  NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 begin
 
   with DmdBD.qryPesquisaPedidos do
@@ -61,15 +65,15 @@ begin
     SQL.Add(' 	, PCPEDI.CODPROD                                                                                         ');
     SQL.Add(' 	, PCPEDI.QT                                                                                              ');
     SQL.Add(' 	, (PCEST.QTESTGER - NVL(PCEST.QTRESERV,0) - NVL(PCEST.QTBLOQUEADA,0) - NVL(PCEST.QTPENDENTE,0)) ESTDISP  ');
-    SQL.Add(' FROM MDINTEGRACAODEPSLIBERAPEDIDO LIBERA                                                                   ');
+    // SQL.Add(' FROM MDINTEGRACAODEPSLIBERAPEDIDO LIBERA                                                                   ');
+    SQL.Add(' FROM NTINTEGRACAODEPSLIBERAPEDIDO LIBERA                                                                   ');
     SQL.Add(' JOIN PCPEDC ON PCPEDC.NUMPED = LIBERA.NUMPED                                                               ');
     SQL.Add('             AND PCPEDC.POSICAO = ''B''                                                                     ');
     SQL.Add(' LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI                                                      ');
     SQL.Add(' LEFT JOIN PCUSUARI ON PCUSUARI.CODUSUR = PCPEDC.CODUSUR                                                    ');
     SQL.Add(' LEFT JOIN PCPEDI ON PCPEDI.NUMPED = PCPEDC.NUMPED                                                          ');
     SQL.Add(' LEFT JOIN PCEST ON PCEST.CODFILIAL = nvl(PCPEDI.CODFILIALRETIRA, PCPEDC.CODFILIAL)                         ');
-    SQL.Add
-      (' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
+    SQL.Add(' 				AND PCEST.CODPROD = PCPEDI.CODPROD                                                                 ');
 
     SQL.Add('WHERE TRUNC(LIBERA.DTLIBERADEPS) BETWEEN :DTINICIAL AND :DTFINAL   ');
 
@@ -232,35 +236,33 @@ begin
 
 end;
 
-procedure CorteProduto(Filial: string; Produto, QuantidadeOriginal,
-  QuantidadeSeparada, QuantidadeCortada, QuantidadeFalta, Carregamento, Usuario,
+procedure CorteProduto(Filial: string; Produto, QuantidadeOriginal, QuantidadeSeparada, QuantidadeCortada, QuantidadeFalta, Carregamento, Usuario,
   Pedido, ValorUnitario, Cliente, RCA, Rotina, Emitente, Sequencia: double);
 begin
 
-//  with DmdBD.qryInserePCCORTEI do
-//  begin
-//
-//    Close;
-//
-//    ParamByName('CODPROD').AsFloat := Produto;
-//    ParamByName('QTSEPARADA').AsFloat := QuantidadeSeparada;
-//    ParamByName('QTCORTADA').AsFloat := QuantidadeCortada;
-//    ParamByName('NUMCAR').AsFloat := Carregamento;
-//    ParamByName('CODFUNC').AsFloat := Usuario;
-//    ParamByName('NUMPED').AsFloat := Pedido;
-//    ParamByName('PVENDA').AsFloat := ValorUnitario;
-//    ParamByName('CODFILIAL').AsString := Filial;
-//    ParamByName('QTORIG').AsFloat := QuantidadeOriginal;
-//    ParamByName('QTFALTA').AsFloat := QuantidadeFalta;
-//    ParamByName('MOTIVO').AsString := 'FALTA DE MERCADORIA';
-//    ParamByName('CODCLI').AsFloat := Cliente;
-//    ParamByName('CODUSUR').AsFloat := RCA;
-//    ParamByName('CODROTINA').AsFloat := Rotina;
-//    ParamByName('CODEMITENTEPED').AsFloat := Emitente;
-//    ParamByName('NUMSEQ').AsFloat := Sequencia;
-//    ExecSQL;
-//  end;
-
+  // with DmdBD.qryInserePCCORTEI do
+  // begin
+  //
+  // Close;
+  //
+  // ParamByName('CODPROD').AsFloat := Produto;
+  // ParamByName('QTSEPARADA').AsFloat := QuantidadeSeparada;
+  // ParamByName('QTCORTADA').AsFloat := QuantidadeCortada;
+  // ParamByName('NUMCAR').AsFloat := Carregamento;
+  // ParamByName('CODFUNC').AsFloat := Usuario;
+  // ParamByName('NUMPED').AsFloat := Pedido;
+  // ParamByName('PVENDA').AsFloat := ValorUnitario;
+  // ParamByName('CODFILIAL').AsString := Filial;
+  // ParamByName('QTORIG').AsFloat := QuantidadeOriginal;
+  // ParamByName('QTFALTA').AsFloat := QuantidadeFalta;
+  // ParamByName('MOTIVO').AsString := 'FALTA DE MERCADORIA';
+  // ParamByName('CODCLI').AsFloat := Cliente;
+  // ParamByName('CODUSUR').AsFloat := RCA;
+  // ParamByName('CODROTINA').AsFloat := Rotina;
+  // ParamByName('CODEMITENTEPED').AsFloat := Emitente;
+  // ParamByName('NUMSEQ').AsFloat := Sequencia;
+  // ExecSQL;
+  // end;
 
   // Insere uma falta zerada caso já não exista
   with DmdBD.qryInserePCFALTA do
@@ -271,13 +273,12 @@ begin
     ParamByName('CODPROD').AsFloat := Produto;
     ParamByName('CODUSUR').AsFloat := RCA;
     ParamByName('CODCLI').AsFloat := Cliente;
-//    ParamByName('QT').AsFloat := QuantidadeCortada;
+    // ParamByName('QT').AsFloat := QuantidadeCortada;
     ParamByName('PVENDA').AsFloat := ValorUnitario;
     ParamByName('CODFILIAL').AsString := Filial;
     ParamByName('NUMSEQ').AsFloat := Sequencia;
     ExecSQL;
   end;
-
 
   with DmdBD.qryAtualizaPCFALTA do
   begin
@@ -289,8 +290,6 @@ begin
     ExecSQL;
   end;
 
-
-
   with DmdBD.qryCorteItemPedido do
   begin
 
@@ -299,6 +298,21 @@ begin
     ParamByName('NUMPED').AsFloat := Pedido;
     ParamByName('CODPROD').AsFloat := Produto;
     ExecSQL;
+  end;
+
+  if gCONFIG_QT_PENDENTE = qtpendDeduzirCampo then
+  begin
+
+    with DmdBD.qryDeduzirQtPendente do
+    begin
+
+      Close;
+      ParamByName('QT_CORTE').AsFloat := QuantidadeCortada;
+      ParamByName('CODPROD').AsFloat := Produto;
+      ParamByName('CODFILIAL').AsString := Filial;
+      ExecSQL;
+    end;
+
   end;
 
 end;
@@ -322,14 +336,10 @@ begin
       ParamByName('VLTOTALANTES').AsFloat := qryTotaisPedidoVLTOTAL.AsFloat;
       ParamByName('VLTABELAANTES').AsFloat := qryTotaisPedidoVLTABELA.AsFloat;
       ParamByName('VLATENDANTES').AsFloat := qryTotaisPedidoVLATEND.AsFloat;
-      ParamByName('VLCUSTOREPANTES').AsFloat :=
-        qryTotaisPedidoVLCUSTOREP.AsFloat;
-      ParamByName('VLCUSTOCONTANTES').AsFloat :=
-        qryTotaisPedidoVLCUSTOCONT.AsFloat;
-      ParamByName('VLCUSTOREALANTES').AsFloat :=
-        qryTotaisPedidoVLCUSTOREAL.AsFloat;
-      ParamByName('VLCUSTOFINANTES').AsFloat :=
-        qryTotaisPedidoVLCUSTOFIN.AsFloat;
+      ParamByName('VLCUSTOREPANTES').AsFloat := qryTotaisPedidoVLCUSTOREP.AsFloat;
+      ParamByName('VLCUSTOCONTANTES').AsFloat := qryTotaisPedidoVLCUSTOCONT.AsFloat;
+      ParamByName('VLCUSTOREALANTES').AsFloat := qryTotaisPedidoVLCUSTOREAL.AsFloat;
+      ParamByName('VLCUSTOFINANTES').AsFloat := qryTotaisPedidoVLCUSTOFIN.AsFloat;
       ParamByName('NUMITENSANTES').AsFloat := qryTotaisPedidoNUMITENS.AsFloat;
       ParamByName('TOTPESOANTES').AsFloat := qryTotaisPedidoTOTPESO.AsFloat;
       ExecSQL;
@@ -355,14 +365,10 @@ begin
       ParamByName('VLTOTALDEPOIS').AsFloat := qryTotaisPedidoVLTOTAL.AsFloat;
       ParamByName('VLTABELADEPOIS').AsFloat := qryTotaisPedidoVLTABELA.AsFloat;
       ParamByName('VLATENDDEPOIS').AsFloat := qryTotaisPedidoVLATEND.AsFloat;
-      ParamByName('VLCUSTOREPDEPOIS').AsFloat :=
-        qryTotaisPedidoVLCUSTOREP.AsFloat;
-      ParamByName('VLCUSTOCONTDEPOIS').AsFloat :=
-        qryTotaisPedidoVLCUSTOCONT.AsFloat;
-      ParamByName('VLCUSTOREALDEPOIS').AsFloat :=
-        qryTotaisPedidoVLCUSTOREAL.AsFloat;
-      ParamByName('VLCUSTOFINDEPOIS').AsFloat :=
-        qryTotaisPedidoVLCUSTOFIN.AsFloat;
+      ParamByName('VLCUSTOREPDEPOIS').AsFloat := qryTotaisPedidoVLCUSTOREP.AsFloat;
+      ParamByName('VLCUSTOCONTDEPOIS').AsFloat := qryTotaisPedidoVLCUSTOCONT.AsFloat;
+      ParamByName('VLCUSTOREALDEPOIS').AsFloat := qryTotaisPedidoVLCUSTOREAL.AsFloat;
+      ParamByName('VLCUSTOFINDEPOIS').AsFloat := qryTotaisPedidoVLCUSTOFIN.AsFloat;
       ParamByName('NUMITENSDEPOIS').AsFloat := qryTotaisPedidoNUMITENS.AsFloat;
       ParamByName('TOTPESODEPOIS').AsFloat := qryTotaisPedidoTOTPESO.AsFloat;
       ParamByName('CORTE').AsString := IfThen(TeveCorte, 'S', 'N');
@@ -399,16 +405,12 @@ begin
           ParamByName('QTPEDDEPOIS').AsFloat := qryItensPedidoQT.AsFloat;
           ParamByName('PVENDAPED').AsFloat := qryItensPedidoPVENDA.AsFloat;
           ParamByName('PTABELAPED').AsFloat := qryItensPedidoPTABELA.AsFloat;
-          ParamByName('VLCUSTOREPPED').AsFloat :=
-            qryItensPedidoVLCUSTOREP.AsFloat;
-          ParamByName('VLCUSTOCONTPED').AsFloat :=
-            qryItensPedidoVLCUSTOCONT.AsFloat;
-          ParamByName('VLCUSTOREALPED').AsFloat :=
-            qryItensPedidoVLCUSTOREAL.AsFloat;
+          ParamByName('VLCUSTOREPPED').AsFloat := qryItensPedidoVLCUSTOREP.AsFloat;
+          ParamByName('VLCUSTOCONTPED').AsFloat := qryItensPedidoVLCUSTOCONT.AsFloat;
+          ParamByName('VLCUSTOREALPED').AsFloat := qryItensPedidoVLCUSTOREAL.AsFloat;
           ParamByName('QTESTGER').AsFloat := qryItensPedidoQTESTGER.AsFloat;
           ParamByName('QTRESERV').AsFloat := qryItensPedidoQTRESERV.AsFloat;
-          ParamByName('QTBLOQUEADA').AsFloat :=
-            qryItensPedidoQTBLOQUEADA.AsFloat;
+          ParamByName('QTBLOQUEADA').AsFloat := qryItensPedidoQTBLOQUEADA.AsFloat;
           ParamByName('QTPENDENTE').AsFloat := qryItensPedidoQTPENDENTE.AsFloat;
           ParamByName('QTINDENIZ').AsFloat := qryItensPedidoQTINDENIZ.AsFloat;
           ParamByName('QTDISPONIVEL').AsFloat := qryItensPedidoESTDISP.AsFloat;
@@ -424,8 +426,7 @@ begin
 
 end;
 
-function ProcessarPedidos(Usuario: TUsuario; Rotina: double;
-  RegistrarTextoLog: boolean = false): boolean;
+function ProcessarPedidos(Usuario: TUsuario; Rotina: double; RegistrarTextoLog: boolean = false): boolean;
 var
   numero_pedido: double;
   codigo_produto: double;
@@ -448,8 +449,7 @@ var
   filial_item: string;
 begin
 
-  if (DmdBD.qryPesquisaPedidos.State <> dsBrowse) or
-    (DmdBD.qryPesquisaPedidos.RecordCount = 0) then
+  if (DmdBD.qryPesquisaPedidos.State <> dsBrowse) or (DmdBD.qryPesquisaPedidos.RecordCount = 0) then
   begin
 
     Result := false;
@@ -488,17 +488,16 @@ begin
           if not(PedidoPrecisaDeCorte(numero_pedido)) then
           begin
 
-            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
-              '. Não necessita de corte. Liberando pedido.');
+            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) + '. Não necessita de corte. Liberando pedido.');
             LiberarPedido(codigo_filial, numero_pedido);
 
             AtualizarLogPedido(numero_pedido, false);
 
-//            if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
-//            begin
-//
-//              DesmembrarPedido(numero_pedido, Usuario.Matricula);
-//            end;
+            // if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
+            // begin
+            //
+            // DesmembrarPedido(numero_pedido, Usuario.Matricula);
+            // end;
 
             qryPesquisaPedidos.Next;
 
@@ -528,8 +527,7 @@ begin
             Sequencia := qryItensPedidoNUMSEQ.AsFloat;
             filial_item := qryItensPedidoCODFILIAL.AsString;
 
-            if (quantidade_disponivel < quantidade_original) and
-              (quantidade_disponivel > 0) then
+            if (quantidade_disponivel < quantidade_original) and (quantidade_disponivel > 0) then
             begin
 
               quantidade_final := quantidade_disponivel;
@@ -546,13 +544,10 @@ begin
             if quantidade_corte > 0 then
             begin
 
-              RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
-                '. Cortando produto ' + FloatToStr(codigo_produto));
+              RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) + '. Cortando produto ' + FloatToStr(codigo_produto));
 
-              CorteProduto(filial_item, codigo_produto, quantidade_original,
-                quantidade_final, quantidade_corte, 0, numero_carregamento,
-                Usuario.Matricula, numero_pedido, valor_unitario,
-                codigo_cliente, codigo_rca, Rotina, codigo_emitente, Sequencia);
+              CorteProduto(filial_item, codigo_produto, quantidade_original, quantidade_final, quantidade_corte, 0, numero_carregamento,
+                Usuario.Matricula, numero_pedido, valor_unitario, codigo_cliente, codigo_rca, Rotina, codigo_emitente, Sequencia);
 
             end;
 
@@ -568,24 +563,16 @@ begin
               ParamByName('QTPEDANTES').AsFloat := quantidade_original;
               ParamByName('QTPEDDEPOIS').AsFloat := quantidade_final;
               ParamByName('PVENDAPED').AsFloat := qryItensPedidoPVENDA.AsFloat;
-              ParamByName('PTABELAPED').AsFloat :=
-                qryItensPedidoPTABELA.AsFloat;
-              ParamByName('VLCUSTOREPPED').AsFloat :=
-                qryItensPedidoVLCUSTOREP.AsFloat;
-              ParamByName('VLCUSTOCONTPED').AsFloat :=
-                qryItensPedidoVLCUSTOCONT.AsFloat;
-              ParamByName('VLCUSTOREALPED').AsFloat :=
-                qryItensPedidoVLCUSTOREAL.AsFloat;
+              ParamByName('PTABELAPED').AsFloat := qryItensPedidoPTABELA.AsFloat;
+              ParamByName('VLCUSTOREPPED').AsFloat := qryItensPedidoVLCUSTOREP.AsFloat;
+              ParamByName('VLCUSTOCONTPED').AsFloat := qryItensPedidoVLCUSTOCONT.AsFloat;
+              ParamByName('VLCUSTOREALPED').AsFloat := qryItensPedidoVLCUSTOREAL.AsFloat;
               ParamByName('QTESTGER').AsFloat := qryItensPedidoQTESTGER.AsFloat;
               ParamByName('QTRESERV').AsFloat := qryItensPedidoQTRESERV.AsFloat;
-              ParamByName('QTBLOQUEADA').AsFloat :=
-                qryItensPedidoQTBLOQUEADA.AsFloat;
-              ParamByName('QTPENDENTE').AsFloat :=
-                qryItensPedidoQTPENDENTE.AsFloat;
-              ParamByName('QTINDENIZ').AsFloat :=
-                qryItensPedidoQTINDENIZ.AsFloat;
-              ParamByName('QTDISPONIVEL').AsFloat :=
-                qryItensPedidoESTDISP.AsFloat;
+              ParamByName('QTBLOQUEADA').AsFloat := qryItensPedidoQTBLOQUEADA.AsFloat;
+              ParamByName('QTPENDENTE').AsFloat := qryItensPedidoQTPENDENTE.AsFloat;
+              ParamByName('QTINDENIZ').AsFloat := qryItensPedidoQTINDENIZ.AsFloat;
+              ParamByName('QTDISPONIVEL').AsFloat := qryItensPedidoESTDISP.AsFloat;
               ExecSQL;
             end;
 
@@ -595,15 +582,12 @@ begin
           if valor_corte_pedido > 0 then
           begin
 
-            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
-              '. Atualizando cabeçalho.');
+            RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) + '. Atualizando cabeçalho.');
 
-            AtualizarPedido(numero_pedido, valor_corte_pedido,
-              Usuario.Matricula);
+            AtualizarPedido(numero_pedido, valor_corte_pedido, Usuario.Matricula);
           end;
 
-          RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) +
-            '. Liberando pedido.');
+          RegistrarLog('Pedido: ' + FloatToStr(numero_pedido) + '. Liberando pedido.');
           LiberarPedido(codigo_filial, numero_pedido);
           InserePCNFCANITEM(numero_pedido);
 
@@ -652,8 +636,7 @@ begin
   end;
 end;
 
-function PesquisaLog(DataInicial, DataFinal: TDateTime;
-  NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+function PesquisaLog(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 begin
 
   with DmdBD.qryConsultaLogCabecalho do
@@ -687,7 +670,8 @@ begin
     SQL.Add('      , LOG.NUMITENSDEPOIS                                           ');
     SQL.Add('      , LOG.TOTPESOANTES                                             ');
     SQL.Add('      , LOG.TOTPESODEPOIS                                            ');
-    SQL.Add(' FROM MDINTEGRACAODEPSLOGC LOG                                       ');
+    // SQL.Add(' FROM MDINTEGRACAODEPSLOGC LOG                                       ');
+    SQL.Add(' FROM NTINTEGRACAODEPSLOGC LOG                                       ');
     SQL.Add(' JOIN PCPEDC ON PCPEDC.NUMPED = LOG.NUMPED                           ');
     SQL.Add(' LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI               ');
     SQL.Add(' LEFT JOIN PCEMPR USUARIO ON USUARIO.MATRICULA = LOG.CODUSUARIO      ');
@@ -837,7 +821,6 @@ begin
     ExecProc;
   end;
 
-
   // Atualizando PCPLPAG do cabeçalho quando se tem apenas um item
   // a procedure deveria fazer isso mas não faz
   with DmdBD.qryAtualizarPCPLPAG do
@@ -848,7 +831,49 @@ begin
     ExecSQL;
   end;
 
+end;
 
+procedure CarregarConfiguracoes();
+begin
+
+  gCONFIG_QT_PENDENTE := qtpendNaoFazerNada;
+
+  with DmdBD do
+  begin
+
+    qryConfigQtPendente.Close;
+    qryConfigQtPendente.Open;
+
+    if qryConfigQtPendente.RecordCount > 0 then
+    begin
+
+      if qryConfigQtPendenteVALOR.AsString = '1' then
+      begin
+
+        gCONFIG_QT_PENDENTE := qtpendDeduzirCampo;
+      end;
+    end;
+
+    qryConfigQtPendente.Close;
+
+  end;
+
+end;
+
+procedure SalvarConfiguracaoQtPendente(aNovoValor: TConfigQTPendente);
+begin
+
+  with DmdBD do
+  begin
+
+    qryInsereConfigQtPendente.Close;
+    qryInsereConfigQtPendente.ExecSQL;
+
+    qryAtualizaConfigQtPendente.Close;
+    qryAtualizaConfigQtPendente.ParamByName('VALOR').AsString := IfThen((aNovoValor = qtpendNaoFazerNada), '0', '1');
+    qryAtualizaConfigQtPendente.ExecSQL;
+
+  end;
 
 end;
 

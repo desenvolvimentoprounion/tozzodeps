@@ -1,6 +1,6 @@
 object DmdBD: TDmdBD
   OldCreateOrder = False
-  Height = 1051
+  Height = 1198
   Width = 763
   object qryPesquisaPedidos: TFDQuery
     Connection = conn
@@ -24,7 +24,7 @@ object DmdBD: TDmdBD
       '    , NVL(PCPEDC.NUMCAR, 0) AS NUMCAR'
       '    , NVL(PCPEDC.CODEMITENTE, 0) AS CODEMITENTE'
       '    , PCPEDC.CODPLPAG'
-      'FROM MDINTEGRACAODEPSLIBERAPEDIDO LIBERA'
+      'FROM NTINTEGRACAODEPSLIBERAPEDIDO LIBERA'
       'JOIN PCPEDC ON PCPEDC.NUMPED = LIBERA.NUMPED'
       'LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI'
       'LEFT JOIN PCUSUARI ON PCUSUARI.CODUSUR = PCPEDC.CODUSUR'
@@ -625,7 +625,7 @@ object DmdBD: TDmdBD
   object qryMarcarComoLiberado: TFDQuery
     Connection = conn
     SQL.Strings = (
-      'UPDATE mdintegracaodepsliberapedido SET'
+      'UPDATE NTintegracaodepsliberapedido SET'
       'DTLIBERAWINTHOR = SYSDATE'
       'WHERE NUMPED = :NUMPED')
     Left = 488
@@ -717,7 +717,7 @@ object DmdBD: TDmdBD
   object qryRegistraLogPedido: TFDQuery
     Connection = conn
     SQL.Strings = (
-      'INSERT INTO MDINTEGRACAODEPSLOGC'
+      'INSERT INTO NTINTEGRACAODEPSLOGC'
       '            (NUMPED'
       '             , DATA'
       '             , CODUSUARIO'
@@ -793,7 +793,7 @@ object DmdBD: TDmdBD
   object qryAtualizaLogPedido: TFDQuery
     Connection = conn
     SQL.Strings = (
-      'UPDATE MDINTEGRACAODEPSLOGC'
+      'UPDATE NTINTEGRACAODEPSLOGC'
       'SET    VLTOTALDEPOIS = :VLTOTALDEPOIS'
       '       , VLATENDDEPOIS = :VLATENDDEPOIS'
       '       , VLTABELADEPOIS = :VLTABELADEPOIS'
@@ -857,7 +857,7 @@ object DmdBD: TDmdBD
     Connection = conn
     SQL.Strings = (
       
-        'INSERT INTO MDINTEGRACAODEPSLOGI (NUMPED, CODPROD, QTPEDANTES, Q' +
+        'INSERT INTO NTINTEGRACAODEPSLOGI (NUMPED, CODPROD, QTPEDANTES, Q' +
         'TPEDDEPOIS, PVENDAPED, PTABELAPED, VLCUSTOREPPED, VLCUSTOCONTPED' +
         ', VLCUSTOREALPED, QTESTGER, QTRESERV, QTBLOQUEADA, QTPENDENTE, Q' +
         'TINDENIZ, QTDISPONIVEL)'
@@ -960,7 +960,7 @@ object DmdBD: TDmdBD
       '     , LOG.NUMITENSDEPOIS    '
       '     , LOG.TOTPESOANTES      '
       '     , LOG.TOTPESODEPOIS     '
-      'FROM MDINTEGRACAODEPSLOGC LOG'
+      'FROM NTINTEGRACAODEPSLOGC LOG'
       'JOIN PCPEDC ON PCPEDC.NUMPED = LOG.NUMPED'
       'LEFT JOIN PCCLIENT ON PCCLIENT.CODCLI = PCPEDC.CODCLI'
       'LEFT JOIN PCEMPR USUARIO ON USUARIO.MATRICULA = LOG.CODUSUARIO'
@@ -1170,7 +1170,7 @@ object DmdBD: TDmdBD
       #9', LOG.QTPENDENTE'
       #9', LOG.QTINDENIZ'
       #9', LOG.QTDISPONIVEL'
-      'FROM MDINTEGRACAODEPSLOGI LOG'
+      'FROM NTINTEGRACAODEPSLOGI LOG'
       'JOIN PCPRODUT ON PCPRODUT.CODPROD = LOG.CODPROD'
       'WHERE LOG.NUMPED = :NUMPED'
       'ORDER BY PCPRODUT.DESCRICAO')
@@ -1404,12 +1404,12 @@ object DmdBD: TDmdBD
   object qryAtualizaDatasIntegracao: TFDQuery
     Connection = conn
     SQL.Strings = (
-      'UPDATE MDINTEGRACAODEPSLIBERAPEDIDO SET'
+      'UPDATE NTINTEGRACAODEPSLIBERAPEDIDO SET'
       'DTLIBERAWINTHOR = SYSDATE'
       'WHERE DTLIBERAWINTHOR IS NULL '
       'AND NUMPED IN ('
       '    SELECT DEPS.NUMPED'
-      '    FROM MDINTEGRACAODEPSLIBERAPEDIDO DEPS'
+      '    FROM NTINTEGRACAODEPSLIBERAPEDIDO DEPS'
       '    JOIN PCPEDC ON PCPEDC.NUMPED = DEPS.NUMPED'
       '            AND PCPEDC.POSICAO <> '#39'B'#39
       '    WHERE DEPS.DTLIBERAWINTHOR IS NULL            '
@@ -1433,6 +1433,66 @@ object DmdBD: TDmdBD
       end
       item
         Name = 'NUMPED'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODPROD'
+        ParamType = ptInput
+      end>
+  end
+  object qryConfigQtPendente: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'SELECT NVL(valor, '#39'1'#39') AS VALOR'
+      'FROM NTINTEGRACAODEPSCONFIG'
+      'WHERE CODCONFIG = 1')
+    Left = 64
+    Top = 1008
+    object qryConfigQtPendenteVALOR: TStringField
+      FieldName = 'VALOR'
+      Size = 100
+    end
+  end
+  object qryInsereConfigQtPendente: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'INSERT INTO NTINTEGRACAODEPSCONFIG (CODCONFIG, VALOR)'
+      
+        'SELECT 1, '#39'0'#39' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM NTINTEGR' +
+        'ACAODEPSCONFIG WHERE CODCONFIG = 1)')
+    Left = 64
+    Top = 1080
+  end
+  object qryAtualizaConfigQtPendente: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE NTINTEGRACAODEPSCONFIG SET'
+      'VALOR = :VALOR'
+      'WHERE CODCONFIG = 1')
+    Left = 208
+    Top = 1000
+    ParamData = <
+      item
+        Name = 'VALOR'
+        ParamType = ptInput
+      end>
+  end
+  object qryDeduzirQtPendente: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE PCEST SET'
+      'QTPENDENTE = NVL(QTPENDENTE, 0) - :QT_CORTE'
+      'WHERE CODFILIAL = :CODFILIAL'
+      'AND CODPROD = :CODPROD')
+    Left = 408
+    Top = 984
+    ParamData = <
+      item
+        Name = 'QT_CORTE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CODFILIAL'
         ParamType = ptInput
       end
       item
