@@ -493,11 +493,11 @@ begin
 
             AtualizarLogPedido(numero_pedido, false);
 
-            // if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
-            // begin
-            //
-            // DesmembrarPedido(numero_pedido, Usuario.Matricula);
-            // end;
+            if (qryPesquisaPedidosCODPLPAG.AsString = '99') then
+            begin
+
+              DesmembrarPedido(numero_pedido, Usuario.Matricula);
+            end;
 
             qryPesquisaPedidos.Next;
 
