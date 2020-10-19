@@ -164,43 +164,42 @@ type
     cxLabel34: TcxLabel;
     btnSalvarConfiguracoes: TcxButton;
     cxButton1: TcxButton;
+    grpConfigQtPendente2: TcxGroupBox;
+    cxLabel35: TcxLabel;
+    radQtdOriginalQtCorte: TcxRadioButton;
+    radQtdAposCorteQtCorte: TcxRadioButton;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
     procedure _irParaMenu(Sender: TObject);
     procedure _PesquisarManual(Sender: TObject);
-    procedure grdPedidosDBTableView1StylesGetContentStyle
-      (Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
-    procedure btnEdtCodClientePropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+    procedure grdPedidosDBTableView1StylesGetContentStyle(Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
+      var AStyle: TcxStyle);
+    procedure btnEdtCodClientePropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure btnEdtCodClienteExit(Sender: TObject);
-    procedure btnEdtCodRCAPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+    procedure btnEdtCodRCAPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure btnEdtCodRCAExit(Sender: TObject);
     procedure btnLiberarPedidosManualClick(Sender: TObject);
     procedure btnPlayAutoClick(Sender: TObject);
-    procedure btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+    procedure btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure btnEdtUsuarioAutoExit(Sender: TObject);
     procedure timerTimer(Sender: TObject);
     procedure btnPararAutoClick(Sender: TObject);
     procedure tabExecucaoManualShow(Sender: TObject);
     procedure _irParaLog(Sender: TObject);
     procedure btnEdtCodClienteLogExit(Sender: TObject);
-    procedure btnEdtCodClienteLogPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
-    procedure btnEdtCodRCALogPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+    procedure btnEdtCodClienteLogPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+    procedure btnEdtCodRCALogPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure btnEdtCodRCALogExit(Sender: TObject);
-    procedure grdLogPedidosStylesGetContentStyle(Sender: TcxCustomGridTableView;
-      ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
+    procedure grdLogPedidosStylesGetContentStyle(Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
       var AStyle: TcxStyle);
     procedure btnPesquisarLogClick(Sender: TObject);
     procedure _VerLogItens(Sender: TObject);
     procedure _irParaConfig(Sender: TObject);
     procedure tabConfigShow(Sender: TObject);
     procedure btnSalvarConfiguracoesClick(Sender: TObject);
+    procedure radNaoFazerNadaQtPendenteClick(Sender: TObject);
+    procedure radDeduzirQtPendenteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -240,13 +239,11 @@ end;
 procedure TFrmPrincipal._irParaLog(Sender: TObject);
 begin
 
-
   tabLog.Show;
 end;
 
 procedure TFrmPrincipal._irParaConfig(Sender: TObject);
 begin
-
 
   tabConfig.Show;
 
@@ -255,8 +252,7 @@ end;
 procedure TFrmPrincipal.btnEdtCodClienteExit(Sender: TObject);
 begin
 
-  BotaoPesquisaOnExit(cliente, btnEdtCodCliente, edtDescricaoCliente,
-    'Cliente não encontrado');
+  BotaoPesquisaOnExit(cliente, btnEdtCodCliente, edtDescricaoCliente, 'Cliente não encontrado');
 
 end;
 
@@ -266,16 +262,13 @@ begin
   BotaoPesquisaOnExit(cliente, btnEdtCodClienteLog, edtDescricaoLog, 'Cliente não encontrado');
 end;
 
-procedure TFrmPrincipal.btnEdtCodClienteLogPropertiesButtonClick(
-  Sender: TObject; AButtonIndex: Integer);
+procedure TFrmPrincipal.btnEdtCodClienteLogPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 begin
-
 
   BotaoPesquisaOnButtonClick(cliente, btnEdtCodClienteLog, Self);
 end;
 
-procedure TFrmPrincipal.btnEdtCodClientePropertiesButtonClick(Sender: TObject;
-  AButtonIndex: Integer);
+procedure TFrmPrincipal.btnEdtCodClientePropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 begin
 
   BotaoPesquisaOnButtonClick(cliente, btnEdtCodCliente, Self);
@@ -294,16 +287,13 @@ begin
 
 end;
 
-procedure TFrmPrincipal.btnEdtCodRCALogPropertiesButtonClick(Sender: TObject;
-  AButtonIndex: Integer);
+procedure TFrmPrincipal.btnEdtCodRCALogPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 begin
-
 
   BotaoPesquisaOnButtonClick(rca, btnEdtCodRCALog, Self);
 end;
 
-procedure TFrmPrincipal.btnEdtCodRCAPropertiesButtonClick(Sender: TObject;
-  AButtonIndex: Integer);
+procedure TFrmPrincipal.btnEdtCodRCAPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 begin
 
   BotaoPesquisaOnButtonClick(rca, btnEdtCodRCA, Self);
@@ -312,12 +302,10 @@ end;
 procedure TFrmPrincipal.btnEdtUsuarioAutoExit(Sender: TObject);
 begin
 
-  BotaoPesquisaOnExit(usuario, btnEdtUsuarioAuto, edtDescricaoUsuarioAuto,
-    'Usuário não encontrado');
+  BotaoPesquisaOnExit(usuario, btnEdtUsuarioAuto, edtDescricaoUsuarioAuto, 'Usuário não encontrado');
 end;
 
-procedure TFrmPrincipal.btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject;
-  AButtonIndex: Integer);
+procedure TFrmPrincipal.btnEdtUsuarioAutoPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
 begin
 
   BotaoPesquisaOnButtonClick(usuario, btnEdtUsuarioAuto, Self);
@@ -328,14 +316,14 @@ var
   data_maxima: TDateTime;
 begin
 
-//  data_maxima := EncodeDate(2020, 7, 30);
-////
-//  if (Date > data_maxima) then
-//  begin
-//
-//    TMsg.Alerta('O período de homologação expirou');
-//    Exit;
-//  end;
+  // data_maxima := EncodeDate(2020, 7, 30);
+  /// /
+  // if (Date > data_maxima) then
+  // begin
+  //
+  // TMsg.Alerta('O período de homologação expirou');
+  // Exit;
+  // end;
 
   FrmPrincipal.prgBar.Visible := True;
   Application.ProcessMessages;
@@ -378,14 +366,11 @@ end;
 
 procedure TFrmPrincipal.btnPesquisarLogClick(Sender: TObject);
 var
-  data_inicial,
-  data_final : TDateTime;
+  data_inicial, data_final: TDateTime;
 
-  numero_pedido,
-  codigo_cliente,
-  codigo_rca : double;
+  numero_pedido, codigo_cliente, codigo_rca: double;
 
-  registros_encontrados : integer;
+  registros_encontrados: Integer;
 begin
 
   if (dtLogInicial.Text = '') then
@@ -419,7 +404,6 @@ begin
   if btnEdtCodRCALog.Text <> '' then
     codigo_rca := btnEdtCodRCALog.EditValue;
 
-
   registros_encontrados := PesquisaLog(data_inicial, data_final, numero_pedido, codigo_cliente, codigo_rca);
 
   if registros_encontrados = 0 then
@@ -436,14 +420,14 @@ var
   minutos: double;
 begin
 
-//  data_maxima := EncodeDate(2019, 9, 10);
+  // data_maxima := EncodeDate(2019, 9, 10);
 
-//  if (Date > data_maxima) then
-//  begin
-//
-//    TMsg.Alerta('O período de homologação expirou');
-//    Exit;
-//  end;
+  // if (Date > data_maxima) then
+  // begin
+  //
+  // TMsg.Alerta('O período de homologação expirou');
+  // Exit;
+  // end;
 
   if btnEdtUsuarioAuto.Text = '' then
   begin
@@ -483,10 +467,11 @@ end;
 procedure TFrmPrincipal.btnSalvarConfiguracoesClick(Sender: TObject);
 var
   nova_config_qt_pendente: TConfigQTPendente;
+  nova_config_qt_pendente_tratamento: TConfigQTPendenteTratamento;
 begin
 
-
   nova_config_qt_pendente := qtpendNaoFazerNada;
+  nova_config_qt_pendente_tratamento := qtpendQtdOriginalPedido;
 
   if radDeduzirQtPendente.Checked then
   begin
@@ -495,26 +480,31 @@ begin
   end;
 
   SalvarConfiguracaoQtPendente(nova_config_qt_pendente);
+
+  if radQtdAposCorteQtCorte.Checked then
+  begin
+
+    nova_config_qt_pendente_tratamento := qtpendQtdAposCorte;
+  end;
+
+  SalvarConfiguracaoQtPendenteTratamento(nova_config_qt_pendente_tratamento);
+
   CarregarConfiguracoes();
 
   TMsg.Sucesso('Configuração alterada com sucesso');
-
 
 end;
 
 procedure TFrmPrincipal._VerLogItens(Sender: TObject);
 var
-  numero_pedido : double;
+  numero_pedido: double;
 begin
 
-  if (DmdBD.qryConsultaLogCabecalho.State <> dsBrowse)
-    or (DmdBD.qryConsultaLogCabecalho.RecordCount = 0)
-   then
+  if (DmdBD.qryConsultaLogCabecalho.State <> dsBrowse) or (DmdBD.qryConsultaLogCabecalho.RecordCount = 0) then
   begin
 
     Exit;
   end;
-
 
   numero_pedido := DmdBD.qryConsultaLogCabecalhoNUMPED.AsFloat;
   VerItensLog(numero_pedido);
@@ -560,14 +550,13 @@ begin
   if mskNumeroPedido.Text <> '' then
     numero_pedido := mskNumeroPedido.EditValue;
 
-  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido,
-    codigo_cliente, codigo_rca);
+  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido, codigo_cliente, codigo_rca);
 
-//  if registros_encontrados = 0 then
-//  begin
-//
-//    TMsg.Alerta('Nenhum registro encontrado');
-//  end;
+  // if registros_encontrados = 0 then
+  // begin
+  //
+  // TMsg.Alerta('Nenhum registro encontrado');
+  // end;
 
 end;
 
@@ -586,8 +575,7 @@ begin
   gUSUARIO := TUsuario.PorLogin(ParamStr(1));
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
-  Caption := ParamStr(5) +
-    ' - Integração WinThor x DEPS - versão: 3.2.0.0';
+  Caption := ParamStr(5) + ' - Integração WinThor x DEPS - versão: 3.3.0.0';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
@@ -599,11 +587,10 @@ begin
 
 end;
 
-procedure TFrmPrincipal.grdLogPedidosStylesGetContentStyle(
-  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+procedure TFrmPrincipal.grdLogPedidosStylesGetContentStyle(Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
 var
-  idx_corte : integer;
+  idx_corte: Integer;
 begin
 
   idx_corte := grdLogPedidosCORTE.Index;
@@ -619,11 +606,9 @@ begin
     AStyle := stySemCorte;
   end;
 
-
 end;
 
-procedure TFrmPrincipal.grdPedidosDBTableView1StylesGetContentStyle
-  (Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+procedure TFrmPrincipal.grdPedidosDBTableView1StylesGetContentStyle(Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
 var
   sem_estoque_idx: Integer;
@@ -644,11 +629,27 @@ begin
 
 end;
 
+procedure TFrmPrincipal.radDeduzirQtPendenteClick(Sender: TObject);
+begin
+
+  grpConfigQtPendente2.Enabled := not radNaoFazerNadaQtPendente.Checked;
+
+end;
+
+procedure TFrmPrincipal.radNaoFazerNadaQtPendenteClick(Sender: TObject);
+begin
+
+  grpConfigQtPendente2.Enabled := not radNaoFazerNadaQtPendente.Checked;
+
+end;
+
 procedure TFrmPrincipal.tabConfigShow(Sender: TObject);
 begin
 
   radNaoFazerNadaQtPendente.Checked := (gCONFIG_QT_PENDENTE = qtpendNaoFazerNada);
   radDeduzirQtPendente.Checked := (gCONFIG_QT_PENDENTE = qtpendDeduzirCampo);
+
+  grpConfigQtPendente2.Enabled := not radNaoFazerNadaQtPendente.Checked;
 
 end;
 

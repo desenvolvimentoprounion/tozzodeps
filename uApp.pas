@@ -7,6 +7,9 @@ uses uUsuario, StrUtils, FireDAC.Comp.Client, FireDAC.Stan.Option;
 type
   TConfigQTPendente = (qtpendNaoFazerNada, qtpendDeduzirCampo);
 
+type
+  TConfigQTPendenteTratamento = (qtpendQtdOriginalPedido, qtpendQtdAposCorte);
+
 function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
 
 function ProcessarPedidos(Usuario: TUsuario; Rotina: double; RegistrarTextoLog: boolean = false): boolean;
@@ -22,11 +25,13 @@ procedure DesmembrarPedido(aNumeroPedido: double; aMatriculaUsuario: double);
 procedure CarregarConfiguracoes();
 
 procedure SalvarConfiguracaoQtPendente(aNovoValor: TConfigQTPendente);
+procedure SalvarConfiguracaoQtPendenteTratamento(aNovoValor: TConfigQTPendenteTratamento);
 
 var
   gUSUARIO: TUsuario;
   gCODIGO_ROTINA: double;
   gCONFIG_QT_PENDENTE: TConfigQTPendente;
+  gCONFIG_QT_PENDENTE_TRATAMENTO: TConfigQTPendenteTratamento;
 
 implementation
 
@@ -195,6 +200,16 @@ begin
       qryReservarEstoqueItem.ParamByName('CODPROD').AsFloat := qryItensPedidoCODPROD.AsFloat;
       qryReservarEstoqueItem.ExecSQL;
 
+      if gCONFIG_QT_PENDENTE = qtpendDeduzirCampo then
+      begin
+
+        qryDeduzirQtPendente.Close;
+        qryDeduzirQtPendente.ParamByName('QTPENDENTE').AsFloat := qryItensPedidoQT.AsFloat;
+        qryDeduzirQtPendente.ParamByName('CODPROD').AsFloat := qryItensPedidoCODPROD.AsFloat;
+        qryDeduzirQtPendente.ParamByName('CODFILIAL').AsString := filial_item;
+        qryDeduzirQtPendente.ExecSQL;
+      end;
+
       qryItensPedido.Next;
     end;
 
@@ -307,7 +322,18 @@ begin
     begin
 
       Close;
-      ParamByName('QT_CORTE').AsFloat := QuantidadeCortada;
+
+      if gCONFIG_QT_PENDENTE_TRATAMENTO = qtpendQtdOriginalPedido then
+      begin
+
+        ParamByName('QTPENDENTE').AsFloat := QuantidadeOriginal;
+      end
+      else
+      begin
+
+        ParamByName('QTPENDENTE').AsFloat := QuantidadeCortada;
+      end;
+
       ParamByName('CODPROD').AsFloat := Produto;
       ParamByName('CODFILIAL').AsString := Filial;
       ExecSQL;
@@ -837,6 +863,7 @@ procedure CarregarConfiguracoes();
 begin
 
   gCONFIG_QT_PENDENTE := qtpendNaoFazerNada;
+  gCONFIG_QT_PENDENTE_TRATAMENTO := qtpendQtdOriginalPedido;
 
   with DmdBD do
   begin
@@ -856,6 +883,21 @@ begin
 
     qryConfigQtPendente.Close;
 
+    qryConfigQtPendenteTratamento.Close;
+    qryConfigQtPendenteTratamento.Open;
+
+    if qryConfigQtPendenteTratamento.RecordCount > 0 then
+    begin
+
+      if qryConfigQtPendenteTratamentoVALOR.AsString = '1' then
+      begin
+
+        gCONFIG_QT_PENDENTE_TRATAMENTO := qtpendQtdAposCorte;
+      end;
+    end;
+
+    qryConfigQtPendenteTratamento.Close;
+
   end;
 
 end;
@@ -872,6 +914,23 @@ begin
     qryAtualizaConfigQtPendente.Close;
     qryAtualizaConfigQtPendente.ParamByName('VALOR').AsString := IfThen((aNovoValor = qtpendNaoFazerNada), '0', '1');
     qryAtualizaConfigQtPendente.ExecSQL;
+
+  end;
+
+end;
+
+procedure SalvarConfiguracaoQtPendenteTratamento(aNovoValor: TConfigQTPendenteTratamento);
+begin
+
+  with DmdBD do
+  begin
+
+    qryInsereConfigQtPendenteTratamento.Close;
+    qryInsereConfigQtPendenteTratamento.ExecSQL;
+
+    qryAtualizaConfigQtPendenteTratamento.Close;
+    qryAtualizaConfigQtPendenteTratamento.ParamByName('VALOR').AsString := IfThen((aNovoValor = qtpendQtdOriginalPedido), '0', '1');
+    qryAtualizaConfigQtPendenteTratamento.ExecSQL;
 
   end;
 

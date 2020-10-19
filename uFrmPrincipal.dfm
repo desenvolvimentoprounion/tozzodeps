@@ -1507,7 +1507,7 @@ object FrmPrincipal: TFrmPrincipal
       object grdConfigQtPendente: TcxGroupBox
         Left = 16
         Top = 24
-        Caption = 'QT. PENDENTE: Ao realizar corte dos produtos do pedido'
+        Caption = 'QT. PENDENTE: Tratamento do campo qt. pendente'
         TabOrder = 0
         Height = 97
         Width = 857
@@ -1520,6 +1520,7 @@ object FrmPrincipal: TFrmPrincipal
           Checked = True
           TabOrder = 0
           TabStop = True
+          OnClick = radNaoFazerNadaQtPendenteClick
           Transparent = True
         end
         object radDeduzirQtPendente: TcxRadioButton
@@ -1527,16 +1528,15 @@ object FrmPrincipal: TFrmPrincipal
           Top = 59
           Width = 393
           Height = 17
-          Caption = 'Deduzir a quantidade cortada do campo QT. PENDENTE'
+          Caption = 'Deduzir quantidade do campo QT. PENDENTE'
           TabOrder = 1
+          OnClick = radDeduzirQtPendenteClick
           Transparent = True
         end
         object cxLabel34: TcxLabel
           Left = 16
           Top = 22
-          Caption = 
-            'O que deve ser feito em rela'#231#227'o ao campo QT. PENDENTE do estoque' +
-            ' do produto quando houver corte no pedido?'
+          Caption = 'O que deve ser feito em rela'#231#227'o ao campo QT. PENDENTE?'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -1600,6 +1600,51 @@ object FrmPrincipal: TFrmPrincipal
           95E31F53F473FE00C527425349ACC3430000000049454E44AE426082}
         TabOrder = 2
         OnClick = _irParaMenu
+      end
+      object grpConfigQtPendente2: TcxGroupBox
+        Left = 16
+        Top = 143
+        Caption = 
+          'QT. PENDENTE EM PEDIDOS CORTADOS: Tratamento do campo qt. penden' +
+          'te quando houver corte dos pedidos'
+        TabOrder = 3
+        Height = 105
+        Width = 857
+        object cxLabel35: TcxLabel
+          Left = 16
+          Top = 22
+          Caption = 
+            'Quando houver cortes de itens no pedido, a quantidade deduzida d' +
+            'o campo QT. PENDENTE deve ser:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -13
+          Style.Font.Name = 'Verdana'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          Transparent = True
+        end
+        object radQtdOriginalQtCorte: TcxRadioButton
+          Left = 16
+          Top = 59
+          Width = 297
+          Height = 17
+          Caption = 'A quantidade original do item no pedido'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+          Transparent = True
+        end
+        object radQtdAposCorteQtCorte: TcxRadioButton
+          Left = 328
+          Top = 59
+          Width = 449
+          Height = 17
+          Caption = 'A quantidade do item no pedido ap'#243's a realiza'#231#227'o do corte'
+          TabOrder = 2
+          Transparent = True
+        end
       end
     end
   end

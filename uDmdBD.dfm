@@ -1,6 +1,6 @@
 object DmdBD: TDmdBD
   OldCreateOrder = False
-  Height = 1198
+  Height = 1343
   Width = 763
   object qryPesquisaPedidos: TFDQuery
     Connection = conn
@@ -1481,14 +1481,14 @@ object DmdBD: TDmdBD
     Connection = conn
     SQL.Strings = (
       'UPDATE PCEST SET'
-      'QTPENDENTE = NVL(QTPENDENTE, 0) - :QT_CORTE'
+      'QTPENDENTE = NVL(QTPENDENTE, 0) - :QTPENDENTE'
       'WHERE CODFILIAL = :CODFILIAL'
       'AND CODPROD = :CODPROD')
     Left = 408
     Top = 984
     ParamData = <
       item
-        Name = 'QT_CORTE'
+        Name = 'QTPENDENTE'
         ParamType = ptInput
       end
       item
@@ -1499,5 +1499,42 @@ object DmdBD: TDmdBD
         Name = 'CODPROD'
         ParamType = ptInput
       end>
+  end
+  object qryConfigQtPendenteTratamento: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'SELECT NVL(valor, '#39'0'#39') AS VALOR'
+      'FROM NTINTEGRACAODEPSCONFIG'
+      'WHERE CODCONFIG = 2')
+    Left = 72
+    Top = 1192
+    object qryConfigQtPendenteTratamentoVALOR: TStringField
+      FieldName = 'VALOR'
+      Size = 100
+    end
+  end
+  object qryAtualizaConfigQtPendenteTratamento: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'UPDATE NTINTEGRACAODEPSCONFIG SET'
+      'VALOR = :VALOR'
+      'WHERE CODCONFIG = 2')
+    Left = 272
+    Top = 1192
+    ParamData = <
+      item
+        Name = 'VALOR'
+        ParamType = ptInput
+      end>
+  end
+  object qryInsereConfigQtPendenteTratamento: TFDQuery
+    Connection = conn
+    SQL.Strings = (
+      'INSERT INTO NTINTEGRACAODEPSCONFIG (CODCONFIG, VALOR)'
+      
+        'SELECT 2, '#39'0'#39' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM NTINTEGR' +
+        'ACAODEPSCONFIG WHERE CODCONFIG = 2)')
+    Left = 96
+    Top = 1264
   end
 end

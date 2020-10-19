@@ -124,6 +124,10 @@ type
     qryInsereConfigQtPendente: TFDQuery;
     qryAtualizaConfigQtPendente: TFDQuery;
     qryDeduzirQtPendente: TFDQuery;
+    qryConfigQtPendenteTratamento: TFDQuery;
+    qryAtualizaConfigQtPendenteTratamento: TFDQuery;
+    qryInsereConfigQtPendenteTratamento: TFDQuery;
+    qryConfigQtPendenteTratamentoVALOR: TStringField;
   private
     { Private declarations }
   public
