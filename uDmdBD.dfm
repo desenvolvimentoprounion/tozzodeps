@@ -1537,4 +1537,9 @@ object DmdBD: TDmdBD
     Left = 96
     Top = 1264
   end
+  object qryStoreProc: TFDQuery
+    Connection = conn
+    Left = 456
+    Top = 752
+  end
 end

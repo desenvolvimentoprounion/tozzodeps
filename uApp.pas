@@ -10,7 +10,8 @@ type
 type
   TConfigQTPendenteTratamento = (qtpendQtdOriginalPedido, qtpendQtdAposCorte);
 
-function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA, CodigoEmitente: double;
+  CodigoFilial: string): integer;
 
 function ProcessarPedidos(Usuario: TUsuario; Rotina: double; RegistrarTextoLog: boolean = false): boolean;
 
@@ -45,7 +46,8 @@ begin
   Application.ProcessMessages;
 end;
 
-function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA: double): integer;
+function PesquisaPedidos(DataInicial, DataFinal: TDateTime; NumeroPedido, CodigoCliente, CodigoRCA, CodigoEmitente: double;
+  CodigoFilial: string): integer;
 begin
 
   with DmdBD.qryPesquisaPedidos do
@@ -106,6 +108,20 @@ begin
 
       SQL.Add('AND PCPEDC.CODUSUR = :CODUSUR');
       ParamByName('CODUSUR').AsFloat := CodigoRCA;
+    end;
+
+    if CodigoEmitente > 0 then
+    begin
+
+      SQL.Add('AND PCPEDC.CODEMITENTE = :CODEMITENTE ');
+      ParamByName('CODEMITENTE').AsFloat := CodigoEmitente;
+    end;
+
+    if CodigoFilial <> '' then
+    begin
+
+      SQL.Add('AND PCPEDC.CODFILIAL = :CODFILIAL ');
+      ParamByName('CODFILIAL').AsString := CodigoFilial;
     end;
 
     SQL.Add(' )                                                                                                          ');
@@ -767,85 +783,106 @@ end;
 procedure DesmembrarPedido(aNumeroPedido: double; aMatriculaUsuario: double);
 begin
 
-  with DmdBD.StorProcDesmembraPedido do
+  with DmdBD.qryStoreProc do
   begin
 
     Close;
-    FetchOptions.Items := FetchOptions.Items - [fiMeta];
-
-    with Params do
-    begin
-      Clear;
-      with Add do
-      begin
-
-        Name := 'pi_nCodRotina';
-        ParamType := ptInput;
-        DataType := ftFloat;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'pi_nNumPed';
-        ParamType := ptInput;
-        DataType := ftFloat;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'pi_nMatricula';
-        ParamType := ptInput;
-        DataType := ftFloat;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'pi_vPosicaoPedido';
-        ParamType := ptInput;
-        DataType := ftString;
-        Size := 1;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'pi_nProxNumCar';
-        ParamType := ptInput;
-        DataType := ftFloat;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'po_vOcorreramErros';
-        ParamType := ptOutput;
-        DataType := ftString;
-        Size := 100;
-      end;
-
-      with Add do
-      begin
-
-        Name := 'po_vMsgErros';
-        ParamType := ptOutput;
-        DataType := ftString;
-        Size := 100;
-      end;
-    end;
-
-    Prepare;
-    Params[0].Value := 2336;
-    Params[1].Value := aNumeroPedido;
-    Params[2].Value := aMatriculaUsuario;
-    Params[3].Value := 'L';
-    Params[4].Value := 0;
-    Params[5].Value := '';
-    Params[5].Value := '';
-    ExecProc;
+    SQL.Clear;
+    SQL.Add(' DECLARE                                             ');
+    SQL.Add('  po_vOcorreramErros VARCHAR2(1);                    ');
+    SQL.Add('  po_vMsgErros       VARCHAR2(2000);                 ');
+    SQL.Add(' BEGIN                                               ');
+    SQL.Add(' PRC_MED_FINALIZACAO_PEDIDO_01(2336,                 ');
+    SQL.Add('                               ' + FloatToStr(aNumeroPedido) + ',      ');
+    SQL.Add('                               ' + FloatToStr(aMatriculaUsuario) + ',  ');
+    SQL.Add('                               ''L'',                ');
+    SQL.Add('                               0,                    ');
+    SQL.Add('                               po_vOcorreramErros,   ');
+    SQL.Add('                               po_vMsgErros);        ');
+    SQL.Add(' END;                                                ');
+    ExecSQL;
   end;
+//
+//  with DmdBD.StorProcDesmembraPedido do
+//  begin
+//
+//    Close;
+//    FetchOptions.Items := FetchOptions.Items - [fiMeta];
+//    // SchemaName := 'NILO';
+//
+//    with Params do
+//    begin
+//      Clear;
+//      with Add do
+//      begin
+//
+//        Name := 'pi_nCodRotina';
+//        ParamType := ptInput;
+//        DataType := ftFloat;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'pi_nNumPed';
+//        ParamType := ptInput;
+//        DataType := ftFloat;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'pi_nMatricula';
+//        ParamType := ptInput;
+//        DataType := ftFloat;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'pi_vPosicaoPedido';
+//        ParamType := ptInput;
+//        DataType := ftString;
+//        Size := 1;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'pi_nProxNumCar';
+//        ParamType := ptInput;
+//        DataType := ftFloat;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'po_vOcorreramErros';
+//        ParamType := ptOutput;
+//        DataType := ftString;
+//        Size := 100;
+//      end;
+//
+//      with Add do
+//      begin
+//
+//        Name := 'po_vMsgErros';
+//        ParamType := ptOutput;
+//        DataType := ftString;
+//        Size := 100;
+//      end;
+//    end;
+//
+//    Prepare;
+//    Params[0].Value := 2336;
+//    Params[1].Value := aNumeroPedido;
+//    Params[2].Value := aMatriculaUsuario;
+//    Params[3].Value := 'L';
+//    Params[4].Value := 0;
+//    Params[5].Value := '';
+//    Params[5].Value := '';
+//    ExecProc;
+//  end;
 
   // Atualizando PCPLPAG do cabeçalho quando se tem apenas um item
   // a procedure deveria fazer isso mas não faz

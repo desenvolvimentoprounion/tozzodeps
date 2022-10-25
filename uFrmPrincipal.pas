@@ -168,6 +168,15 @@ type
     cxLabel35: TcxLabel;
     radQtdOriginalQtCorte: TcxRadioButton;
     radQtdAposCorteQtCorte: TcxRadioButton;
+    grdPedidosDBTableView1NUMCAR: TcxGridDBColumn;
+    grdPedidosDBTableView1CODEMITENTE: TcxGridDBColumn;
+    grdPedidosDBTableView1CODPLPAG: TcxGridDBColumn;
+    cxLabel36: TcxLabel;
+    btnEdtCodEmintente: TcxButtonEdit;
+    edtDescricaoEmitente: TcxTextEdit;
+    cxLabel37: TcxLabel;
+    btnEdtCodFilial: TcxButtonEdit;
+    edtDescricaoFilial: TcxTextEdit;
     procedure FormShow(Sender: TObject);
     procedure _irParaExecuaoManual(Sender: TObject);
     procedure _irParaExecucaoAutomatica(Sender: TObject);
@@ -200,6 +209,10 @@ type
     procedure btnSalvarConfiguracoesClick(Sender: TObject);
     procedure radNaoFazerNadaQtPendenteClick(Sender: TObject);
     procedure radDeduzirQtPendenteClick(Sender: TObject);
+    procedure btnEdtCodEmintenteExit(Sender: TObject);
+    procedure btnEdtCodEmintentePropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+    procedure btnEdtCodFilialExit(Sender: TObject);
+    procedure btnEdtCodFilialPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
   private
     { Private declarations }
   public
@@ -272,6 +285,34 @@ procedure TFrmPrincipal.btnEdtCodClientePropertiesButtonClick(Sender: TObject; A
 begin
 
   BotaoPesquisaOnButtonClick(cliente, btnEdtCodCliente, Self);
+end;
+
+procedure TFrmPrincipal.btnEdtCodEmintenteExit(Sender: TObject);
+begin
+
+  BotaoPesquisaOnExit(usuario, btnEdtCodEmintente, edtDescricaoEmitente, 'Emitente não encontrado');
+
+end;
+
+procedure TFrmPrincipal.btnEdtCodEmintentePropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+begin
+
+  BotaoPesquisaOnButtonClick(usuario, btnEdtCodEmintente, Self);
+
+end;
+
+procedure TFrmPrincipal.btnEdtCodFilialExit(Sender: TObject);
+begin
+
+  BotaoPesquisaOnExit(filial, btnEdtCodFilial, edtDescricaoFilial, 'Filial não encontrada');
+
+end;
+
+procedure TFrmPrincipal.btnEdtCodFilialPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+begin
+
+  BotaoPesquisaOnButtonClick(filial, btnEdtCodFilial, Self);
+
 end;
 
 procedure TFrmPrincipal.btnEdtCodRCAExit(Sender: TObject);
@@ -514,7 +555,8 @@ end;
 procedure TFrmPrincipal._PesquisarManual(Sender: TObject);
 var
   dt_inicial, dt_final: TDateTime;
-  numero_pedido, codigo_cliente, codigo_rca: double;
+  numero_pedido, codigo_cliente, codigo_rca, codigo_emitente: double;
+  codigo_filial: string;
 
   registros_encontrados: Integer;
 begin
@@ -540,6 +582,8 @@ begin
   codigo_cliente := 0;
   codigo_rca := 0;
   numero_pedido := 0;
+  codigo_emitente := 0;
+  codigo_filial := '';
 
   if btnEdtCodCliente.Text <> '' then
     codigo_cliente := btnEdtCodCliente.EditValue;
@@ -550,13 +594,15 @@ begin
   if mskNumeroPedido.Text <> '' then
     numero_pedido := mskNumeroPedido.EditValue;
 
-  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido, codigo_cliente, codigo_rca);
+  if btnEdtCodEmintente.Text <> '' then
+    codigo_emitente := btnEdtCodEmintente.EditValue;
 
-  // if registros_encontrados = 0 then
-  // begin
-  //
-  // TMsg.Alerta('Nenhum registro encontrado');
-  // end;
+  if btnEdtCodFilial.Text <> '' then
+    codigo_filial := btnEdtCodFilial.Text;
+
+  registros_encontrados := PesquisaPedidos(dt_inicial, dt_final, numero_pedido, codigo_cliente, codigo_rca, codigo_emitente, codigo_filial);
+
+
 
 end;
 
@@ -575,7 +621,7 @@ begin
   gUSUARIO := TUsuario.PorLogin(ParamStr(1));
   gCODIGO_ROTINA := StrToFloat(ParamStr(5));
 
-  Caption := ParamStr(5) + ' - Integração WinThor x DEPS - versão: 3.3.0.0';
+  Caption := ParamStr(5) + ' - Integração WinThor x DEPS - versão: 4.1.0.0';
   Application.Title := Caption;
 
   btnEdtUsuarioAuto.EditValue := gUSUARIO.Matricula;
@@ -685,7 +731,7 @@ begin
     RegistrarLog('Iniciando processamento automático');
 
     data_inicial := IncDay(Date, spnQtdDias.EditValue * -1);
-    registros_encontrados := PesquisaPedidos(data_inicial, Date, 0, 0, 0);
+    registros_encontrados := PesquisaPedidos(data_inicial, Date, 0, 0, 0, 0, '');
 
     RegistrarLog(IntToStr(registros_encontrados) + ' registros encontrados');
 

@@ -24,7 +24,7 @@ object FrmPrincipal: TFrmPrincipal
     Height = 597
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabMenu
+    Properties.ActivePage = tabExecucaoManual
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 594
     ClientRectLeft = 2
@@ -475,12 +475,12 @@ object FrmPrincipal: TFrmPrincipal
           4E60032FB08CCD035B31D02A1E53C2E21DBCC186380D12E87D0D867F1BC82D64
           F06441078B5F5B080D710957367940161E62F818A770768EF1E03BC6C88B147F
           95E31F53F473FE00C527425349ACC3430000000049454E44AE426082}
-        TabOrder = 7
+        TabOrder = 9
         OnClick = _irParaMenu
       end
       object mskNumeroPedido: TcxMaskEdit
         Left = 374
-        Top = 24
+        Top = 26
         Properties.MaskKind = emkRegExprEx
         Properties.EditMask = '\d+'
         StyleFocused.BorderColor = 33023
@@ -502,7 +502,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object btnEdtCodCliente: TcxButtonEdit
         Left = 7
-        Top = 79
+        Top = 138
         Properties.Buttons = <
           item
             Default = True
@@ -512,13 +512,13 @@ object FrmPrincipal: TFrmPrincipal
         Properties.EditMask = '\d+'
         Properties.OnButtonClick = btnEdtCodClientePropertiesButtonClick
         StyleFocused.BorderColor = 33023
-        TabOrder = 3
+        TabOrder = 5
         OnExit = btnEdtCodClienteExit
         Width = 100
       end
       object btnEdtCodRCA: TcxButtonEdit
         Left = 374
-        Top = 79
+        Top = 138
         Properties.Buttons = <
           item
             Default = True
@@ -528,33 +528,33 @@ object FrmPrincipal: TFrmPrincipal
         Properties.EditMask = '\d+'
         Properties.OnButtonClick = btnEdtCodRCAPropertiesButtonClick
         StyleFocused.BorderColor = 33023
-        TabOrder = 4
+        TabOrder = 6
         OnExit = btnEdtCodRCAExit
         Width = 100
       end
       object edtDescricaoCliente: TcxTextEdit
         Left = 108
-        Top = 79
+        Top = 138
         Enabled = False
         StyleDisabled.BorderColor = clBlack
         StyleDisabled.Color = clWhite
         StyleDisabled.TextColor = clBlack
-        TabOrder = 9
+        TabOrder = 11
         Width = 225
       end
       object edtDescricaoRCA: TcxTextEdit
         Left = 475
-        Top = 79
+        Top = 138
         Enabled = False
         StyleDisabled.BorderColor = clBlack
         StyleDisabled.Color = clWhite
         StyleDisabled.TextColor = clBlack
-        TabOrder = 10
+        TabOrder = 12
         Width = 225
       end
       object cxLabel11: TcxLabel
         Left = 7
-        Top = 59
+        Top = 118
         Caption = 'Cliente'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -567,7 +567,7 @@ object FrmPrincipal: TFrmPrincipal
       end
       object cxLabel12: TcxLabel
         Left = 374
-        Top = 59
+        Top = 118
         Caption = 'RCA'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -579,8 +579,8 @@ object FrmPrincipal: TFrmPrincipal
         Transparent = True
       end
       object btnPesquisar: TcxButton
-        Left = 833
-        Top = 108
+        Left = 835
+        Top = 138
         Width = 130
         Height = 25
         Anchors = [akTop, akRight]
@@ -617,31 +617,31 @@ object FrmPrincipal: TFrmPrincipal
           5FE9689081B0779E8EAB28CCDA549E9F9380CB35E6E5FFD0F2FA4E1A3213A87B
           319E9A8CF8B55323DE4C7EBCEE78EE16AD714F6ACBBF059CA12764F2DBD90000
           000049454E44AE426082}
-        TabOrder = 5
+        TabOrder = 7
         OnClick = _PesquisarManual
       end
       object cxLabel8: TcxLabel
         Left = 7
-        Top = 25
+        Top = 27
         Caption = 'De'
         Transparent = True
       end
       object dtLiberaPedidoInicial: TcxDateEdit
         Left = 28
-        Top = 24
+        Top = 26
         StyleFocused.BorderColor = 33023
         TabOrder = 0
         Width = 121
       end
       object cxLabel9: TcxLabel
         Left = 159
-        Top = 28
+        Top = 30
         Caption = 'at'#233
         Transparent = True
       end
       object dtLiberaPedidoFinal: TcxDateEdit
         Left = 189
-        Top = 24
+        Top = 26
         StyleFocused.BorderColor = 33023
         TabOrder = 1
         Width = 121
@@ -661,11 +661,11 @@ object FrmPrincipal: TFrmPrincipal
       end
       object grdPedidos: TcxGrid
         Left = 7
-        Top = 139
+        Top = 184
         Width = 958
-        Height = 336
+        Height = 291
         Anchors = [akLeft, akTop, akRight, akBottom]
-        TabOrder = 16
+        TabOrder = 18
         object grdPedidosDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DmdBD.dsrPesquisaPedidos
@@ -732,6 +732,18 @@ object FrmPrincipal: TFrmPrincipal
             Visible = False
             VisibleForCustomization = False
           end
+          object grdPedidosDBTableView1NUMCAR: TcxGridDBColumn
+            Caption = 'N'#218'M. CARREG'
+            DataBinding.FieldName = 'NUMCAR'
+          end
+          object grdPedidosDBTableView1CODEMITENTE: TcxGridDBColumn
+            Caption = 'C'#211'D. EMITENTE'
+            DataBinding.FieldName = 'CODEMITENTE'
+          end
+          object grdPedidosDBTableView1CODPLPAG: TcxGridDBColumn
+            Caption = 'PL. PAG.'
+            DataBinding.FieldName = 'CODPLPAG'
+          end
         end
         object grdPedidosLevel1: TcxGridLevel
           GridView = grdPedidosDBTableView1
@@ -768,7 +780,7 @@ object FrmPrincipal: TFrmPrincipal
           8F4051E227EE6031000B50F044E2572816E4074B01271011448801609C03F581
           E26CEE67CFA5ABDD195501EB82381435A0314401412DE04F7EEE05100AE00129
           20B9C87716160F050A40FE2F0C443CDF350F545E0000000049454E44AE426082}
-        TabOrder = 6
+        TabOrder = 8
         OnClick = btnLiberarPedidosManualClick
       end
       object cxLabel14: TcxLabel
@@ -816,9 +828,87 @@ object FrmPrincipal: TFrmPrincipal
         Left = 7
         Top = 478
         Anchors = [akLeft, akRight, akBottom]
-        TabOrder = 19
+        TabOrder = 21
         Visible = False
         Width = 958
+      end
+      object cxLabel36: TcxLabel
+        Left = 7
+        Top = 61
+        Caption = 'Emitente'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object btnEdtCodEmintente: TcxButtonEdit
+        Left = 7
+        Top = 81
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        Properties.MaskKind = emkRegExprEx
+        Properties.EditMask = '\d+'
+        Properties.OnButtonClick = btnEdtCodEmintentePropertiesButtonClick
+        StyleFocused.BorderColor = 33023
+        TabOrder = 3
+        OnExit = btnEdtCodEmintenteExit
+        Width = 100
+      end
+      object edtDescricaoEmitente: TcxTextEdit
+        Left = 108
+        Top = 81
+        Enabled = False
+        StyleDisabled.BorderColor = clBlack
+        StyleDisabled.Color = clWhite
+        StyleDisabled.TextColor = clBlack
+        TabOrder = 23
+        Width = 225
+      end
+      object cxLabel37: TcxLabel
+        Left = 374
+        Top = 62
+        Caption = 'Filial'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -13
+        Style.Font.Name = 'Verdana'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object btnEdtCodFilial: TcxButtonEdit
+        Left = 374
+        Top = 82
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        Properties.MaskKind = emkRegExprEx
+        Properties.EditMask = '\d+'
+        Properties.OnButtonClick = btnEdtCodFilialPropertiesButtonClick
+        StyleFocused.BorderColor = 33023
+        TabOrder = 4
+        OnExit = btnEdtCodFilialExit
+        Width = 100
+      end
+      object edtDescricaoFilial: TcxTextEdit
+        Left = 475
+        Top = 82
+        Enabled = False
+        StyleDisabled.BorderColor = clBlack
+        StyleDisabled.Color = clWhite
+        StyleDisabled.TextColor = clBlack
+        TabOrder = 25
+        Width = 225
       end
     end
     object tabExecucaoAutomatica: TcxTabSheet
@@ -1650,6 +1740,7 @@ object FrmPrincipal: TFrmPrincipal
   end
   object LookAndFeelController: TcxLookAndFeelController
     NativeStyle = False
+    ScrollbarMode = sbmClassic
     SkinName = 'SevenClassic'
     Left = 864
     Top = 80

@@ -8,7 +8,7 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.UI.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.Oracle,
   FireDAC.Phys.OracleDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
-  FireDAC.Comp.DataSet;
+  FireDAC.Comp.DataSet, MemDS, DBAccess, Ora;
 
 type
   TDmdBD = class(TDataModule)
@@ -128,6 +128,7 @@ type
     qryAtualizaConfigQtPendenteTratamento: TFDQuery;
     qryInsereConfigQtPendenteTratamento: TFDQuery;
     qryConfigQtPendenteTratamentoVALOR: TStringField;
+    qryStoreProc: TFDQuery;
   private
     { Private declarations }
   public
